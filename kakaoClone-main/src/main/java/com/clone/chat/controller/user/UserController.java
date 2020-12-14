@@ -99,16 +99,6 @@ public class UserController {
 		Files.copy(file.toPath(), response.getOutputStream());
 		//TODO thumnail
 	}
-	
-	@GetMapping("/image-list")
-	public List<String> getImageList(HttpServletResponse response) throws IOException {
-		List<String> list = new ArrayList<>();
-		
-		list.add("11111111-1234-5678-1234-567812345678");
-		list.add("22222222-1234-5678-1234-567812345678");
-		list.add("33333333-1234-5678-1234-567812345678");
-		return list;
-		
-	}
+
 	
 }

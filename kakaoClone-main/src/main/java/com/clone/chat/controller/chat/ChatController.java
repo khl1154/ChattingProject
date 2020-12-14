@@ -34,13 +34,6 @@ public class ChatController {
 
 	private final UserService userService;
 
-
-	@PostMapping("/room-invite")
-	public ResponseForm invite(@RequestParam List<String> users, Long chatRoomId) {
-		chatService.invite(users, chatRoomId);
-
-		return new ResponseForm();
-	}
 	
 	@PostMapping("/room-create")
 	public ResponseForm roomCreate(@RequestBody ChatRoomDto dto) {
