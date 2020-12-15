@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
@@ -65,14 +66,18 @@ public class UserController {
 		ObjectMapper objectMapper = new ObjectMapper();
 		Map<String,Object> resultMap = new HashMap<String,Object>();
 
+		//해당 유저의 정보를 통해 고유한 토큰 생성
+		String token = userService.create(dto.getId());
+		Cookie cookieToken = new Cookie("Authorization", token);
+
+
 		if("user1@daum.net".equals(dto.getId())&&"1234".equals(dto.getPw())){
 
 
-			//해당 유저의 정보를 통해 고유한 토큰 생성
-			String token = userService.create(dto.getId());
-			//클라이언트에 전송하기 위해 response 헤더에 인증토큰을 담아준다.
+			//클라이언트에 전송하기 위해 response 쿠키에 인증토큰을 담아준다.
 			logger.info("loginSuccess");
-			response.setHeader("Authorization", token);
+			//response.setHeader("Authorization", token);
+			response.addCookie(cookieToken);
 			resultMap.put("user_id",dto.getId());
 			resultMap.put("return","success");
 		}else{
