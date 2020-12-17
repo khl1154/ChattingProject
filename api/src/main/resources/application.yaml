@@ -1,0 +1,10 @@
+#port
+spring:
+  profiles:
+    include:
+      - core
+      - db
+server:
+  port: 9000
+
+#include
