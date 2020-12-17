@@ -1,0 +1,17 @@
+rootProject.name = 'chat'
+String[] cores = ['core']
+String[] apis = ['api']
+apis.each {
+    include it
+    def projectDir = new File(rootDir, it)
+    if (!projectDir.exists()) {
+        projectDir.mkdirs()
+    }
+}
+cores.each {
+    include it
+    def projectDir = new File(rootDir, it)
+    if (!projectDir.exists()) {
+        projectDir.mkdirs()
+    }
+}
