@@ -1,10 +1,10 @@
-package com.clone.chat.util.exception;
+package com.clone.chat.exception;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import com.clone.chat.util.ResponseForm;
+import com.clone.chat.model.ResponseForm;
 
 import lombok.extern.slf4j.Slf4j;
 

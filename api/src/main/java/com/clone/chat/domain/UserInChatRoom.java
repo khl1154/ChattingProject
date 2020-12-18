@@ -9,7 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.clone.chat.util.BaseTimeEntity;
+import com.clone.chat.domain.base.BaseTimeEntity;
 
 import lombok.AccessLevel;
 import lombok.Getter;

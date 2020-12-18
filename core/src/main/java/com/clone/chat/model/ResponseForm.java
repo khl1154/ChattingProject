@@ -1,10 +1,9 @@
-package com.clone.chat.util;
+package com.clone.chat.model;
 
 import java.util.LinkedHashMap;
 
-import com.clone.chat.util.exception.ErrorCodes;
+import com.clone.chat.exception.ErrorCodes;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
 public class ResponseForm extends LinkedHashMap<String, Object>{

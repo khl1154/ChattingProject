@@ -1,4 +1,4 @@
-package com.clone.chat.util;
+package com.clone.chat.domain.base;
 
 import java.time.LocalDateTime;
 

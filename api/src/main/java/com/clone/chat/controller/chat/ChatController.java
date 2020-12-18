@@ -14,7 +14,7 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.*;
 
 import com.clone.chat.model.ChatRoomDto;
-import com.clone.chat.util.ResponseForm;
+import com.clone.chat.model.ResponseForm;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.util.HtmlUtils;

@@ -17,9 +17,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.clone.chat.domain.User;
 import com.clone.chat.model.UserDto;
 import com.clone.chat.repository.UserRepository;
-import com.clone.chat.util.exception.BusinessException;
-import com.clone.chat.util.exception.ErrorCodes;
-import com.clone.chat.util.exception.ErrorTrace;
+import com.clone.chat.exception.BusinessException;
+import com.clone.chat.exception.ErrorCodes;
+import com.clone.chat.exception.ErrorTrace;
 
 import lombok.RequiredArgsConstructor;
 

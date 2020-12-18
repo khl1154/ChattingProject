@@ -1,6 +1,6 @@
 package com.clone.chat.config;
 
-import com.clone.chat.util.filter.RequestLoggingFilter;
+import com.clone.chat.filter.RequestLoggingFilter;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

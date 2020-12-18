@@ -4,10 +4,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import com.clone.chat.util.BaseTimeEntity;
+import com.clone.chat.domain.base.BaseTimeEntity;
 
 import lombok.AccessLevel;
 import lombok.Builder;

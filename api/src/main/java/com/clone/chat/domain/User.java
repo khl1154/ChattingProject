@@ -5,7 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import com.clone.chat.util.BaseTimeEntity;
+import com.clone.chat.domain.base.BaseTimeEntity;
 
 import lombok.AccessLevel;
 import lombok.Builder;

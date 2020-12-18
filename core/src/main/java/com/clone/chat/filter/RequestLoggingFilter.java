@@ -1,4 +1,4 @@
-package com.clone.chat.util.filter;
+package com.clone.chat.filter;
 
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
