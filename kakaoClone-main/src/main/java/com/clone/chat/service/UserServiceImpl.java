@@ -6,8 +6,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 import com.clone.chat.controller.user.UserController;
-import com.clone.chat.domain.File;
-import com.clone.chat.dto.FileDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -25,7 +23,6 @@ import com.clone.chat.util.exception.ErrorCodes;
 import com.clone.chat.util.exception.ErrorTrace;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.multipart.MultipartFile;
 
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -33,29 +30,17 @@ import org.springframework.web.multipart.MultipartFile;
 public class UserServiceImpl implements UserService {
 
 	private final UserRepository userRepository;
-	private final FileService fileService;
 
 
 	Logger logger = LoggerFactory.getLogger(UserController.class);
 
 	@Transactional
 	@Override
-	public void join(UserDto dto, MultipartFile file) {
+	public void join(UserDto dto) {
 		Optional<User> user = userRepository.findById(dto.getId());
 		if (user.isPresent())
 			throw new BusinessException(ErrorCodes.DUPLICATED_ID, ErrorTrace.getName());
-		FileDto fileDto = new FileDto();
-		if(!file.isEmpty()) {
-			fileDto = fileService.save(file);
-		} else {
-			File defalutFile = fileService.findOne(1L);
-			fileDto.setId(defalutFile.getId());
-			fileDto.setFileName(defalutFile.getFileName());
-			fileDto.setFilePath(defalutFile.getFilePath());
-			fileDto.setFileSize(defalutFile.getFileSize());
-			fileDto.setOriginalFileName(defalutFile.getOriginalFileName());
-		}
-		dto.setFileDto(fileDto);
+
 		userRepository.save(dto.toEntity());
 	}
 
@@ -80,6 +65,18 @@ public class UserServiceImpl implements UserService {
 
 		return response;
 	}
+
+
+
+
+
+
+
+
+
+
+
+
 
 	public String create(String userId) throws UnsupportedEncodingException {
 		List<String> authList = new ArrayList();
@@ -117,6 +114,11 @@ public class UserServiceImpl implements UserService {
 			resultMap.put("return","fail");
 		}
 
+
 		return resultMap;
 	}
+
+
+
+
 }
