@@ -2,9 +2,12 @@ package com.clone.chat.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.clone.chat.dto.FileDto;
 import com.clone.chat.util.BaseTimeEntity;
 
 import lombok.AccessLevel;
@@ -19,18 +22,18 @@ import lombok.NoArgsConstructor;
 public class User extends BaseTimeEntity{
 	
 	@Id @Column(name = "user_id", nullable = false)
-	String id;	//email
-	String password;
-	String nickName;
-	String phone;
+	private String id;	//email
+
+	@OneToOne(fetch = FetchType.LAZY)
+	private File file;
+	private String password;
+	private String phone;
 	
 	@Builder
-	public User(String id, String password, String nickName, String phone) {
+	public User(String id, FileDto fileDto, String password, String phone) {
 		this.id = id;
+		this.file = fileDto.toEntity();
 		this.password = password;
-		this.nickName = nickName;
 		this.phone = phone;
 	}
-	
-	
 }

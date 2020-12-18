@@ -63,9 +63,4 @@ public class ChatController {
 
 		return new ChatRoomDto(chat.getName(), chat.getMessage());
 	}
-
-
-
-
-
 }

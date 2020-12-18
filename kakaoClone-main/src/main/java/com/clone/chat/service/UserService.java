@@ -5,13 +5,14 @@ import java.util.List;
 import java.util.Map;
 
 import com.clone.chat.dto.UserDto;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface UserService {
 
 	/*
 	 * 사용자 등록
 	 */
-	public void join(UserDto dto);
+	public void join(UserDto dto, MultipartFile file);
 	
 	/*
 	 * 중복 체크

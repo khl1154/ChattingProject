@@ -13,6 +13,7 @@ public class ResponseForm extends LinkedHashMap<String, Object>{
 	private static final long serialVersionUID = -4098281931429200073L;
 
 	public ResponseForm() {
+
 		put("result", "success");
 	}
 	
