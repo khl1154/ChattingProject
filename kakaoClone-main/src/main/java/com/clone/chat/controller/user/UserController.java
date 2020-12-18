@@ -52,6 +52,7 @@ public class UserController {
 		return new ResponseForm();
 	}
 
+
 	@GetMapping("/duplicate_check")
 	public ResponseForm duplicate(String id) {
 		userService.duplicateId(id);

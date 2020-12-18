@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface FileService {
 
+
     public FileDto save(MultipartFile file);
     public File findOne(Long id);
 }

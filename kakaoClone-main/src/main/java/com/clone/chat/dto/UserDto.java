@@ -26,5 +26,4 @@ public class UserDto {
 			.phone(phone)
 			.build();
 	}
-
 }
