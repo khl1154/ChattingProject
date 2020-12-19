@@ -1,4 +1,4 @@
-package com.clone.chat.controller.user;
+package com.clone.chat.controller.api;
 
 import java.io.File;
 import java.io.IOException;
@@ -10,13 +10,15 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
+import com.clone.chat.domain.base.UserBase;
 import com.clone.chat.service.UserService;
+import io.swagger.annotations.Api;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import com.clone.chat.model.UserDto;
 import com.clone.chat.model.ResponseForm;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -25,31 +27,30 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("user")
+@RequestMapping(UserController.URI_PREFIX)
+@Slf4j
+@Api(tags = "유저")
 public class UserController {
-
+	public static final String URI_PREFIX = ApiController.URI_PREFIX+"/users";
 	@Autowired
 	private final UserService userService;
 
-	Logger logger = LoggerFactory.getLogger(UserController.class);
 
 
 
 
 
 	
-	@GetMapping("/list")
+	@GetMapping("/lists")
 	public ResponseForm list(String id) {
 		List<String> list = userService.getList(id);
 
 		return new ResponseForm("list", list);
 	}
 	
-	@PostMapping("/join")
-	public ResponseForm join(@RequestBody UserDto dto) {
+	@PostMapping("/joins")
+	public void join(@RequestBody UserBase dto) {
 		userService.join(dto);
-
-		return new ResponseForm();
 	}
 	
 	@GetMapping("/duplicate_check")
@@ -60,22 +61,22 @@ public class UserController {
 	}
 
 	@PostMapping("/login")
-	public String login(@RequestBody UserDto dto, HttpServletResponse response) throws JsonProcessingException,UnsupportedEncodingException {
+	public String login(@RequestBody UserBase dto, HttpServletResponse response) throws JsonProcessingException,UnsupportedEncodingException {
 		ObjectMapper objectMapper = new ObjectMapper();
 		Map<String,Object> resultMap = new HashMap<String,Object>();
 
-		if("user1@daum.net".equals(dto.getId())&&"1234".equals(dto.getPw())){
+		if("user1@daum.net".equals(dto.getId())&&"1234".equals(dto.getPassword())){
 
 
 			//해당 유저의 정보를 통해 고유한 토큰 생성
 			String token = userService.create(dto.getId());
 			//클라이언트에 전송하기 위해 response 헤더에 인증토큰을 담아준다.
-			logger.info("loginSuccess");
+			log.info("loginSuccess");
 			response.setHeader("Authorization", token);
 			resultMap.put("user_id",dto.getId());
 			resultMap.put("return","success");
 		}else{
-			logger.info("loginFail");
+			log.info("loginFail");
 			resultMap.put("return","fail");
 		}
 

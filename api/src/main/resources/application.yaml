@@ -7,4 +7,8 @@ spring:
 server:
   port: 9000
 
-#include
+project:
+  properties:
+    username: chat
+    password: chat1234
+    swagger-host: localhost:9000

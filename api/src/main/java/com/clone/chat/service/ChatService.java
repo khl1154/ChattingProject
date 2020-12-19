@@ -2,6 +2,8 @@ package com.clone.chat.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,7 +12,6 @@ import com.clone.chat.domain.ChatRoom;
 import com.clone.chat.domain.User;
 import com.clone.chat.domain.UserInChatRoom;
 import com.clone.chat.model.ChatRoomDto;
-import com.clone.chat.model.ChatRoomDto.Response;
 import com.clone.chat.repository.ChatRoomRepository;
 import com.clone.chat.repository.UserInChatRoomRepository;
 import com.clone.chat.repository.UserRepository;
@@ -30,34 +31,19 @@ public class ChatService {
     public Long chatRoomCreate(ChatRoomDto dto) {
         ChatRoom chatRoom = chatRoomRepository.save(dto.toEntity());
 
+
         //연결테이블 처리
-        User user = userRepository.getOne(dto.getUserId());
-        UserInChatRoom userInChatRoom = new UserInChatRoom(chatRoom, user, true);
+        Optional<User> user = userRepository.findById(dto.getUserId());
+        user.orElseThrow(() -> new NoSuchElementException());
+
+        UserInChatRoom userInChatRoom = new UserInChatRoom(chatRoom, user.get(), true);
         userInChatRoomRepository.save(userInChatRoom);
 
         return chatRoom.getId();
     }
 
-    public List<Response> getList(String userId, String search) {
-        List<UserInChatRoom> list = userInChatRoomRepository.findByUser(userId, search);
-
-        return toDto(list);
-    }
-
-    private List<Response> toDto(List<UserInChatRoom> list) {
-        List<Response> dtoList = new ArrayList<>();
-
-        for (UserInChatRoom userInChatRoom : list) {
-            Response response = new Response();
-            response.setChatRoomId(userInChatRoom.getChatRoom().getId());
-            response.setChatRoomName(userInChatRoom.getChatRoom().getName());
-            response.setLastMsg(null);
-            response.setModifiedDate(userInChatRoom.getChatRoom().getModifiedDate());
-            response.setUnreadMsgCount(null);
-
-            dtoList.add(response);
-        }
-        return dtoList;
+    public List<UserInChatRoom> getList(String userId, String search) {
+        return userInChatRoomRepository.findByUser(userId, search);
     }
 
     @Transactional

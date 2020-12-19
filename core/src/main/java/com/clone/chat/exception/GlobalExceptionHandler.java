@@ -1,5 +1,6 @@
 package com.clone.chat.exception;
 
+import com.clone.chat.code.MsgCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -14,7 +15,7 @@ public class GlobalExceptionHandler {
 
 	@ExceptionHandler(BusinessException.class)
 	public ResponseEntity<ResponseForm> businessException(BusinessException exception) {
-		ErrorCodes code = exception.getCode();
+		MsgCode code = exception.getCode();
 		String funcName = exception.getFunction();
 
 		log.error(code.toString() + " : " + funcName);

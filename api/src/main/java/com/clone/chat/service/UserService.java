@@ -5,20 +5,18 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 
-import com.clone.chat.controller.user.UserController;
+import com.clone.chat.domain.base.UserBase;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.clone.chat.domain.User;
-import com.clone.chat.model.UserDto;
 import com.clone.chat.repository.UserRepository;
 import com.clone.chat.exception.BusinessException;
-import com.clone.chat.exception.ErrorCodes;
+import com.clone.chat.code.MsgCode;
 import com.clone.chat.exception.ErrorTrace;
 
 import lombok.RequiredArgsConstructor;
@@ -26,26 +24,25 @@ import lombok.RequiredArgsConstructor;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 @Service
+@Slf4j
 public class UserService {
 
 	private final UserRepository userRepository;
 
 
-	Logger logger = LoggerFactory.getLogger(UserController.class);
-
 	@Transactional
-	public void join(UserDto dto) {
+	public void join(UserBase dto) {
 		Optional<User> user = userRepository.findById(dto.getId());
 		if (user.isPresent())
-			throw new BusinessException(ErrorCodes.DUPLICATED_ID, ErrorTrace.getName());
+			throw new BusinessException(MsgCode.ERROR_DUPLICATED_ID, ErrorTrace.getName());
 
-		userRepository.save(dto.toEntity());
+		userRepository.save(dto.map(User.class));
 	}
 
 	public void duplicateId(String userId) {
 		Optional<User> user = userRepository.findById(userId);
 		if (user.isPresent())
-			throw new BusinessException(ErrorCodes.DUPLICATED_ID, ErrorTrace.getName());
+			throw new BusinessException(MsgCode.ERROR_DUPLICATED_ID, ErrorTrace.getName());
 
 	}
 
@@ -103,10 +100,10 @@ public class UserService {
 
 		//유저아이디와 해당 유저아이디의 토큰값이 일치하면 success 아니면 fail
 		if(userId.equals(String.valueOf(scope))){
-			logger.info("logoutSuccess");
+			log.info("logoutSuccess");
 			resultMap.put("return","success");
 		}else{
-			logger.info("logoutFail");
+			log.info("logoutFail");
 			resultMap.put("return","fail");
 		}
 

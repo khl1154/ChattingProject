@@ -2,10 +2,11 @@ package com.clone.chat.model;
 
 import java.util.LinkedHashMap;
 
-import com.clone.chat.exception.ErrorCodes;
+import com.clone.chat.code.MsgCode;
 import lombok.Getter;
 
 @Getter
+@Deprecated
 public class ResponseForm extends LinkedHashMap<String, Object>{
 
 	private static final long serialVersionUID = -4098281931429200073L;
@@ -18,7 +19,7 @@ public class ResponseForm extends LinkedHashMap<String, Object>{
 		put(key, obj);
 	}
 	
-	public ResponseForm(ErrorCodes code, String funcName) {
+	public ResponseForm(MsgCode code, String funcName) {
 		put("errMsg", code);
 		put("errClass", funcName);
 	}
