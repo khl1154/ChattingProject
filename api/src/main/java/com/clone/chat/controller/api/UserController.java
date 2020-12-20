@@ -36,11 +36,6 @@ public class UserController {
 	private final UserService userService;
 
 
-
-
-
-
-	
 	@GetMapping("/lists")
 	public ResponseForm list(String id) {
 		List<String> list = userService.getList(id);

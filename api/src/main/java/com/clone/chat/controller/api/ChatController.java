@@ -1,17 +1,15 @@
 package com.clone.chat.controller.api;
 
-import com.clone.chat.controller.SwaggerController;
 import com.clone.chat.domain.ChatMessage;
 import com.clone.chat.domain.UserInChatRoom;
-import com.clone.chat.model.*;
+import com.clone.chat.model.ChatRoomDto;
+import com.clone.chat.model.Greeting;
+import com.clone.chat.model.ResponseForm;
 import com.clone.chat.service.ChatService;
-import com.clone.chat.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.*;
@@ -25,13 +23,9 @@ import java.util.List;
 @Slf4j
 @Api(tags = "체팅")
 public class ChatController {
-    public static final String URI_PREFIX = ApiController.URI_PREFIX+"/chats";
+    public static final String URI_PREFIX = ApiController.URI_PREFIX + "/chats";
 
     private final ChatService chatService;
-
-
-    private final UserService userService;
-
 
 
     @ApiOperation(value = "방만들기")

@@ -346,3 +346,4 @@ gradle-app.setting
 
 # End of https://www.toptal.com/developers/gitignore/api/macos,node,windows,gradle,intellij+all,eclipse
 /.idea/
+/api/src/main/resources/templates/docs/
