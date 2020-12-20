@@ -93,7 +93,7 @@ public class TestRestDocTest {
         crud.put("title", "Sample Model");
         crud.put("body", "http://www.baeldung.com/");
 
-        this.mockMvc.perform(get("/apis/chats/rooms")).andExpect(status().isOk())
+        this.mockMvc.perform(get("/apis/chats/rooms").content(objectMapper.writeValueAsString(crud))).andExpect(status().isOk())
                 .andDo(document("index"))
                 .andExpect(status().isOk())
                 .andDo(MockMvcResultHandlers.print());
@@ -118,6 +118,23 @@ public class TestRestDocTest {
 //                .andExpect(status().isOk())
 //                .andDo(MockMvcResultHandlers.print())
 //                .andReturn();
+    }
+
+    @Test
+    @Transactional
+    public void 테스트2() throws Exception {
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        HttpHeaders headers = new HttpHeaders();
+
+        Map<String, Object> crud = new HashMap<>();
+        crud.put("title", "Sample Model");
+        crud.put("body", "http://www.baeldung.com/");
+
+        this.mockMvc.perform(get("/apis/chats/rooms").content(objectMapper.writeValueAsString(crud))).andExpect(status().isOk())
+                .andDo(document("chat"))
+                .andExpect(status().isOk())
+                .andDo(MockMvcResultHandlers.print());
     }
 
 }
