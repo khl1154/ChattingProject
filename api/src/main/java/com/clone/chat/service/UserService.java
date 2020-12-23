@@ -1,25 +1,29 @@
 package com.clone.chat.service;
 
-import java.io.UnsupportedEncodingException;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.*;
-
-import com.clone.chat.domain.base.UserBase;
+import com.clone.chat.code.MsgCode;
+import com.clone.chat.domain.User;
+import com.clone.chat.dto.UserDto;
+import com.clone.chat.exception.BusinessException;
+import com.clone.chat.exception.ErrorTrace;
+import com.clone.chat.repository.UserRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
-import com.clone.chat.domain.User;
-import com.clone.chat.repository.UserRepository;
-import com.clone.chat.exception.BusinessException;
-import com.clone.chat.code.MsgCode;
-import com.clone.chat.exception.ErrorTrace;
-
-import lombok.RequiredArgsConstructor;
+import java.io.UnsupportedEncodingException;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -28,22 +32,25 @@ import lombok.RequiredArgsConstructor;
 public class UserService {
 
 	private final UserRepository userRepository;
-
+	private final FileService fileService;
 
 	@Transactional
-	public void join(UserBase dto) {
+	public void join(UserDto dto, MultipartFile file) {
 		Optional<User> user = userRepository.findById(dto.getId());
 		if (user.isPresent())
 			throw new BusinessException(MsgCode.ERROR_DUPLICATED_ID, ErrorTrace.getName());
-
-		userRepository.save(dto.map(User.class));
+		Long fileId = 1L;
+		if(!file.isEmpty()) {
+			fileId = fileService.save(file);
+		}
+		dto.setFileId(fileId);
+		userRepository.save((dto.toEntity()));
 	}
 
 	public void duplicateId(String userId) {
 		Optional<User> user = userRepository.findById(userId);
 		if (user.isPresent())
 			throw new BusinessException(MsgCode.ERROR_DUPLICATED_ID, ErrorTrace.getName());
-
 	}
 
 	public List<String> getList(String id) {
@@ -55,21 +62,8 @@ public class UserService {
 				response.add(l.getId());
 		});
 
-
 		return response;
 	}
-
-
-
-
-
-
-
-
-
-
-
-
 
 	public String create(String userId) throws UnsupportedEncodingException {
 		List<String> authList = new ArrayList();
@@ -107,11 +101,6 @@ public class UserService {
 			resultMap.put("return","fail");
 		}
 
-
 		return resultMap;
 	}
-
-
-
-
 }

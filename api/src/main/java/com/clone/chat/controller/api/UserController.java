@@ -11,6 +11,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 
 import com.clone.chat.domain.base.UserBase;
+import com.clone.chat.dto.UserDto;
 import com.clone.chat.service.UserService;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +25,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 @RequiredArgsConstructor
 @RestController
@@ -42,10 +44,10 @@ public class UserController {
 
 		return new ResponseForm("list", list);
 	}
-	
+
 	@PostMapping("/joins")
-	public void join(@RequestBody UserBase dto) {
-		userService.join(dto);
+	public void join(UserDto userDto, MultipartFile file) {
+		userService.join(userDto, file);
 	}
 	
 	@GetMapping("/duplicate_check")
