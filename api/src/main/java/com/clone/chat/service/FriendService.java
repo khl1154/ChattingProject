@@ -19,9 +19,9 @@ import java.util.List;
 @Service
 public class FriendService {
 
-    final FriendRepository friendRepository;
-    final UserRepository userRepository;
-    final FileRepository fileRepository;
+    private final FriendRepository friendRepository;
+    private final UserRepository userRepository;
+    private final FileRepository fileRepository;
 
     public void saveFriend(FriendDto friendDto) {
         friendRepository.save(friendDto.toEntity());
@@ -34,10 +34,9 @@ public class FriendService {
         List<ProfileDto> profileDtos = new LinkedList<>();
         for(Friend friend : friends) {
             User user = userRepository.findById(friend.getFriendInfoId().getFriendId()).get();
-            String fileName = fileRepository.findById(user.getFileId()).get().getFileName();
             profileDtos.add(ProfileDto.builder()
                     .userId(user.getId())
-                    .fileName(fileName)
+                    .fileName(user.getFile().getFileName())
                     .nickName(user.getNickName())
                     .statusMsg(user.getStatusMsg())
                     .build());

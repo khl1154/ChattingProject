@@ -10,6 +10,7 @@ import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -20,8 +21,13 @@ import javax.persistence.Table;
 @Table(name = "user")
 public class User extends UserBase {
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "file_id")
+    private File file;
+
     @Builder
-    public User(String id, Long fileId, String password, String nickName, String phone, String statusMsg) {
-        super(id, fileId, password, nickName, phone, statusMsg);
+    public User(String id, String password, String nickName, String phone, String statusMsg, File file) {
+        super(id, password, nickName, phone, statusMsg);
+        this.file = file;
     }
 }

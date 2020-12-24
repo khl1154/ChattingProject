@@ -7,6 +7,11 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 
 @Getter
 @Entity
@@ -20,4 +25,5 @@ public class Friend {
     public Friend(FriendInfoId friendInfoId) {
         this.friendInfoId = friendInfoId;
     }
+
 }
