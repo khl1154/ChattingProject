@@ -1,10 +1,21 @@
 package com.clone.chat.controller.api;
 
+import com.clone.chat.dto.FriendDto;
+import com.clone.chat.dto.ProfileDto;
+import com.clone.chat.service.FriendService;
 import io.swagger.annotations.Api;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -14,6 +25,26 @@ import org.springframework.web.bind.annotation.RestController;
 public class FriendController {
 
     public static final String URI_PREFIX = ApiController.URI_PREFIX+"/friends";
+    private final FriendService friendService;
 
+    // 친구 추가
+    @PostMapping("/add")
+    public void addFriend(FriendDto friendDto) {
+        friendService.saveFriend(friendDto);
+    }
 
+    // 친구 리스트 불러오기
+    @GetMapping("/list")
+    public Result<List<ProfileDto>> getFriendsProfile(String userId) {
+        List<ProfileDto> friendsProfile = friendService.getList(userId);
+        return new Result<List<ProfileDto>>(friendsProfile.size(), friendsProfile);
+    }
+
+    @Data
+    @AllArgsConstructor
+    @Builder
+    static class Result<T> {
+        private int count;
+        private T data;
+    }
 }

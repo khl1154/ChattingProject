@@ -18,12 +18,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @EntityListeners({AuditingEntityListener.class})
 public class UserBase extends ModelBase{
 	@Id
-	@Column(
-			name = "user_id",
-			nullable = false
-	)
+	@Column(name = "user_id", nullable = false)
 	String id;
-	Long fileId;
 	String password;
 	String nickName;
 	String phone;
@@ -33,9 +29,8 @@ public class UserBase extends ModelBase{
 	@LastModifiedDate
 	private LocalDateTime modifiedDate;
 
-	public UserBase(String id, Long fileId, String password, String nickName, String phone, String statusMsg) {
+	public UserBase(String id, String password, String nickName, String phone, String statusMsg) {
 		this.id = id;
-		this.fileId = fileId;
 		this.password = password;
 		this.nickName = nickName;
 		this.phone = phone;
@@ -52,10 +47,6 @@ public class UserBase extends ModelBase{
 
 	public String getId() {
 		return this.id;
-	}
-
-	public Long getFileId() {
-		return this.fileId;
 	}
 
 	public String getPassword() {
@@ -76,10 +67,6 @@ public class UserBase extends ModelBase{
 
 	public void setId(final String id) {
 		this.id = id;
-	}
-
-	public void setFileId(final Long fileId) {
-		this.fileId = fileId;
 	}
 
 	public void setPassword(final String password) {

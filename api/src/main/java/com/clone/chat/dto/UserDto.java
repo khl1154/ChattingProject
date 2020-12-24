@@ -11,7 +11,7 @@ import lombok.Setter;
 public class UserDto {
 
     private String id;
-    private Long fileId;
+    private String fileName;
     private String password;
     private String nickName;
     private String phone;
@@ -21,7 +21,6 @@ public class UserDto {
         return User.builder()
                 .id(id)
                 .password(password)
-                .fileId(fileId)
                 .nickName(nickName)
                 .phone(phone)
                 .statusMsg(statusMsg)

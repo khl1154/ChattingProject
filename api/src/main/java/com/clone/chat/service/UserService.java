@@ -1,6 +1,7 @@
 package com.clone.chat.service;
 
 import com.clone.chat.code.MsgCode;
+import com.clone.chat.domain.File;
 import com.clone.chat.domain.User;
 import com.clone.chat.dto.UserDto;
 import com.clone.chat.exception.BusinessException;
@@ -36,15 +37,17 @@ public class UserService {
 
 	@Transactional
 	public void join(UserDto dto, MultipartFile file) {
-		Optional<User> user = userRepository.findById(dto.getId());
-		if (user.isPresent())
+		Optional<User> optionalUser = userRepository.findById(dto.getId());
+		if (optionalUser.isPresent())
 			throw new BusinessException(MsgCode.ERROR_DUPLICATED_ID, ErrorTrace.getName());
 		Long fileId = 1L;
 		if(!file.isEmpty()) {
 			fileId = fileService.save(file);
 		}
-		dto.setFileId(fileId);
-		userRepository.save((dto.toEntity()));
+		File userFile = fileService.findOne(fileId);
+		User user = dto.toEntity();
+		user.setFile(userFile);
+		userRepository.save(user);
 	}
 
 	public void duplicateId(String userId) {
