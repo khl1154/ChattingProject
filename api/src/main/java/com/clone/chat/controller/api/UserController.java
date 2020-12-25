@@ -10,8 +10,11 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
+import com.clone.chat.code.MsgCode;
 import com.clone.chat.domain.base.UserBase;
 import com.clone.chat.dto.UserDto;
+import com.clone.chat.exception.BusinessException;
+import com.clone.chat.exception.ErrorTrace;
 import com.clone.chat.service.UserService;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
@@ -37,24 +40,16 @@ public class UserController {
 	@Autowired
 	private final UserService userService;
 
-
-	@GetMapping("/lists")
-	public ResponseForm list(String id) {
-		List<String> list = userService.getList(id);
-
-		return new ResponseForm("list", list);
-	}
-
 	@PostMapping("/joins")
 	public void join(UserDto userDto, MultipartFile file) {
 		userService.join(userDto, file);
 	}
 	
 	@GetMapping("/duplicate_check")
-	public ResponseForm duplicate(String id) {
+	public String duplicate(String id) {
 		userService.duplicateId(id);
 		
-		return new ResponseForm();
+		return "success";
 	}
 
 	@PostMapping("/login")
@@ -63,7 +58,6 @@ public class UserController {
 		Map<String,Object> resultMap = new HashMap<String,Object>();
 
 		if("user1@daum.net".equals(dto.getId())&&"1234".equals(dto.getPassword())){
-
 
 			//해당 유저의 정보를 통해 고유한 토큰 생성
 			String token = userService.create(dto.getId());
@@ -80,15 +74,11 @@ public class UserController {
 		return new ObjectMapper().writeValueAsString(resultMap);
 	}
 
-
 	@GetMapping("/logout")
 	public String login(String userId, @RequestHeader(value = "Authorization", required=false) String token) throws JsonProcessingException,UnsupportedEncodingException {
 
 		return new ObjectMapper().writeValueAsString(userService.validate(token,userId));
 	}
-
-
-
 
 	@GetMapping("/image")
 	public void getImage(String id, HttpServletResponse response) throws IOException {

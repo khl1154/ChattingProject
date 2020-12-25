@@ -18,7 +18,6 @@ import javax.persistence.Table;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "user")
 public class User extends UserBase {
 
     @OneToOne(fetch = FetchType.LAZY)

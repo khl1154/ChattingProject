@@ -35,11 +35,13 @@ public class UserService {
 	private final UserRepository userRepository;
 	private final FileService fileService;
 
+	public User find(String userId) {
+		return userRepository.findById(userId).get();
+	}
+
 	@Transactional
 	public void join(UserDto dto, MultipartFile file) {
-		Optional<User> optionalUser = userRepository.findById(dto.getId());
-		if (optionalUser.isPresent())
-			throw new BusinessException(MsgCode.ERROR_DUPLICATED_ID, ErrorTrace.getName());
+		duplicateId(dto.getId());
 		Long fileId = 1L;
 		if(!file.isEmpty()) {
 			fileId = fileService.save(file);
@@ -54,18 +56,6 @@ public class UserService {
 		Optional<User> user = userRepository.findById(userId);
 		if (user.isPresent())
 			throw new BusinessException(MsgCode.ERROR_DUPLICATED_ID, ErrorTrace.getName());
-	}
-
-	public List<String> getList(String id) {
-		List<User> list = userRepository.findAll();
-		List<String> response = new ArrayList<>();
-
-		list.forEach(l -> {
-			if (!l.getId().equals(id))
-				response.add(l.getId());
-		});
-
-		return response;
 	}
 
 	public String create(String userId) throws UnsupportedEncodingException {
