@@ -58,9 +58,9 @@ public class WebSecurityConfigurerAdapter extends org.springframework.security.c
 //				.antMatchers("/", "/w","/apis/*").permitAll()
 				.anyRequest().authenticated()
 				.and()
-				.httpBasic();
-
-
+				.httpBasic()
+				.and()
+				.csrf().disable();
 	}
 
 	@Bean

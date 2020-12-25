@@ -1,6 +1,7 @@
 package com.clone.chat.advice;
 
 import com.clone.chat.code.MsgCode;
+import com.clone.chat.exception.BusinessException;
 import com.clone.chat.model.error.Error;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -20,6 +21,15 @@ import java.util.stream.Collectors;
 @Slf4j
 @RestControllerAdvice
 public class ChatAdviceController extends ResponseEntityExceptionHandler {
+
+    @ExceptionHandler(BusinessException.class)
+    protected ResponseEntity<Object> BusinessException(BusinessException be, Throwable ex, WebRequest webRequest) {
+        logingAndSetMsg(ex, webRequest);
+        Error e = new Error();
+        e.setCode(be.getCode().name());
+        e.setMessage(Optional.ofNullable(ex.getMessage()).orElseGet(ex::toString));
+        return new ResponseEntity<>(e, HttpStatus.BAD_REQUEST);
+    }
 
     @ExceptionHandler(NoSuchElementException.class)
     protected ResponseEntity<Object> noSuchElementException(Throwable ex, WebRequest webRequest) {
