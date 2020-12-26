@@ -33,6 +33,12 @@ public class WebSocketManagerService {
     public User removeUser(String sessionId) {
         return users.remove(sessionId);
     }
+    public void removeByUserId(String id) {
+        Optional<Map.Entry<String, User>> entreSetByUserId = findEntreSetByUserId(id);
+        if(entreSetByUserId.isPresent()){
+            this.removeUser(entreSetByUserId.get().getKey());
+        }
+    }
 
     public Optional<User> getUser(SimpMessageHeaderAccessor simpMessageHeaderAccessor) {
         String sessionId = (String)simpMessageHeaderAccessor.getSessionAttributes().get("sessionId");

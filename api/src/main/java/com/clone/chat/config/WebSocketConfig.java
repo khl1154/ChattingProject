@@ -5,6 +5,7 @@ import com.clone.chat.domain.User;
 import com.clone.chat.repository.UserRepository;
 import com.clone.chat.service.TokenService;
 import com.clone.chat.service.WebSocketManagerService;
+import io.jsonwebtoken.ClaimJwtException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import lombok.extern.slf4j.Slf4j;
@@ -62,19 +63,25 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
             @Override
             public Message<?> preSend(Message<?> message, MessageChannel channel) {
 
+
                 MessageHeaders headers = message.getHeaders();
                 StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
                 MultiValueMap<String, String> multiValueMap = headers.get(StompHeaderAccessor.NATIVE_HEADERS,MultiValueMap.class);
                 if (StompCommand.SUBSCRIBE.equals(accessor.getCommand()) || StompCommand.MESSAGE.equals(accessor.getCommand())) {
                     String token = multiValueMap.getFirst(HttpHeaders.AUTHORIZATION);
-                    Jws<Claims> claimsJws = tokenService.parserJwt(token);
-//                    String sessionId = (String) accessor.getSessionAttributes().get("sessionId");
-                    String sessionId = accessor.getSessionId();
-                    Optional<User> sessionUser = webSocketManagerService.getUser(sessionId);
-                    if (!sessionUser.isPresent()) {
-                        Optional<User> dbUser = userRepository.findById(claimsJws.getBody().getSubject());
-                        dbUser.orElseThrow(() -> new NoSuchElementException("no source user"));
-                        webSocketManagerService.putUser(sessionId, dbUser.get());
+                    try {
+                        Jws<Claims> claimsJws = tokenService.parserJwt(token);
+    //                    String sessionId = (String) accessor.getSessionAttributes().get("sessionId");
+                        String sessionId = accessor.getSessionId();
+                        Optional<User> sessionUser = webSocketManagerService.getUser(sessionId);
+                        if (!sessionUser.isPresent()) {
+                            Optional<User> dbUser = userRepository.findById(claimsJws.getBody().getSubject());
+                            dbUser.orElseThrow(() -> new NoSuchElementException("no source user"));
+                            webSocketManagerService.putUser(sessionId, dbUser.get());
+                        }
+                    } catch (ClaimJwtException e) { // ExpiredJwtException
+                        webSocketManagerService.removeByUserId(e.getClaims().getSubject());
+                        throw e;
                     }
                 }
 
