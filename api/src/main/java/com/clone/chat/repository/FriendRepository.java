@@ -8,5 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface FriendRepository extends JpaRepository<Friend, FriendInfoId> {
-    List<Friend> findAllByFriendInfoIdUserId(String userId);
+    @EntityGraph(attributePaths = {"user"}, type = EntityGraph.EntityGraphType.LOAD)
+    List<Friend> findAllByUserId(String userId);
+
 }
