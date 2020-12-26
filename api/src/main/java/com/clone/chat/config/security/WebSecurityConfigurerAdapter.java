@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -31,19 +32,18 @@ public class WebSecurityConfigurerAdapter extends org.springframework.security.c
 	@Autowired
 	PasswordEncoder passwordEncoder;
 
-//	@Override
-//	public void configure(WebSecurity web) throws Exception {
-//		web.ignoring().antMatchers(
-//				"/resources/**",
-//				"/webjars/**",
+	@Override
+	public void configure(WebSecurity web) throws Exception {
+		web.ignoring().antMatchers(
+				"/h2-console",
+				"/h2-console/**",
 //				"/assets/**",
 //				"/web-core-assets/**",
 //				"/*.js",
 //				"/*.map",
-//				"/favicon.ico",
-//				API_PATH+"/**"
-//		);
-//	}
+				"/favicon.ico"
+		);
+	}
 
 	@Override
 	public AuthenticationManager authenticationManagerBean() throws Exception {
@@ -54,7 +54,7 @@ public class WebSecurityConfigurerAdapter extends org.springframework.security.c
 	protected void configure(HttpSecurity http) throws Exception {
 		http
 				.authorizeRequests()
-				.antMatchers("/", "/apis","/apis/**").permitAll()
+				.antMatchers("/", "/apis","/apis/**", "/h2-console","/h2-console/**").permitAll()
 //				.antMatchers("/", "/w","/apis/*").permitAll()
 				.anyRequest().authenticated()
 				.and()

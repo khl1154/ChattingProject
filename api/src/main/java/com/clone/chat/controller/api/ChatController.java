@@ -10,8 +10,11 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.HtmlUtils;
 
@@ -27,6 +30,8 @@ public class ChatController {
 
     private final ChatService chatService;
 
+    @Autowired
+    private SimpMessagingTemplate messagingTemplate;
 
     @ApiOperation(value = "방만들기")
     @PostMapping("/rooms")
@@ -43,9 +48,11 @@ public class ChatController {
 
     //방입장시 알림메시지
     @MessageMapping("/joins/{roomNo}")
-    @SendTo("/topics/greetings/{roomNo}")
-    public Greeting greeting(ChatMessage message) throws Exception {
+    @SendTo("/topic/greetings/{roomNo}")
+    public Greeting greeting(ChatMessage message, SimpMessageHeaderAccessor accessor) throws Exception {
         Thread.sleep(100); // delay
+//        messagingTemplate.
+//        accessor.getUser()
         return new Greeting("Hello, " + HtmlUtils.htmlEscape(message.getName()) + "!");
     }
 
