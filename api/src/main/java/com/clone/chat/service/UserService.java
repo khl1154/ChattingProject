@@ -71,25 +71,6 @@ public class UserService {
 
 
 
-	public String create(String userId) throws UnsupportedEncodingException {
-		List<String> authList = new ArrayList();
-		authList.add(userId);
-
-		String jwt = Jwts.builder()
-				//.setIssuer("Stormpath")
-				//.setSubject("msilverman")
-				.claim("scope", authList)
-				.setIssuedAt(Date.from(Instant.now()))
-				.setExpiration(Date.from(Instant.now().plus(2, ChronoUnit.HOURS)))
-				.signWith(SignatureAlgorithm.HS256,
-						"secret".getBytes("UTF-8"))
-				.compact();
-
-		System.out.println(jwt);
-
-		return jwt;
-	}
-
 
 	public Map<String,Object> validate(String token, String userId) throws UnsupportedEncodingException{
 		Map<String,Object> resultMap = new HashMap<String, Object>();

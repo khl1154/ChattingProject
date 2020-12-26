@@ -24,7 +24,7 @@ public class UserBase extends ModelBase {
 
 	@Id
 	@Column(name = "user_id", nullable = false)
-	String id;    //email
+	String id;
 	String password;
 	String nickName;
 	String phone;

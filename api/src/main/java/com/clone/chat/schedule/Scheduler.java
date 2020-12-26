@@ -1,6 +1,9 @@
 package com.clone.chat.schedule;
 
+import com.clone.chat.domain.User;
+import com.clone.chat.repository.FriendRepository;
 import com.clone.chat.service.TestService;
+import com.clone.chat.service.WebSocketManagerService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
@@ -10,8 +13,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Map;
+import java.util.Optional;
 
 @Component
 @Slf4j(topic = "schedule")
@@ -20,8 +23,15 @@ public class Scheduler {
 
     @Autowired
     TestService testService;
+    @Autowired
     SimpMessagingTemplate template;
-    private Set<String> listeners = new HashSet<>();
+
+    @Autowired
+    private FriendRepository friendRepository;
+
+
+    @Autowired
+    WebSocketManagerService webSocketManagerService;
 	/*
 	https://postitforhooney.tistory.com/entry/SpringScheduled-Cron-Example-%ED%91%9C%ED%98%84%EC%8B%9D
 
@@ -39,6 +49,22 @@ public class Scheduler {
 //    @Scheduled(cron = "1 1 1 * * *")
     @Scheduled(cron = "*/2 * * * * *")
     public void finishAdmPtcpCdChange() {
+
+        Optional<Map.Entry<String, User>> user1 = webSocketManagerService.findEntreSetByUserId("user1");
+        if (user1.isPresent() && null != user1.get().getValue()) {
+            SimpMessageHeaderAccessor headerAccessor = SimpMessageHeaderAccessor.create(SimpMessageType.MESSAGE);
+            User user = user1.get().getValue();
+            String sessionId = user1.get().getKey();
+            headerAccessor.setSessionId(sessionId);
+            headerAccessor.setLeaveMutable(true);
+            int value = (int) Math.round(Math.random() * 100d);
+            template.convertAndSendToUser(
+                    sessionId,
+                    "/queue/friends",
+                    friendRepository.findByUserId(user.getId()),
+                    headerAccessor.getMessageHeaders());
+
+        }
 
 //        for (String listener : listeners) {
 //            log.info("Sending notification to " + listener);
