@@ -16,6 +16,7 @@ public class ApiWebMvcConfigurer implements WebMvcConfigurer {
                 .allowedOrigins("*");
     }
 
+
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addRedirectViewController("/swagger/v2/api-docs", "/v2/api-docs").setKeepQueryParams(true);
