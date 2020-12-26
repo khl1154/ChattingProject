@@ -41,6 +41,18 @@ class FriendServiceTest {
     FileRepository fileRepository;
 
     @Test
+    public void 테스트() throws Exception{
+        //given
+        FriendDto friendDto = new FriendDto();
+        friendDto.setUserId("id1");
+        friendDto.setFriendId("id2");
+        friendService.saveFriend(friendDto);
+        //when
+
+        //then
+    }
+
+    @Test
     @Rollback(false)
     @Transactional
     public void 친구프로필가져오기() throws Exception{
@@ -48,11 +60,11 @@ class FriendServiceTest {
         // 친구 정보 등록 후 진구 프로필 가져오기
 
         File file = File.builder()
-                .id(1L)
                 .fileSize(1L)
                 .fileName("111")
                 .originalFileName("222")
                 .filePath("11")
+                .id(1L)
                 .build();
         fileRepository.save(file);
 
@@ -88,29 +100,30 @@ class FriendServiceTest {
         userRepository.save(user3);
 
 
-        System.out.println(" ==========================2 ");
-        FriendDto dto1 = new FriendDto();
-        dto1.setUserId(user1.getId());
-        dto1.setFriendId(user2.getId());
-
-        FriendDto dto2 = new FriendDto();
-        dto2.setUserId(user1.getId());
-        dto2.setFriendId(user3.getId());
-        friendService.saveFriend(dto1);
-        friendService.saveFriend(dto2);
-
-        //when
-        System.out.println(" ==========================3 ");
-        List<ProfileDto> list = friendService.getList("id1");
-        //then
-
-        System.out.println("list = " + list.size());
-        for(ProfileDto dto : list) {
-            System.out.println("dto.getUserId() = " + dto.getUserId());
-            System.out.println("dto.getUserId() = " + dto.getFileName());
-            System.out.println("dto.getUserId() = " + dto.getNickName());
-            System.out.println("dto.getUserId() = " + dto.getStatusMsg());
-        }
+//        System.out.println(" ==========================2 ");
+//        FriendDto dto1 = new FriendDto();
+//        dto1.setUserId(user1.getId());
+//        dto1.setFriend(user2.getId());
+//
+//        FriendDto dto2 = new FriendDto();
+//        dto2.setUserId(user1.getId());
+//        dto2.setFriend(user3.getId());
+//
+//        friendService.saveFriend(dto1);
+//        friendService.saveFriend(dto2);
+//
+//        //when
+//        System.out.println(" ==========================3 ");
+//        List<ProfileDto> list = friendService.getList("id1");
+//        //then
+//
+//        System.out.println("list = " + list.size());
+//        for(ProfileDto dto : list) {
+//            System.out.println("dto.getUserId() = " + dto.getUserId());
+//            System.out.println("dto.getUserId() = " + dto.getFileName());
+//            System.out.println("dto.getUserId() = " + dto.getNickName());
+//            System.out.println("dto.getUserId() = " + dto.getStatusMsg());
+//        }
 
 //        assertThat(list,contains(
 //                hasProperty("userId", is(user2.getId()))
