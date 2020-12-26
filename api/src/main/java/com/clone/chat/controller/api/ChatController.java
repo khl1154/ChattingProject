@@ -6,6 +6,7 @@ import com.clone.chat.model.ChatRoomDto;
 import com.clone.chat.model.Greeting;
 import com.clone.chat.model.ResponseForm;
 import com.clone.chat.service.ChatService;
+import com.clone.chat.service.TestService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +29,11 @@ import java.util.List;
 public class ChatController {
     public static final String URI_PREFIX = ApiController.URI_PREFIX + "/chats";
 
-    private final ChatService chatService;
+    @Autowired
+    TestService testService;
+
+    @Autowired
+    ChatService chatService;
 
     @Autowired
     private SimpMessagingTemplate messagingTemplate;
