@@ -80,17 +80,5 @@ public class UserController {
 		return new ResponseForm();
 	}
 
-
-
-
-
-
-	@GetMapping("/image")
-	public void getImage(String id, HttpServletResponse response) throws IOException {
-		File file = new File("src/main/resources/static/image/sample.png");
-		Files.copy(file.toPath(), response.getOutputStream());
-		//TODO thumnail
-	}
-
 	
 }
