@@ -17,7 +17,8 @@ websocket
  - event: https://ratseno.tistory.com/71
  - https://www.devglan.com/spring-boot/spring-boot-websocket-example
  - channel: https://medium.com/@hardeek.sharma/accessing-header-in-stomp-web-socket-connection-with-spring-boot-3d4a962a0f00
- - 
+ - session관리: https://stackoverflow.com/questions/28552033/disconnect-client-session-from-spring-websocket-stomp-server
+   - https://stackoverflow.com/questions/56497055/principal-is-null-for-every-spring-websocket-event 
 
 
 h2
