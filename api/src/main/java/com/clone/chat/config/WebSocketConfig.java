@@ -107,7 +107,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/websocket")
                 .setAllowedOrigins("*")
-                .addInterceptors(new HttpHandshakeInterceptor(webSocketManagerService))
+//                .addInterceptors(new HttpHandshakeInterceptor(webSocketManagerService))
 //                .setHandshakeHandler(new DefaultHandshakeHandler(){
 //                    public boolean beforeHandshake(
 //                            ServerHttpRequest request,
