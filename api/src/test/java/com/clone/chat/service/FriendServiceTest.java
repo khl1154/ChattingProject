@@ -68,7 +68,7 @@ class FriendServiceTest {
                 .build();
         fileRepository.save(file);
 
-        User user1 = User.builder()
+  /*      User user1 = User.builder()
                 .id("id1")
                 .password("pw1")
                 .phone("111")
@@ -99,7 +99,7 @@ class FriendServiceTest {
         userRepository.save(user2);
         userRepository.save(user3);
 
-
+*/
 //        System.out.println(" ==========================2 ");
 //        FriendDto dto1 = new FriendDto();
 //        dto1.setUserId(user1.getId());

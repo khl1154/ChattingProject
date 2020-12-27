@@ -1,6 +1,7 @@
 package com.clone.chat.service;
 
 import com.clone.chat.code.MsgCode;
+import com.clone.chat.domain.File;
 import com.clone.chat.domain.Friend;
 import com.clone.chat.domain.FriendInfoId;
 import com.clone.chat.domain.User;
@@ -54,9 +55,13 @@ public class FriendService {
         // 친구 아이디에 해당하는 유저 정보를 다 가져온다.
         List<ProfileDto> profileDtos = new LinkedList<>();
         for(Friend friend : friends) {
+            String profileImageName = "";
+            if(friend.getFriend().getFile() != null)
+                profileImageName = friend.getFriend().getFile().getFileName();
+
             profileDtos.add(ProfileDto.builder()
                     .userId(friend.getFriend().getId())
-                    .fileName(friend.getFriend().getFile().getFileName())
+                    .fileName(profileImageName)
                     .nickName(friend.getFriend().getNickName())
                     .statusMsg(friend.getFriend().getStatusMsg())
                     .build());
