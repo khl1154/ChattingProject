@@ -56,14 +56,17 @@ public class WebSecurityConfigurerAdapter extends org.springframework.security.c
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
+				.requestMatchers()
+				.antMatchers("/websocket", "/websocket/**")
+				.and()
 				.authorizeRequests()
 				.antMatchers("/", "/apis","/apis/**", "/h2-console","/h2-console/**").permitAll()
 //				.antMatchers("/", "/w","/apis/*").permitAll()
 				.anyRequest().authenticated()
-				.and()
-				.httpBasic()
-				.and()
-				.csrf().disable();
+				.and().csrf().disable()
+				.httpBasic();
+
+
 	}
 
 	@Bean
