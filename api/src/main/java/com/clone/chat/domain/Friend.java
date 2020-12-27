@@ -1,43 +1,35 @@
 package com.clone.chat.domain;
 
+import com.clone.chat.domain.base.BaseTimeEntity;
+import com.clone.chat.model.ModelBase;
 import lombok.AccessLevel;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
-import javax.persistence.JoinColumn;
-import javax.persistence.MapsId;
-import javax.persistence.OneToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.*;
 
-@Getter
-@Setter
+@Getter 
+@NoArgsConstructor
 @Entity
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@IdClass(FriendInfoId.class)
-public class Friend {
+@Table(name = "friend")
+public class Friend extends ModelBase {
 
-    //친구 정보
-    @Id
-    @OneToOne
-    @JoinColumn(name = "friend_id")
-    private User friend;
+	@Id
+	@Column (name = "SEQ")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long seq;
 
-    @Id
-    @Column(name = "user_id")
-    private String userId;
+	@Column (name = "USER_ID")
+	private String userId;
 
-    @Builder
-    public Friend(String userId, User userFriend) {
-        this.userId = userId;
-        this.friend = userFriend;
-    }
+	@Column (name = "FRIENDS_ID")
+	private String friendsId;
+
+	@Builder
+	public Friend(Long seq, String userId, String friendsId) {
+		this.seq = seq;
+		this.userId = userId;
+		this.friendsId = friendsId;
+	}
 }

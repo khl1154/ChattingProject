@@ -56,25 +56,18 @@ public class UserService {
 			throw new BusinessException(MsgCode.ERROR_DUPLICATED_ID, ErrorTrace.getName());
 	}
 
-	public String create(String userId) throws UnsupportedEncodingException {
-		List<String> authList = new ArrayList();
-		authList.add(userId);
+	public List<String> getList(String id) {
+		List<User> list = userRepository.findAll();
+		List<String> response = new ArrayList<>();
 
-		String jwt = Jwts.builder()
-				//.setIssuer("Stormpath")
-				//.setSubject("msilverman")
-				.claim("scope", authList)
-				.setIssuedAt(Date.from(Instant.now()))
-				.setExpiration(Date.from(Instant.now().plus(2, ChronoUnit.HOURS)))
-				.signWith(SignatureAlgorithm.HS256,
-						"secret".getBytes("UTF-8"))
-				.compact();
+		list.forEach(l -> {
+			if (!l.getId().equals(id))
+				response.add(l.getId());
+		});
 
-		System.out.println(jwt);
 
-		return jwt;
+		return response;
 	}
-
 
 	public Map<String,Object> validate(String token, String userId) throws UnsupportedEncodingException{
 		Map<String,Object> resultMap = new HashMap<String, Object>();

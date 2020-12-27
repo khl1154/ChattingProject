@@ -40,7 +40,7 @@ public class UserController {
 	@Autowired
 	private final UserService userService;
 
-	@PostMapping("/join")
+	@PostMapping("/joins")
 	public void join(UserDto userDto, MultipartFile file) {
 		userService.join(userDto, file);
 	}
@@ -48,43 +48,7 @@ public class UserController {
 	@GetMapping("/duplicate_check")
 	public String duplicate(String id) {
 		userService.duplicateId(id);
-		
 		return "success";
-	}
-
-	@PostMapping("/login")
-	public String login(@RequestBody UserBase dto, HttpServletResponse response) throws JsonProcessingException,UnsupportedEncodingException {
-		ObjectMapper objectMapper = new ObjectMapper();
-		Map<String,Object> resultMap = new HashMap<String,Object>();
-
-		if("user1@daum.net".equals(dto.getId())&&"1234".equals(dto.getPassword())){
-
-			//해당 유저의 정보를 통해 고유한 토큰 생성
-			String token = userService.create(dto.getId());
-			//클라이언트에 전송하기 위해 response 헤더에 인증토큰을 담아준다.
-			log.info("loginSuccess");
-			response.setHeader("Authorization", token);
-			resultMap.put("user_id",dto.getId());
-			resultMap.put("return","success");
-		}else{
-			log.info("loginFail");
-			resultMap.put("return","fail");
-		}
-
-		return new ObjectMapper().writeValueAsString(resultMap);
-	}
-
-	@GetMapping("/logout")
-	public String login(String userId, @RequestHeader(value = "Authorization", required=false) String token) throws JsonProcessingException,UnsupportedEncodingException {
-
-		return new ObjectMapper().writeValueAsString(userService.validate(token,userId));
-	}
-
-	@GetMapping("/image")
-	public void getImage(String id, HttpServletResponse response) throws IOException {
-		File file = new File("src/main/resources/static/image/sample.png");
-		Files.copy(file.toPath(), response.getOutputStream());
-		//TODO thumnail
 	}
 
 	

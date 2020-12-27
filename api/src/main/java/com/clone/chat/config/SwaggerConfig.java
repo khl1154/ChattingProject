@@ -29,8 +29,9 @@ public class SwaggerConfig {
 
     @Autowired
     ServerProperties serverProperties;
-@Autowired
-private TypeResolver typeResolver;
+    @Autowired
+    private TypeResolver typeResolver;
+
     @Bean
     public Docket api(TypeResolver typeResolver) {
         return new Docket(DocumentationType.SWAGGER_2)
@@ -60,7 +61,8 @@ private TypeResolver typeResolver;
                 .build();
 
     }
-    private List<ResponseMessage> getCustomizedResponseMessages(){
+
+    private List<ResponseMessage> getCustomizedResponseMessages() {
         ModelRef modelRef = new ModelRef(Error.class.getSimpleName());
         List<ResponseMessage> responseMessages = new ArrayList<>();
         responseMessages.add(new ResponseMessageBuilder().code(500).message("Server has crashed!! and Error").responseModel(modelRef).build());
