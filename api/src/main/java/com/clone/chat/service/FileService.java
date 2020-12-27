@@ -19,7 +19,7 @@ public class FileService {
     private final FileRepository fileRepository;
 
     @Transactional
-    public Long save(MultipartFile file){
+    public com.clone.chat.domain.File save(MultipartFile file){
         String originalFileName = "";
         String fileName = "";
         String filePath = "";
@@ -51,9 +51,7 @@ public class FileService {
                 .filePath(filePath)
                 .fileSize(fileSize)
                 .build();
-        Long fileId = fileRepository.save(fileDto.toEntity()).getId();
-
-        return fileId;
+        return fileRepository.save(fileDto.toEntity());
     }
 
     public com.clone.chat.domain.File findOne(Long id) {

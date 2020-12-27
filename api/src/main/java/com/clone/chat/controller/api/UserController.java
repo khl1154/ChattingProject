@@ -40,7 +40,7 @@ public class UserController {
 	@Autowired
 	private final UserService userService;
 
-	@PostMapping("/joins")
+	@PostMapping("/join")
 	public void join(UserDto userDto, MultipartFile file) {
 		userService.join(userDto, file);
 	}

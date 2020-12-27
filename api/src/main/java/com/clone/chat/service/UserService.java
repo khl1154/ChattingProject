@@ -42,13 +42,11 @@ public class UserService {
 	@Transactional
 	public void join(UserDto dto, MultipartFile file) {
 		duplicateId(dto.getId());
-		Long fileId = 1L;
-		if(!file.isEmpty()) {
-			fileId = fileService.save(file);
-		}
-		File userFile = fileService.findOne(fileId);
 		User user = dto.toEntity();
-		user.setFile(userFile);
+		if(file != null) {
+			File userFile = fileService.save(file);
+			user.setFile(userFile);
+		}
 		userRepository.save(user);
 	}
 

@@ -47,6 +47,6 @@ public class FriendController {
     @Builder
     static class Result<T> {
         private int count;
-        private T data;
+        private T profile;
     }
 }
