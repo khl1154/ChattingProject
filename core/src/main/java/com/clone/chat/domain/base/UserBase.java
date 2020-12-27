@@ -2,7 +2,6 @@
 // Source code recreated from a .class file by IntelliJ IDEA
 // (powered by FernFlower decompiler)
 //
-
 package com.clone.chat.domain.base;
 import com.clone.chat.model.ModelBase;
 import java.time.LocalDateTime;
@@ -10,6 +9,8 @@ import javax.persistence.Column;
 import javax.persistence.EntityListeners;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+
+import lombok.Builder;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -17,6 +18,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @MappedSuperclass
 @EntityListeners({AuditingEntityListener.class})
 public class UserBase extends ModelBase{
+
 	@Id
 	@Column(name = "user_id", nullable = false)
 	String id;
@@ -29,6 +31,7 @@ public class UserBase extends ModelBase{
 	@LastModifiedDate
 	private LocalDateTime modifiedDate;
 
+	@Builder
 	public UserBase(String id, String password, String nickName, String phone, String statusMsg) {
 		this.id = id;
 		this.password = password;

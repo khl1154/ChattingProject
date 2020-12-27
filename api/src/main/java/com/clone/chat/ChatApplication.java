@@ -63,10 +63,10 @@ public class ChatApplication {
 
 
             List<Friend> friends = Arrays.asList(
-                    Friend.builder().userId("user1").friendsId("user2").build(),
-                    Friend.builder().userId("user1").friendsId("user3").build(),
-                    Friend.builder().userId("user2").friendsId("user4").build(),
-                    Friend.builder().userId("user2").friendsId("user5").build()
+                    Friend.builder().userId("user1").userFriend(userRepository.findById("user2").get()).build(),
+                    Friend.builder().userId("user1").userFriend(userRepository.findById("user3").get()).build(),
+                    Friend.builder().userId("user2").userFriend(userRepository.findById("user4").get()).build(),
+                    Friend.builder().userId("user2").userFriend(userRepository.findById("user5").get()).build()
             );
             friendRepository.saveAll(friends);
 
