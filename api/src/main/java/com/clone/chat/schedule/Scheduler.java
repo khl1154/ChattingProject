@@ -61,7 +61,7 @@ public class Scheduler {
             template.convertAndSendToUser(
                     sessionId,
                     "/queue/friends",
-                    friendRepository.findByUserId(user.getId()),
+                    friendRepository.findAllByUserId(user.getId()),
                     headerAccessor.getMessageHeaders());
 
         }

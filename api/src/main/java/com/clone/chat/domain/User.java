@@ -4,6 +4,9 @@ import com.clone.chat.domain.base.UserBase;
 import lombok.*;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Getter
@@ -13,5 +16,8 @@ import javax.persistence.Table;
 @Table(name = "user")
 public class User extends UserBase {
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "file_id")
+    private File file;
 
 }

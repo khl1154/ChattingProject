@@ -13,23 +13,22 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 @Table(name = "friend")
+@IdClass(FriendInfoId.class)
 public class Friend extends ModelBase {
 
+	//친구 정보
 	@Id
-	@Column (name = "SEQ")
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long seq;
+	@OneToOne
+	@JoinColumn(name = "friend_id")
+	private User friend;
 
-	@Column (name = "USER_ID")
+	@Id
+	@Column(name = "user_id")
 	private String userId;
 
-	@Column (name = "FRIENDS_ID")
-	private String friendsId;
-
 	@Builder
-	public Friend(Long seq, String userId, String friendsId) {
-		this.seq = seq;
+	public Friend(String userId, User userFriend) {
 		this.userId = userId;
-		this.friendsId = friendsId;
+		this.friend = userFriend;
 	}
 }

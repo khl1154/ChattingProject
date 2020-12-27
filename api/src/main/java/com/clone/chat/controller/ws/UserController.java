@@ -29,8 +29,6 @@ public class UserController {
     @Autowired
     private SimpMessageSendingOperations messagingTemplate;
 
-
-
     @MessageMapping("/friends")
     @SendToUser("/queue/friends")
     public List<Friend> processMessageFromClient(Principal principal, SimpMessageHeaderAccessor simpMessageHeaderAccessor) throws Exception {
@@ -38,7 +36,7 @@ public class UserController {
         //messagingTemplate.convertAndSendToUser(principal.getName(), "/queue/reply", name);
         Optional<User> user = webSocketManagerService.getUser(simpMessageHeaderAccessor);
         user.orElseThrow(() -> new NoSuchElementException("no Such"));
-        return friendRepository.findByUserId(user.get().getId());
+        return friendRepository.findAllByUserId(user.get().getId());
     }
 
 
