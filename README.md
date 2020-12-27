@@ -9,6 +9,17 @@ kakaoClone
 tip
 ===
 
+websocket
+ - https://www.baeldung.com/spring-websockets-sendtouser
+ - https://hyeooona825.tistory.com/89?category=794651
+ - https://kmdigit.github.io/2020/03/12/send-message-direct-user-in-spring-websocket/
+ - https://www.codesandnotes.be/2020/03/31/websocket-based-notification-system-using-spring/
+ - event: https://ratseno.tistory.com/71
+ - https://www.devglan.com/spring-boot/spring-boot-websocket-example
+ - channel: https://medium.com/@hardeek.sharma/accessing-header-in-stomp-web-socket-connection-with-spring-boot-3d4a962a0f00
+ - 
+
+
 h2
 - http://h2database.com/html/features.html#connection_modes
 

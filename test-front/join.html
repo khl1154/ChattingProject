@@ -20,7 +20,9 @@ join
     });
     function connectionSockJs(connected) {
         // http://localhost:9000/websocket/topic/chats/joins/1
+        // var socket = new SockJS('http://127.0.0.1:8080/websocket')
         var socket = new SockJS('http://localhost:9000/websocket')
+        // var socket = new SockJS('websocket')
         var stompClient = Stomp.over(socket);
         stompClient.connect({}, function (frame) {
             connected(stompClient, frame)
@@ -37,7 +39,7 @@ join
             var data = {
                 name: 'a'
             }
-            socket.send('/app/joins/1', {}, JSON.stringify(data));
+            socket.send('/app/joins/1', {'aheader': 'aaaaaaa'}, JSON.stringify(data));
         }, 1000)
     }
 </script>

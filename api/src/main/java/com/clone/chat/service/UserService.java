@@ -1,30 +1,25 @@
 package com.clone.chat.service;
 
-import com.clone.chat.code.MsgCode;
-import com.clone.chat.domain.File;
-import com.clone.chat.domain.User;
-import com.clone.chat.dto.UserDto;
-import com.clone.chat.exception.BusinessException;
-import com.clone.chat.exception.ErrorTrace;
-import com.clone.chat.repository.UserRepository;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
-
 import java.io.UnsupportedEncodingException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+
+import com.clone.chat.domain.base.UserBase;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.clone.chat.domain.User;
+import com.clone.chat.repository.UserRepository;
+import com.clone.chat.exception.BusinessException;
+import com.clone.chat.code.MsgCode;
+import com.clone.chat.exception.ErrorTrace;
+
+import lombok.RequiredArgsConstructor;
 
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -33,49 +28,48 @@ import java.util.Optional;
 public class UserService {
 
 	private final UserRepository userRepository;
-	private final FileService fileService;
 
-	public User find(String userId) {
-		return userRepository.findById(userId).get();
-	}
 
 	@Transactional
-	public void join(UserDto dto, MultipartFile file) {
-		duplicateId(dto.getId());
-		Long fileId = 1L;
-		if(!file.isEmpty()) {
-			fileId = fileService.save(file);
-		}
-		File userFile = fileService.findOne(fileId);
-		User user = dto.toEntity();
-		user.setFile(userFile);
-		userRepository.save(user);
+	public void join(UserBase dto) {
+		Optional<User> user = userRepository.findById(dto.getId());
+		if (user.isPresent())
+			throw new BusinessException(MsgCode.ERROR_DUPLICATED_ID, ErrorTrace.getName());
+
+		userRepository.save(dto.map(User.class));
 	}
 
 	public void duplicateId(String userId) {
 		Optional<User> user = userRepository.findById(userId);
 		if (user.isPresent())
 			throw new BusinessException(MsgCode.ERROR_DUPLICATED_ID, ErrorTrace.getName());
+
 	}
 
-	public String create(String userId) throws UnsupportedEncodingException {
-		List<String> authList = new ArrayList();
-		authList.add(userId);
+	public List<String> getList(String id) {
+		List<User> list = userRepository.findAll();
+		List<String> response = new ArrayList<>();
 
-		String jwt = Jwts.builder()
-				//.setIssuer("Stormpath")
-				//.setSubject("msilverman")
-				.claim("scope", authList)
-				.setIssuedAt(Date.from(Instant.now()))
-				.setExpiration(Date.from(Instant.now().plus(2, ChronoUnit.HOURS)))
-				.signWith(SignatureAlgorithm.HS256,
-						"secret".getBytes("UTF-8"))
-				.compact();
+		list.forEach(l -> {
+			if (!l.getId().equals(id))
+				response.add(l.getId());
+		});
 
-		System.out.println(jwt);
 
-		return jwt;
+		return response;
 	}
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 	public Map<String,Object> validate(String token, String userId) throws UnsupportedEncodingException{
@@ -94,6 +88,11 @@ public class UserService {
 			resultMap.put("return","fail");
 		}
 
+
 		return resultMap;
 	}
+
+
+
+
 }

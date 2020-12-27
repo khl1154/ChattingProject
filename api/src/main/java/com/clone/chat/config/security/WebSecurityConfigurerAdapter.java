@@ -37,7 +37,10 @@ public class WebSecurityConfigurerAdapter extends org.springframework.security.c
 		web.ignoring().antMatchers(
 				"/h2-console",
 				"/h2-console/**",
-//				"/assets/**",
+				"/websocket",
+				"/websocket/**",
+				"/apis",
+				"/apis/**",
 //				"/web-core-assets/**",
 //				"/*.js",
 //				"/*.map",
