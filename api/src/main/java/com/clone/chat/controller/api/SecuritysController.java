@@ -51,11 +51,11 @@ public class SecuritysController {
 
 	@PostMapping("/login")
 	public Token login(@RequestBody UserBase requestUser, HttpServletResponse response) throws JsonProcessingException, UnsupportedEncodingException {
-
+		//아이디값을 통해 사용자 정보 조회
 		Optional<User> userOption = userRepository.findById(requestUser.getId());
 		userOption.orElseThrow(() -> new UsernameNotFoundException("UsernameNotFoundException"));
 		User user = userOption.get();
-
+		//클라이언트 평문 패스워드와 디비저장된 패스워드 비교 (match 최소 몇번이상 encoding돌렸을때 최소한 한번은 맞아야된다는 암호화(bcrypt))
 		if (passwordEncoder.matches(requestUser.getPassword(), user.getPassword())) {
 			return new Token(tokenService.makeToken(user));
 		} else {

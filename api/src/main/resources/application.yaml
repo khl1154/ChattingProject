@@ -1,6 +1,7 @@
 #port
 spring:
   profiles:
+    active: dev
     include:
       - core
       - db
