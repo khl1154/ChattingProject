@@ -34,7 +34,6 @@ import org.springframework.web.socket.messaging.SessionConnectedEvent;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 import org.springframework.web.socket.server.support.DefaultHandshakeHandler;
 import org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor;
-
 import javax.servlet.http.HttpSession;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -45,14 +44,11 @@ import java.util.Optional;
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
-
     @Autowired
     WebSocketManagerService webSocketManagerService;
 
-
     @Autowired
     TokenService tokenService;
-
 
     @Autowired
     UserRepository userRepository;
@@ -62,7 +58,6 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         registration.interceptors(new ChannelInterceptor() {
             @Override
             public Message<?> preSend(Message<?> message, MessageChannel channel) {
-
 
                 MessageHeaders headers = message.getHeaders();
                 StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
@@ -151,5 +146,4 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 //            messagingTemplate.convertAndSend("/topic/public", chatMessage);
 //        }
     }
-
 }

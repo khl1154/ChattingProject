@@ -51,5 +51,8 @@ public class UserController {
 		return "success";
 	}
 
-	
+	@GetMapping("/list")
+	public List<String> getUsers() {
+		return userService.getList();
+	}
 }
