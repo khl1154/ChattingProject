@@ -51,15 +51,6 @@ public class ChatController {
         return chatService.getList(userId, search);
     }
 
-    //방입장시 알림메시지
-    @MessageMapping("/joins/{roomNo}")
-    @SendTo("/topic/greetings/{roomNo}")
-    public Greeting greeting(ChatMessage message, SimpMessageHeaderAccessor accessor) throws Exception {
-        Thread.sleep(100); // delay
-//        messagingTemplate.
-//        accessor.getUser()
-        return new Greeting("Hello, " + HtmlUtils.htmlEscape(message.getName()) + "!");
-    }
 
     //채팅 송신
     @MessageMapping("/chats/{roomNo}")
