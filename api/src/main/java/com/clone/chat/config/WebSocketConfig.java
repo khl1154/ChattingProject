@@ -1,7 +1,5 @@
 package com.clone.chat.config;
 
-import com.clone.chat.config.ws.AssignPrincipalHandshakeHandler;
-import com.clone.chat.config.ws.WebsocketSessionHolder;
 import com.clone.chat.domain.ChatMessage;
 import com.clone.chat.domain.User;
 import com.clone.chat.repository.UserRepository;
@@ -21,7 +19,6 @@ import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageHeaders;
-import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.config.ChannelRegistration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.messaging.simp.stomp.StompCommand;
@@ -29,21 +26,14 @@ import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.ChannelInterceptor;
 import org.springframework.messaging.support.MessageHeaderAccessor;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.WebSocketHandler;
-import org.springframework.web.socket.WebSocketMessage;
-import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
-import org.springframework.web.socket.config.annotation.WebSocketTransportRegistration;
-import org.springframework.web.socket.handler.WebSocketHandlerDecorator;
-import org.springframework.web.socket.handler.WebSocketHandlerDecoratorFactory;
 import org.springframework.web.socket.messaging.SessionConnectedEvent;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 import org.springframework.web.socket.server.support.DefaultHandshakeHandler;
 import org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor;
-
 import javax.servlet.http.HttpSession;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -54,14 +44,11 @@ import java.util.Optional;
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
-
     @Autowired
     WebSocketManagerService webSocketManagerService;
 
-
     @Autowired
     TokenService tokenService;
-
 
     @Autowired
     UserRepository userRepository;
@@ -71,7 +58,6 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         registration.interceptors(new ChannelInterceptor() {
             @Override
             public Message<?> preSend(Message<?> message, MessageChannel channel) {
-
 
                 MessageHeaders headers = message.getHeaders();
                 StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
@@ -116,8 +102,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/websocket")
                 .setAllowedOrigins("*")
-//                .addInterceptors(new HttpHandshakeInterceptor(webSocketManagerService))
-                .setHandshakeHandler(new AssignPrincipalHandshakeHandler())
+                .addInterceptors(new HttpHandshakeInterceptor(webSocketManagerService))
 //                .setHandshakeHandler(new DefaultHandshakeHandler(){
 //                    public boolean beforeHandshake(
 //                            ServerHttpRequest request,
@@ -141,13 +126,6 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @EventListener
     public void handleWebSocketConnectListener(SessionConnectedEvent event) {
         log.info("Received a new web socket connection");
-        SimpMessageHeaderAccessor headers = SimpMessageHeaderAccessor.wrap(event.getMessage());
-        String sessionId = headers.getSessionId();
-        log.debug("sessionId is " + sessionId);
-        if(null!=headers.getUser()) {
-            String username = headers.getUser().getName(); // headers.getUser() is null
-            log.debug("username is " + username);
-        }
     }
 
     @EventListener
@@ -168,127 +146,4 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 //            messagingTemplate.convertAndSend("/topic/public", chatMessage);
 //        }
     }
-
-//    @EventListener
-//    private void handleSessionConnect(SessionConnectEvent event) {
-//        SimpMessageHeaderAccessor headers = SimpMessageHeaderAccessor.wrap(event.getMessage());
-//        String sessionId = headers.getSessionId();
-//        log.debug("sessionId is " + sessionId);
-//        String username = headers.getUser().getName(); // headers.getUser() is null
-//        log.debug("username is " + username);
-//    }
-//
-//    @EventListener
-//    private void handleSessionConnected(SessionConnectEvent event) {
-//        SimpMessageHeaderAccessor headers = SimpMessageHeaderAccessor.wrap(event.getMessage());
-//        String sessionId = headers.getSessionId();
-//        log.debug("sessionId is " + sessionId);
-//        String username = headers.getUser().getName(); // headers.getUser() is null
-//        log.debug("username is " + username);
-//    }
-//
-//    @EventListener
-//    private void handleSubscribeEvent(SessionSubscribeEvent event) {
-//        SimpMessageHeaderAccessor headers = SimpMessageHeaderAccessor.wrap(event.getMessage());
-//        String sessionId = headers.getSessionId();
-//        log.debug("sessionId is " + sessionId);
-//        String subscriptionId = headers.getSubscriptionId();
-//        log.debug("subscriptionId is " + subscriptionId);
-//        String username = headers.getUser().getName(); // headers.getUser() is null
-//        log.debug("username is " + username);
-//    }
-//
-//    @EventListener
-//    private void handleUnsubscribeEvent(SessionUnsubscribeEvent event) {
-//        SimpMessageHeaderAccessor headers = SimpMessageHeaderAccessor.wrap(event.getMessage());
-//        String sessionId = headers.getSessionId();
-//        log.debug("sessionId is " + sessionId);
-//        String subscriptionId = headers.getSubscriptionId();
-//        log.debug("subscriptionId is " + subscriptionId);
-//        String username = headers.getUser().getName(); // headers.getUser() is null
-//        log.debug("username is " + username);
-//    }
-//
-//    @EventListener
-//    private void handleSessionDisconnect(SessionDisconnectEvent event) {
-//        SimpMessageHeaderAccessor headers = SimpMessageHeaderAccessor.wrap(event.getMessage());
-//        log.debug("sessionId is " + event.getSessionId());
-//        String username = headers.getUser().getName(); // headers.getUser() is null
-//        log.debug("username is " + username);
-//    }
-
-    @Override
-    public void configureWebSocketTransport(WebSocketTransportRegistration registration) {
-        registration.addDecoratorFactory(new WebSocketHandlerDecoratorFactory() {
-            @Override
-            public WebSocketHandler decorate(final WebSocketHandler handler) {
-                return new WebSocketHandlerDecorator(handler) {
-
-                    @Override
-                    public void afterConnectionEstablished(final WebSocketSession session) throws Exception {
-
-                        // We will store current user's session into WebsocketSessionHolder after connection is established
-                        if(null!=session.getPrincipal()) {
-                            String username = session.getPrincipal().getName();
-                            WebsocketSessionHolder.addSession(username, session);
-                        }
-
-                        super.afterConnectionEstablished(session);
-                    }
-                };
-            }
-        });
-    }
-
-
-
-
-
-
-
-
-//    @Override
-//    public void configureWebSocketTransport(WebSocketTransportRegistration registry) {
-//        registry.addDecoratorFactory(new WebSocketHandlerDecoratorFactory() {
-//            @Override
-//            public WebSocketHandler decorate(WebSocketHandler handler) {
-//                return new WebSocketHandlerDecorator(handler) {
-//                    @Override
-//                    public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-//                        log.info("-");
-//                        super.afterConnectionEstablished(session);
-//                    }
-//
-//                    @Override
-//                    public void handleMessage(WebSocketSession session, WebSocketMessage<?> message) throws Exception {
-//                        log.info("-");
-//
-//                    }
-//
-//                    @Override
-//                    public void handleTransportError(WebSocketSession session, Throwable exception) throws Exception {
-//
-//                        log.info("-");
-//                    }
-//
-//                    @Override
-//                    public void afterConnectionClosed(WebSocketSession session, CloseStatus closeStatus) throws Exception {
-//
-//                        log.info("-");
-//                    }
-//
-//                    @Override
-//                    public boolean supportsPartialMessages() {
-//                        return false;
-//                    }
-//                };
-//            }
-//        });
-//    }
-
-//    @Override
-//    public void configureClientInboundChannel(ChannelRegistration registration) {
-//        registration.interceptors(new ChannelInterceptor() {
-//        });
-//    }
 }

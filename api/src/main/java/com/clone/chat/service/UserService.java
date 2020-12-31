@@ -56,15 +56,13 @@ public class UserService {
 			throw new BusinessException(MsgCode.ERROR_DUPLICATED_ID, ErrorTrace.getName());
 	}
 
-	public List<String> getList(String id) {
+	public List<String> getList() {
 		List<User> list = userRepository.findAll();
 		List<String> response = new ArrayList<>();
 
 		list.forEach(l -> {
-			if (!l.getId().equals(id))
 				response.add(l.getId());
 		});
-
 
 		return response;
 	}
