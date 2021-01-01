@@ -59,7 +59,7 @@ public class SecuritysController {
 		if (passwordEncoder.matches(requestUser.getPassword(), user.getPassword())) {
 			return new Token(tokenService.makeToken(user));
 		} else {
-			throw new InsufficientAuthenticationException("InsufficientAuthenticationException");
+			throw new InsufficientAuthenticationException("400");
 		}
 	}
 

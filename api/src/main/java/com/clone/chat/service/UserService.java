@@ -67,22 +67,4 @@ public class UserService {
 		return response;
 	}
 
-	public Map<String,Object> validate(String token, String userId) throws UnsupportedEncodingException{
-		Map<String,Object> resultMap = new HashMap<String, Object>();
-		//토큰을 복호화
-		Claims claims = Jwts.parser().setSigningKey("secret".getBytes("UTF-8")).parseClaimsJws(token).getBody();
-		//[]replace
-		String scope = String.valueOf(claims.get("scope")).replace("[","").replace("]","");
-
-		//유저아이디와 해당 유저아이디의 토큰값이 일치하면 success 아니면 fail
-		if(userId.equals(String.valueOf(scope))){
-			log.info("logoutSuccess");
-			resultMap.put("return","success");
-		}else{
-			log.info("logoutFail");
-			resultMap.put("return","fail");
-		}
-
-		return resultMap;
-	}
 }
