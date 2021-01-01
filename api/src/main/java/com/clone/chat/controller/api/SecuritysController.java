@@ -62,12 +62,5 @@ public class SecuritysController {
 			throw new InsufficientAuthenticationException("500");
 		}
 	}
-
-
-//	@GetMapping("/logout")
-//	public String login(String userId, @RequestHeader(value = "Authorization", required=false) String token) throws JsonProcessingException,UnsupportedEncodingException {
-//		return new ObjectMapper().writeValueAsString(userService.validate(token,userId));
-//	}
-
 	
 }
