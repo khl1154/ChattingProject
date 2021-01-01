@@ -19,3 +19,15 @@ spring:
     database-platform: org.hibernate.dialect.H2Dialect
 logging:
   config: classpath:logback-dev.xml
+
+cloud:
+  aws:
+    credentials:
+      accessKey: AKIAU2UABLWF2JG2HL65
+      secretKey: 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
+    s3:
+      bucket: serobucket
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false

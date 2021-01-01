@@ -22,14 +22,15 @@ public class ChatRoom extends BaseTimeEntity{
 	@Id @Column(name = "chatroom_id", nullable = false)
 	@GeneratedValue
 	private Long id;
-	private String name;
-	private Long msgCount;
-	private String admin;
-	
+	private String chatRoomName;
+	private String adminId;
+
 	@Builder
-	public ChatRoom(String name, String admin) {
-		this.name = name;
-		this.admin = admin;
-		msgCount = 0L;
+	public ChatRoom(Long id, String chatRoomName, String adminId) {
+		this.id = id;
+		this.chatRoomName = chatRoomName;
+		this.adminId = adminId;
 	}
+
+
 }

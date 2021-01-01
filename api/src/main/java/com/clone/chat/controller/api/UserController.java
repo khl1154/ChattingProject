@@ -36,6 +36,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Slf4j
 @Api(tags = "유저")
 public class UserController {
+
 	public static final String URI_PREFIX = ApiController.URI_PREFIX+"/users";
 	@Autowired
 	private final UserService userService;
@@ -44,7 +45,7 @@ public class UserController {
 	public void join(UserDto userDto, MultipartFile file) {
 		userService.join(userDto, file);
 	}
-	
+
 	@GetMapping("/duplicate_check")
 	public String duplicate(String id) {
 		userService.duplicateId(id);

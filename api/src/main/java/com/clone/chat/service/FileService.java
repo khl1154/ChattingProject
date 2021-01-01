@@ -3,6 +3,7 @@ package com.clone.chat.service;
 import com.clone.chat.code.MD5Generator;
 import com.clone.chat.dto.FileDto;
 import com.clone.chat.repository.FileRepository;
+import com.clone.chat.service.aws.S3Service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +18,7 @@ import java.io.File;
 public class FileService {
 
     private final FileRepository fileRepository;
+    private final S3Service s3Service;
 
     @Transactional
     public com.clone.chat.domain.File save(MultipartFile file){
@@ -31,20 +33,20 @@ public class FileService {
             } else {
                 fileName = new MD5Generator(file.getInputStream()).toString();
                 originalFileName = file.getOriginalFilename();
+                fileSize = file.getSize();
+                filePath = s3Service.upload(file,fileName);
             }
-            /* 실행되는 위치의 'files' 폴더에 파일이 저장됩니다. */
-            String savePath = System.getProperty("user.dir") + "\\files";
-            /* 파일이 저장되는 폴더가 없으면 폴더를 생성합니다. */
-            if (!new File(savePath).exists()) new File(savePath).mkdir();
-
-            fileSize = file.getSize();
-            filePath = savePath + "\\" + fileName;
-            file.transferTo(new File(filePath));
+//            /* 실행되는 위치의 'files' 폴더에 파일이 저장됩니다. */
+//            String savePath = System.getProperty("user.dir") + "\\files";
+//            /* 파일이 저장되는 폴더가 없으면 폴더를 생성합니다. */
+//            if (!new File(savePath).exists()) new File(savePath).mkdir();
+//            filePath = savePath + "\\" + fileName;
+//            file.transferTo(new File(filePath));
 
         } catch(Exception e){
             e.getStackTrace();
         }
-
+        System.out.println("filePath = " + filePath);
         FileDto fileDto = new FileDto().builder()
                 .originalFileName(originalFileName)
                 .fileName(fileName)

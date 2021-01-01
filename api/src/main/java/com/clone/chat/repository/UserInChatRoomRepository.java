@@ -11,9 +11,9 @@ import com.clone.chat.domain.UserInChatRoom;
 
 public interface UserInChatRoomRepository extends JpaRepository<UserInChatRoom, Long>{
 
-	@Query("SELECT uc FROM UserInChatRoom uc "
-			+ "JOIN uc.chatRoom c "
-			+ "JOIN uc.user u "
-			+ "WHERE c.name LIKE CONCAT('%',:search,'%') and u.id = :userId")
-	public List<UserInChatRoom> findByUser(@Param("userId") String userId, @Param("search") String search);
+//	@Query("SELECT uc FROM UserInChatRoom uc "
+//			+ "JOIN uc.chatRoom c "
+//			+ "JOIN uc.user u "
+//			+ "WHERE c.name LIKE CONCAT('%',:search,'%') and u.id = :userId")
+//	public List<UserInChatRoom> findByUser(@Param("userId") String userId, @Param("search") String search);
 }

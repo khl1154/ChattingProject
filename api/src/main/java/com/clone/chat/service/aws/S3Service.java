@@ -19,6 +19,9 @@ import java.io.IOException;
 @Service
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class S3Service {
+
+    private static final String CLOUD_FRONT_DOMAIN_NAME = "dt8upu5cibhp1.cloudfront.net";
+
     private AmazonS3 s3Client;
 
     @Value("${cloud.aws.credentials.accessKey}")
@@ -27,10 +30,10 @@ public class S3Service {
     @Value("${cloud.aws.credentials.secretKey}")
     private String secretKey;
 
-    @Value("${cloud.aws.credentials.bucket}")
+    @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
-    @Value("${cloud.aws.credentials.region}")
+    @Value("${cloud.aws.region.static}")
     private String region;
 
     @PostConstruct
@@ -45,11 +48,9 @@ public class S3Service {
     }
 
     //==========================임시
-    public String upload(MultipartFile file) throws IOException {
-        String fileName = file.getOriginalFilename();
-
-        s3Client.putObject(new PutObjectRequest(bucket, fileName, file.getInputStream(), null)
+    public String upload(MultipartFile file, String fileName) throws IOException {
+            s3Client.putObject(new PutObjectRequest(bucket, fileName, file.getInputStream(), null)
                 .withCannedAcl(CannedAccessControlList.PublicRead));
-        return s3Client.getUrl(bucket, fileName).toString();
+        return "https://" + CLOUD_FRONT_DOMAIN_NAME + "/" + fileName;
     }
 }

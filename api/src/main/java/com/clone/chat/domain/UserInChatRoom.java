@@ -12,6 +12,7 @@ import javax.persistence.Table;
 import com.clone.chat.domain.base.BaseTimeEntity;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -24,22 +25,18 @@ public class UserInChatRoom extends BaseTimeEntity {
 	@Id @Column(name = "user_in_chatroom_id", nullable = false)
 	@GeneratedValue
 	Long id;
-	
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "chatroom_id", nullable = false)
-	private ChatRoom chatRoom; 
-	
+	private ChatRoom chatRoom;
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id", nullable = false)
-	private User user; 
-	
-	@Column(columnDefinition="BOOLEAN DEFAULT false")
-	private boolean inOutStatus;
+	private User user;
 
-	public UserInChatRoom(ChatRoom chatRoom, User user, boolean inOutStatus) {
+
+	public UserInChatRoom(ChatRoom chatRoom, User user) {
 		this.chatRoom = chatRoom;
 		this.user = user;
-		this.inOutStatus = inOutStatus;
 	}
 }
-	

@@ -55,13 +55,13 @@ public class FriendService {
         // 친구 아이디에 해당하는 유저 정보를 다 가져온다.
         List<ProfileDto> profileDtos = new LinkedList<>();
         for(Friend friend : friends) {
-            String profileImageName = "";
+            String profileImagePath = "";
             if(friend.getFriend().getFile() != null)
-                profileImageName = friend.getFriend().getFile().getFileName();
+                profileImagePath = friend.getFriend().getFile().getFilePath();
 
             profileDtos.add(ProfileDto.builder()
                     .userId(friend.getFriend().getId())
-                    .fileName(profileImageName)
+                    .filePath(profileImagePath)
                     .nickName(friend.getFriend().getNickName())
                     .statusMsg(friend.getFriend().getStatusMsg())
                     .build());

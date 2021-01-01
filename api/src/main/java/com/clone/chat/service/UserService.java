@@ -12,6 +12,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -34,6 +35,7 @@ public class UserService {
 
 	private final UserRepository userRepository;
 	private final FileService fileService;
+	private final PasswordEncoder passwordEncoder;
 
 	public User find(String userId) {
 		return userRepository.findById(userId).get();
@@ -47,6 +49,8 @@ public class UserService {
 			File userFile = fileService.save(file);
 			user.setFile(userFile);
 		}
+		String password = user.getPassword();
+		user.setPassword(passwordEncoder.encode(password));
 		userRepository.save(user);
 	}
 

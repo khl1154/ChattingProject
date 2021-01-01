@@ -19,13 +19,15 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.HtmlUtils;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(ChatController.URI_PREFIX)
 @Slf4j
-@Api(tags = "체팅")
+@Api(tags = "채팅")
 public class ChatController {
     public static final String URI_PREFIX = ApiController.URI_PREFIX + "/chats";
 
@@ -40,25 +42,26 @@ public class ChatController {
 
     @ApiOperation(value = "방만들기")
     @PostMapping("/rooms")
-    public ResponseForm roomCreate(@RequestBody ChatRoomDto dto) {
-        Long roomId = chatService.chatRoomCreate(dto);
-
-        return new ResponseForm("roomId", roomId);
+    public Map<String, Long> createRoom(@RequestBody ChatRoomDto dto) {
+        Long chatRoomId = chatService.createChatRoom(dto);
+        Map<String, Long> map = new HashMap<>();
+        map.put("chatRoomId",chatRoomId);
+        return map;
     }
 
-    @GetMapping("/rooms")
-    public List<UserInChatRoom> roomList(String userId, String search) {
-        return chatService.getList(userId, search);
-    }
+//    @GetMapping("/rooms")
+//    public List<UserInChatRoom> roomList(String userId, String search) {
+//        return chatService.getList(userId, search);
+//    }
 
 
-    //채팅 송신
-    @MessageMapping("/chats/{roomNo}")
-    @SendTo("/topic/chats/{roomNo}")
-    public ChatRoomDto chat(ChatRoomDto chat) throws Exception {
-
-        return new ChatRoomDto(chat.getName(), chat.getMessage());
-    }
+//    //채팅 송신
+//    @MessageMapping("/chats/{roomNo}")
+//    @SendTo("/topic/chats/{roomNo}")
+//    public ChatRoomDto chat(ChatRoomDto chat) throws Exception {
+//
+//        return new ChatRoomDto(chat.getName(), chat.getMessage());
+//    }
 
 
 }

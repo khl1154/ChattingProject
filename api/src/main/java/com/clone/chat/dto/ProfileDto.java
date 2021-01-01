@@ -10,14 +10,14 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ProfileDto {
     private String userId;
-    private String fileName;
+    private String filePath;
     private String nickName;
     private String statusMsg;
 
     @Builder
-    public ProfileDto(String userId, String fileName, String nickName, String statusMsg) {
+    public ProfileDto(String userId, String filePath, String nickName, String statusMsg) {
         this.userId = userId;
-        this.fileName = fileName;
+        this.filePath = filePath;
         this.nickName = nickName;
         this.statusMsg = statusMsg;
     }

@@ -12,7 +12,6 @@ import lombok.Setter;
 public class UserDto {
 
     private String id;
-    private String fileName;
     private String password;
     private String nickName;
     private String phone;

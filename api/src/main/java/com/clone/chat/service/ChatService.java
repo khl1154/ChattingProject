@@ -28,32 +28,27 @@ public class ChatService {
     private final UserInChatRoomRepository userInChatRoomRepository;
 
     @Transactional
-    public Long chatRoomCreate(ChatRoomDto dto) {
-        ChatRoom chatRoom = chatRoomRepository.save(dto.toEntity());
+    public Long createChatRoom(ChatRoomDto dto) {
+        Long chatRoomId = chatRoomRepository.save(dto.toEntity()).getId();
 
+//        invite(, chatRoomId);
 
-        //연결테이블 처리
-        Optional<User> user = userRepository.findById(dto.getUserId());
-        user.orElseThrow(() -> new NoSuchElementException());
-
-        UserInChatRoom userInChatRoom = new UserInChatRoom(chatRoom, user.get(), true);
-        userInChatRoomRepository.save(userInChatRoom);
-
-        return chatRoom.getId();
+        return chatRoomId;
     }
 
-    public List<UserInChatRoom> getList(String userId, String search) {
-        return userInChatRoomRepository.findByUser(userId, search);
-    }
+//    public List<UserInChatRoom> getList(String userId, String search) {
+//        return userInChatRoomRepository.findByUser(userId, search);
+//    }
 
     @Transactional
     public void invite(List<String> users, Long chatRoomId) {
+
         ChatRoom chatRoom = chatRoomRepository.getOne(chatRoomId);
 
-        for (String userId : users) {
-            User user = userRepository.getOne(userId);
-            UserInChatRoom userInChatRoom = new UserInChatRoom(chatRoom, user, true);
-            userInChatRoomRepository.save(userInChatRoom);
-        }
+//        for (String userId : users) {
+//            User user = userRepository.getOne(userId);
+//            UserInChatRoom userInChatRoom = new UserInChatRoom(chatRoom, user);
+//            userInChatRoomRepository.save(userInChatRoom);
+//        }
     }
 }
