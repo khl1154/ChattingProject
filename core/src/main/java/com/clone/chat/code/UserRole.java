@@ -7,7 +7,8 @@ import java.util.Set;
 
 
 public enum UserRole {
-    USER;
+    USER,
+    ADMIN;
     public Set<SimpleGrantedAuthority> getGrantedAuthorities() {
         Set<SimpleGrantedAuthority> permissions = new HashSet<>();
         permissions.add(new SimpleGrantedAuthority("ROLE_" + this.name()));

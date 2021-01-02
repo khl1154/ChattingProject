@@ -1,5 +1,6 @@
 package com.clone.chat.domain.base;
 
+import com.clone.chat.code.UserRole;
 import com.clone.chat.model.ModelBase;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,10 +10,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.Column;
-import javax.persistence.EntityListeners;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Getter @Setter
@@ -29,12 +27,16 @@ public class UserBase extends ModelBase {
 	String nickName;
 	String phone;
 
+	@Enumerated(EnumType.STRING)
+	UserRole role;
+
 	@Builder
-	public UserBase(String id, String password, String nickName, String phone) {
+	public UserBase(String id, String password, String nickName, String phone, UserRole role) {
 		this.id = id;
 		this.password = password;
 		this.nickName = nickName;
 		this.phone = phone;
+		this.role = role;
 	}
 
 	@CreatedDate

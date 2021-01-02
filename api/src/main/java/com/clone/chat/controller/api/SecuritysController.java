@@ -49,17 +49,17 @@ public class SecuritysController {
 	PasswordEncoder passwordEncoder;
 
 
-	@PostMapping("/login")
-	public Token login(@RequestBody UserBase requestUser, HttpServletResponse response) throws JsonProcessingException, UnsupportedEncodingException {
-		Optional<User> userOption = userRepository.findById(requestUser.getId());
-		userOption.orElseThrow(() -> new UsernameNotFoundException("UsernameNotFoundException"));
-		User user = userOption.get();
-		if (passwordEncoder.matches(requestUser.getPassword(), user.getPassword())) {
-			return new Token(tokenService.makeToken(user));
-		} else {
-			throw new InsufficientAuthenticationException("InsufficientAuthenticationException");
-		}
-	}
+//	@PostMapping("/login")
+//	public Token login(@RequestBody UserBase requestUser, HttpServletResponse response) throws JsonProcessingException, UnsupportedEncodingException {
+//		Optional<User> userOption = userRepository.findById(requestUser.getId());
+//		userOption.orElseThrow(() -> new UsernameNotFoundException("UsernameNotFoundException"));
+//		User user = userOption.get();
+//		if (passwordEncoder.matches(requestUser.getPassword(), user.getPassword())) {
+//			return new Token(tokenService.makeToken(user));
+//		} else {
+//			throw new InsufficientAuthenticationException("InsufficientAuthenticationException");
+//		}
+//	}
 
 
 //	@GetMapping("/logout")

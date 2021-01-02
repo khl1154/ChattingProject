@@ -1,13 +1,24 @@
-#port
 spring:
   profiles:
     include:
       - core
       - db
+      - default
 server:
   port: 9000
 
+---
+
+
+spring:
+  profiles: default
+  application:
+    name: api
 project:
+  jwt:
+    secretKey: sW4unUJNFTenEbGvVKpQJ0pUcGY2e0UdHfHCc6eShM0Mtgmg8VaZ86J3hilNFbG4bG
+    tokenPrefix: "Bearer "
+    tokenExpirationAfterDays: 10
   properties:
     username: chat
     password: chat1234

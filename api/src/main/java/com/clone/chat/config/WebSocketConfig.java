@@ -235,6 +235,16 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
                         super.afterConnectionEstablished(session);
                     }
+
+                    @Override
+                    public void afterConnectionClosed(WebSocketSession session, CloseStatus closeStatus) throws Exception {
+                        // We will store current user's session into WebsocketSessionHolder after connection is established
+                        if(null!=session.getPrincipal()) {
+                            String username = session.getPrincipal().getName();
+                            WebsocketSessionHolder.closeSessions(username);
+                        }
+                        super.afterConnectionClosed(session, closeStatus);
+                    }
                 };
             }
         });

@@ -51,8 +51,13 @@ subprojects { it ->
 		compile group: 'org.apache.commons', name: 'commons-collections4', version: '4.1'
 		compile group: 'org.apache.commons', name: 'commons-text', version: '1.9'
 
+
+
+		testImplementation 'org.springframework.security:spring-security-test'
+		compile('org.springframework.boot:spring-boot-starter-security')
+
 //		compile group: 'org.thymeleaf', name: 'thymeleaf-spring5', version: '3.0.9.RELEASE'
-//		compile group: 'org.thymeleaf.extras', name: 'thymeleaf-extras-springsecurity4', version: '3.0.2.RELEASE'
+		compile group: 'org.thymeleaf.extras', name: 'thymeleaf-extras-springsecurity4', version: '3.0.2.RELEASE'
 
 		// https://mvnrepository.com/artifact/org.webjars/jquery
 		compile group: 'org.webjars', name: 'jquery', version: '3.5.1'

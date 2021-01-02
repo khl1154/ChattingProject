@@ -1,5 +1,6 @@
 package com.clone.chat;
 
+import com.clone.chat.code.UserRole;
 import com.clone.chat.domain.Friend;
 import com.clone.chat.domain.User;
 import com.clone.chat.domain.base.UserBase;
@@ -8,6 +9,7 @@ import com.clone.chat.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.ApplicationPidFileWriter;
@@ -24,7 +26,7 @@ import java.util.List;
 @EnableJpaAuditing
 @SpringBootApplication
 @Slf4j
-public class ChatApplication {
+public class ChatApplication implements CommandLineRunner {
 
     @Value("${spring.application.name}")
     String applicationName;
@@ -52,12 +54,13 @@ public class ChatApplication {
         log.debug("applicationStartedEvent done!! -> " + activeProfile);
         if ("dev".equals(activeProfile)) {
             List<User> users = Arrays.asList(
-                    UserBase.builder().id("user1").password(passwordEncoder.encode("1234")).nickName("user1-nick").build().map(User.class),
-                    UserBase.builder().id("user2").password(passwordEncoder.encode("1234")).nickName("user2-nick").build().map(User.class),
-                    UserBase.builder().id("user3").password(passwordEncoder.encode("1234")).nickName("user3-nick").build().map(User.class),
-                    UserBase.builder().id("user4").password(passwordEncoder.encode("1234")).nickName("user4-nick").build().map(User.class),
-                    UserBase.builder().id("user5").password(passwordEncoder.encode("1234")).nickName("user5-nick").build().map(User.class),
-                    UserBase.builder().id("user6").password(passwordEncoder.encode("1234")).nickName("user6-nick").build().map(User.class)
+                    UserBase.builder().id("admin").password(passwordEncoder.encode("1234")).nickName("admin-nick").role(UserRole.ADMIN).build().map(User.class),
+                    UserBase.builder().id("user1").password(passwordEncoder.encode("1234")).nickName("user1-nick").role(UserRole.USER).build().map(User.class),
+                    UserBase.builder().id("user2").password(passwordEncoder.encode("1234")).nickName("user2-nick").role(UserRole.USER).build().map(User.class),
+                    UserBase.builder().id("user3").password(passwordEncoder.encode("1234")).nickName("user3-nick").role(UserRole.USER).build().map(User.class),
+                    UserBase.builder().id("user4").password(passwordEncoder.encode("1234")).nickName("user4-nick").role(UserRole.USER).build().map(User.class),
+                    UserBase.builder().id("user5").password(passwordEncoder.encode("1234")).nickName("user5-nick").role(UserRole.USER).build().map(User.class),
+                    UserBase.builder().id("user6").password(passwordEncoder.encode("1234")).nickName("user6-nick").role(UserRole.USER).build().map(User.class)
             );
             userRepository.saveAll(users);
 
@@ -73,7 +76,14 @@ public class ChatApplication {
         }
     }
 
-
+    @Override
+    public void run(String... args) {
+//        log.info("EXECUTING : command line runner");
+//
+//        for (int i = 0; i < args.length; ++i) {
+//            log.info("args[{}]: {}", i, args[i]);
+//        }
+    }
 //    @Bean
 //	@Profile("dev")
 //	public void test() {

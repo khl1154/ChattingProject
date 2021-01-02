@@ -24,8 +24,6 @@ ext {
 dependencies {
 
 
-    testImplementation 'org.springframework.security:spring-security-test'
-    compile('org.springframework.boot:spring-boot-starter-security')
 
     //Swagger
     compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'

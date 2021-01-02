@@ -1,20 +1,26 @@
 package com.clone.chat.config.security;
 
 
+import com.clone.chat.code.UserRole;
+import com.clone.chat.config.security.auth.ApiUserDetailsService;
+import com.clone.chat.config.security.jwt.JwtConfig;
+import com.clone.chat.config.security.jwt.JwtTokenVerifier;
+import com.clone.chat.config.security.jwt.JwtUsernameAndPasswordAuthenticationFilter;
+import com.clone.chat.repository.UserRepository;
+import com.clone.chat.service.TokenService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 @Slf4j
 @Configuration
@@ -32,17 +38,42 @@ public class WebSecurityConfigurerAdapter extends org.springframework.security.c
 	@Autowired
 	PasswordEncoder passwordEncoder;
 
+
+	@Autowired
+	UserRepository userRepository;
+
+	@Autowired
+	TokenService tokenService;
+
+
+	@Autowired
+	ApiUserDetailsService userDetailsService;
+
+	@Autowired
+	JwtConfig jwtConfig;
+
+	public static final String SECURITY_PATH                = "/securitys";
+	public static final String LOGOUT_URL                   = SECURITY_PATH+"/sign-out";
+	public static final String LOGIN_PAGE                   = "/#/login";
+	public static final String LOGIN_PROCESSING_URL         = SECURITY_PATH+"/sign-in";
+	public static final String USERNAME_PARAMETER           = "username";
+	public static final String USERPWD_PARAMETER            = "password";
+	public static final String DEFAULT_SUCCESS_URL          = "/";
+
+
 	@Override
 	public void configure(WebSecurity web) throws Exception {
 		web.ignoring().antMatchers(
-				"/h2-console",
-				"/h2-console/**",
+				"/assets/**",
+				"/*.css",
+				"/*.js",
+				"/*.map",
+				"/*.ico",
 				"/websocket",
 				"/websocket/**",
-				"/apis",
-				"/apis/**",
 //				"/web-core-assets/**",
-//				"/*.js",
+//				"/*.js"
+				"/h2-console","/h2-console/**",
 //				"/*.map",
 				"/favicon.ico"
 		);
@@ -56,31 +87,52 @@ public class WebSecurityConfigurerAdapter extends org.springframework.security.c
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
-				.requestMatchers()
-				.antMatchers("/websocket", "/websocket/**")
+				.csrf().disable()
+				.sessionManagement()
+//				.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 				.and()
+				.formLogin()
+				.loginPage(LOGIN_PAGE)                       //로그인 페이지
+				.loginProcessingUrl(LOGIN_PROCESSING_URL)     //login-processing-url  로그인 페이지 form action에 입력할 주소 지정
+				.usernameParameter(USERNAME_PARAMETER)
+				.passwordParameter(USERPWD_PARAMETER)
+				.defaultSuccessUrl(DEFAULT_SUCCESS_URL)       //성공시 이동될 페이지
+//				.failureHandler(authenticationFailureHandler())
+//				.successHandler(new AuthenticationSuccessHandler())
+				.permitAll()
+				.and()
+				.logout()
+					.logoutUrl(LOGOUT_URL)
+					.invalidateHttpSession(true)
+					.logoutSuccessUrl(DEFAULT_SUCCESS_URL)
+				.and()
+				.addFilter(new JwtUsernameAndPasswordAuthenticationFilter(authenticationManager(), jwtConfig, tokenService, userRepository))
+				.addFilterAfter(new JwtTokenVerifier(jwtConfig, tokenService),JwtUsernameAndPasswordAuthenticationFilter.class)
 				.authorizeRequests()
-				.antMatchers("/", "/apis","/apis/**", "/h2-console","/h2-console/**").permitAll()
+				.antMatchers("/", "index","/favicon.ico", "*.css","/css/*", "/js/*").permitAll()
+				.antMatchers("/apis","/apis/**").hasAnyRole(UserRole.USER.name(), UserRole.ADMIN.name())
+				.antMatchers("/h2-console","/h2-console/**").hasAnyRole(UserRole.ADMIN.name())
+				.antMatchers("/swagger", "/swagger/**").hasRole(UserRole.ADMIN.name())
+				.antMatchers("/docs", "/docs/**").hasRole(UserRole.ADMIN.name())
 //				.antMatchers("/", "/w","/apis/*").permitAll()
-				.anyRequest().authenticated()
-				.and().csrf().disable()
-				.httpBasic();
+				.anyRequest()
+				.authenticated();
 
 
+	}
+
+	@Override
+	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+		auth.authenticationProvider(daoAuthenticationProvider());
 	}
 
 	@Bean
-	@Override
-	protected UserDetailsService userDetailsService() {
-		UserDetails admin = User.builder()
-				.username(username)
-//				.password(password)
-				.password(passwordEncoder.encode(password))
-				.roles("SWAGGER").build();
-
-		return new InMemoryUserDetailsManager(admin);
+	public DaoAuthenticationProvider daoAuthenticationProvider() {
+		DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+		provider.setPasswordEncoder(passwordEncoder);
+		provider.setUserDetailsService(userDetailsService);
+		return provider;
 	}
-
 
 	//	@Bean
 //	public AuthenticationSuccessHandler authenticationSuccessHandler() {

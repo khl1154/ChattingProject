@@ -1,4 +1,6 @@
 spring:
+  application:
+    name: api
   profiles: real
   datasource:
     url: jdbc:mariadb://3.35.140.126:3306/messenger
