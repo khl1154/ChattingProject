@@ -34,11 +34,11 @@
     $(document).ready(function () {
         $("#login").click(function () {
             var data = {
-                id: $("#id").val(),
+                username: $("#id").val(),
                 password: $("#password").val(),
             }
             $.ajax({
-                url: "/apis/securitys/login",
+                url: "/securitys/user-sign-in",
                 type: "POST",
                 // cache:false,
                 // timeout : 30000,
