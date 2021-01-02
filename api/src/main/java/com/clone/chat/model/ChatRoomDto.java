@@ -27,7 +27,6 @@ public class ChatRoomDto {
                 .build();
     }
 
-
     private String name;
     private String message;
 
