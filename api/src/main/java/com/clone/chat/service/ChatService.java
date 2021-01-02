@@ -28,12 +28,8 @@ public class ChatService {
     private final UserInChatRoomRepository userInChatRoomRepository;
 
     @Transactional
-    public Long createChatRoom(ChatRoomDto dto) {
-        Long chatRoomId = chatRoomRepository.save(dto.toEntity()).getId();
-
-//        invite(, chatRoomId);
-
-        return chatRoomId;
+    public ChatRoom createChatRoom(ChatRoom chatRoom) {
+        return chatRoomRepository.save(chatRoom);
     }
 
 //    public List<UserInChatRoom> getList(String userId, String search) {
@@ -41,14 +37,14 @@ public class ChatService {
 //    }
 
     @Transactional
-    public void invite(List<String> users, Long chatRoomId) {
+    public void invite(List<String> userIds, Long chatRoomId) {
 
         ChatRoom chatRoom = chatRoomRepository.getOne(chatRoomId);
 
-//        for (String userId : users) {
-//            User user = userRepository.getOne(userId);
-//            UserInChatRoom userInChatRoom = new UserInChatRoom(chatRoom, user);
-//            userInChatRoomRepository.save(userInChatRoom);
-//        }
+        for (String userId : userIds) {
+            User user = userRepository.getOne(userId);
+            UserInChatRoom userInChatRoom = new UserInChatRoom(chatRoom, user);
+            userInChatRoomRepository.save(userInChatRoom);
+        }
     }
 }

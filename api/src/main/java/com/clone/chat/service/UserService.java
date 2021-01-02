@@ -43,7 +43,8 @@ public class UserService {
 
 	@Transactional
 	public void join(UserDto dto, MultipartFile file) {
-		duplicateId(dto.getId());
+		if(duplicateId(dto.getId()))
+			throw new BusinessException(MsgCode.ERROR_DUPLICATED_ID, ErrorTrace.getName());
 		User user = dto.toEntity();
 		if(file != null) {
 			File userFile = fileService.save(file);
@@ -54,10 +55,11 @@ public class UserService {
 		userRepository.save(user);
 	}
 
-	public void duplicateId(String userId) {
+	public boolean duplicateId(String userId) {
 		Optional<User> user = userRepository.findById(userId);
 		if (user.isPresent())
-			throw new BusinessException(MsgCode.ERROR_DUPLICATED_ID, ErrorTrace.getName());
+			return true;
+		return false;
 	}
 
 	public List<String> getList() {
