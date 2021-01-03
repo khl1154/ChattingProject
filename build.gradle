@@ -3,6 +3,8 @@ buildscript {
 		mavenCentral()
 	}
 	dependencies {
+		classpath 'cz.habarta.typescript-generator:typescript-generator-gradle-plugin:2.+'
+		classpath 'cz.habarta.typescript-generator:typescript-generator-spring:2.+'
 		classpath 'org.springframework.boot:spring-boot-gradle-plugin:2.1.9.RELEASE'
 	}
 }

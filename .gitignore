@@ -349,3 +349,4 @@ gradle-app.setting
 /api/src/main/resources/templates/docs/
 /gradlew
 /gradlew.bat
+/front-angular/generate/

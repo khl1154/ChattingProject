@@ -8,6 +8,7 @@ import com.clone.chat.config.security.jwt.JwtTokenVerifier;
 import com.clone.chat.config.security.jwt.JwtUsernameAndPasswordAuthenticationFilter;
 import com.clone.chat.repository.UserRepository;
 import com.clone.chat.service.TokenService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -51,6 +52,9 @@ public class WebSecurityConfigurerAdapter extends org.springframework.security.c
 
 	@Autowired
 	JwtConfig jwtConfig;
+
+	@Autowired
+	ObjectMapper objectMapper;
 
 	public static final String SECURITY_PATH                = "/securitys";
 	public static final String LOGOUT_URL                   = SECURITY_PATH+"/sign-out";
@@ -106,7 +110,7 @@ public class WebSecurityConfigurerAdapter extends org.springframework.security.c
 					.invalidateHttpSession(true)
 					.logoutSuccessUrl(DEFAULT_SUCCESS_URL)
 				.and()
-				.addFilter(new JwtUsernameAndPasswordAuthenticationFilter(authenticationManager(), jwtConfig, tokenService, userRepository))
+				.addFilter(new JwtUsernameAndPasswordAuthenticationFilter(authenticationManager(), jwtConfig, tokenService, userRepository,objectMapper))
 				.addFilterAfter(new JwtTokenVerifier(jwtConfig, tokenService),JwtUsernameAndPasswordAuthenticationFilter.class)
 				.authorizeRequests()
 				.antMatchers("/", "index","/favicon.ico", "*.css","/css/*", "/js/*").permitAll()

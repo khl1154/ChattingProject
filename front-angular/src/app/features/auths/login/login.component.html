@@ -1,0 +1,23 @@
+<div class="authLayout">
+
+
+
+
+    <div id="content" class="container">
+        <div style="margin-top: 100px;"></div>
+        <div class="form-signin" #from [formGroup]="formdata">
+            <input type="hidden" name="_csrf" formControlName="_csrf">
+            <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+            <label for="username" class="sr-only">Username</label>
+            <input type="text" id="username" [(ngModel)]="username" name="username" class="form-control my-1" formControlName="username" placeholder="ID" required autofocus>
+            <label for="password" class="sr-only">Password</label>
+            <input type="password" id="password" name="password" [(ngModel)]="password" class="form-control" formControlName="password" placeholder="Password" required>
+            <button class="btn btn-lg btn-primary btn-block" type="button" (click)="submit($event)">SignIn</button>
+        </div>
+        <div style="width: 100%; max-width:400px; margin: 0 auto">
+
+
+        </div>
+    </div>
+</div>
+

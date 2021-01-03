@@ -1,29 +1,25 @@
 package com.clone.chat.service;
 
-import com.clone.chat.code.UserRole;
 import com.clone.chat.config.security.jwt.JwtConfig;
 import com.clone.chat.domain.User;
+import com.clone.chat.repository.UserRepository;
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class TokenService {
 
     @Autowired
     public JwtConfig jwtConfig;
+    @Autowired
+    public UserRepository userRepository;
 
     public String makeToken(String subject, Collection<? extends GrantedAuthority> bodyAuthorities) {
         Date now = Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant());
@@ -49,12 +45,16 @@ public class TokenService {
     }
 
     public Jws<Claims> parserJwt(String header) throws JwtException {
-//        ,
         String token = header.replace(jwtConfig.getTokenPrefix(), "");
         Jws<Claims> claimsJws = Jwts.parser()
                 .setSigningKey(this.jwtConfig.getSecretKey().getBytes(StandardCharsets.UTF_8))
                 .parseClaimsJws(token);
         return claimsJws;
+    }
+
+    public Optional<User> getUserFromJwtHeader(String header) throws JwtException {
+        Jws<Claims> claimsJws = parserJwt(header);
+        return userRepository.findById(claimsJws.getBody().getSubject());
     }
 
 }

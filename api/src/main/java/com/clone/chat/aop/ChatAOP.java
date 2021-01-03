@@ -20,6 +20,7 @@ public class ChatAOP {
     public void before(JoinPoint joinPoint) throws IOException {
 //		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
 //		log.debug("AOP "+request);
+
     }
 
     @After("within(com.clone.chat.controller.api..*)")

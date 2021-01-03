@@ -2,6 +2,8 @@ package com.clone.chat.domain.base;
 
 import com.clone.chat.code.UserRole;
 import com.clone.chat.model.ModelBase;
+import com.clone.chat.model.view.json.JsonViewApi;
+import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,12 +24,16 @@ public class UserBase extends ModelBase {
 
 	@Id
 	@Column(name = "user_id", nullable = false)
+	@JsonView({JsonViewApi.class})
 	String id;
 	String password;
+	@JsonView({JsonViewApi.class})
 	String nickName;
+	@JsonView({JsonViewApi.class})
 	String phone;
 
 	@Enumerated(EnumType.STRING)
+	@JsonView({JsonViewApi.class})
 	UserRole role;
 
 	@Builder

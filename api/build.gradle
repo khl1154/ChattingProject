@@ -1,3 +1,4 @@
+apply plugin: 'cz.habarta.typescript-generator'
 //apply plugin: 'org.asciidoctor.convert'
 //processResources {
 //    dependsOn "buildRestDoc"
@@ -54,3 +55,24 @@ asciidoctor {
 //    }
 //}
 
+
+def angularDir = project(':front-angular').projectDir
+generateTypeScript {
+//    customTypeNaming = [
+//            'org.springframework.security.core.userdetails.UserDetails:UserDetailsOfSpring',
+//    ]
+    classPatterns = [
+            'com.clone.chat.domain.**',
+            'com.clone.chat.model.**',
+    ]
+    mapClasses = 'asClasses'
+    mapEnum = 'asEnum'
+    nonConstEnums = true
+    //http://www.habarta.cz/typescript-generator/doc/ModulesAndNamespaces.html
+    outputFileType = 'implementationFile'  //values are: declarationFile (.d.ts) or implementationFile (.ts)
+    jsonLibrary = 'jackson2'
+    outputKind = 'module'  // values are: global, module, ambientModule
+    outputFile = "${angularDir}/generate/models.ts"
+    scanSpringApplication = true
+    generateSpringApplicationClient = true
+}

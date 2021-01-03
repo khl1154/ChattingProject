@@ -26,6 +26,7 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
     private final AuthenticationManager authenticationManager;
     private final JwtConfig jwtConfig;
     private final UserRepository userRepository;
+    private final ObjectMapper objectMapper;
     public SecretKey secretKey;
     public static final String JWT_TOKEN_PROCESSES_URL = WebSecurityConfigurerAdapter.SECURITY_PATH + "/user-sign-in";
     //    private final RedisTemplate<String, Object> redisTemplate;
@@ -34,20 +35,22 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
     public JwtUsernameAndPasswordAuthenticationFilter(AuthenticationManager authenticationManager,
                                                       JwtConfig jwtConfig,
                                                       TokenService tokenService,
-                                                      UserRepository userRepository) {
+                                                      UserRepository userRepository, ObjectMapper objectMapper) {
         this.userRepository = userRepository;
         this.tokenService = tokenService;
         this.authenticationManager = authenticationManager;
         this.jwtConfig = jwtConfig;
+        this.objectMapper = objectMapper;
         setFilterProcessesUrl(JWT_TOKEN_PROCESSES_URL);
     }
+
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request,
                                                 HttpServletResponse response) throws AuthenticationException {
 
         try {
-            UsernameAndPasswordAuthenticationRequest authenticationRequest = new ObjectMapper()
+            UsernameAndPasswordAuthenticationRequest authenticationRequest = objectMapper
                     .readValue(request.getInputStream(), UsernameAndPasswordAuthenticationRequest.class);
 
             authenticationRequest.setPassword(authenticationRequest.getPassword());
