@@ -9,19 +9,21 @@ import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.*;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(AuthsController.URI_PREFIX)
+@RequestMapping(FriendsController.URI_PREFIX)
 @Slf4j
 @Api(tags = "권한")
-public class AuthsController {
-    public static final String URI_PREFIX = ApiController.URI_PREFIX + "/auths";
+public class FriendsController {
+    public static final String URI_PREFIX = ApiController.URI_PREFIX + "/friends";
 
     @Autowired
     TokenService tokenService;

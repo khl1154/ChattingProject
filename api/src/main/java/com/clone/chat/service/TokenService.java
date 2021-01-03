@@ -6,6 +6,7 @@ import com.clone.chat.repository.UserRepository;
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
@@ -52,9 +53,12 @@ public class TokenService {
         return claimsJws;
     }
 
-    public Optional<User> getUserFromJwtHeader(String header) throws JwtException {
+    public User getUserFromJwtHeader(String header) throws JwtException {
         Jws<Claims> claimsJws = parserJwt(header);
-        return userRepository.findById(claimsJws.getBody().getSubject());
+        Optional<User> useroption = userRepository.findById(claimsJws.getBody().getSubject());
+        useroption.orElseThrow(() -> new UsernameNotFoundException("notfound"));
+        useroption.get().setToken(header);
+        return useroption.get();
     }
 
 }

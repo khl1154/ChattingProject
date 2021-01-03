@@ -5,6 +5,14 @@ import {LayoutModule} from '@app/shareds/layout/layout.module';
 import {AppRoutingModule} from './app-routing.module';
 import {ServiceModule} from '@app/services/service.module';
 import {SharedModule} from '@app/shareds/shared.module';
+import {
+    InjectableRxStompConfig,
+    RxStompService,
+    rxStompServiceFactory,
+    StompConfig,
+    StompService
+} from "@stomp/ng2-stompjs";
+import {myRxStompConfig} from "@app/my-rx-stomp.config";
 
 /*
 declarations - 이 모듈에서 사용하는 뷰 클래스를 정의한다. Angular에는 컴포넌트, 디렉티브, 파이프 세 종류의 뷰 클래스가 있다.
@@ -25,7 +33,22 @@ bootstrap - 루트 컴포넌트라고 하는 메인 어플리케이션의 뷰를
     declarations: [
         AppComponent,
     ],
-    providers: [],
+    providers: [
+        // StompService,
+        // {
+        //     provide: StompConfig,
+        //     useValue: myRxStompConfig
+        // }
+        {
+            provide: InjectableRxStompConfig,
+            useValue: myRxStompConfig,
+        },
+        {
+            provide: RxStompService,
+            useFactory: rxStompServiceFactory,
+            deps: [InjectableRxStompConfig],
+        }
+    ],
     exports: [
         BrowserModule,
         AppRoutingModule,

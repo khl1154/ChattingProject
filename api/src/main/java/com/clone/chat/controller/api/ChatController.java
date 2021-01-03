@@ -65,7 +65,6 @@ public class ChatController {
     @MessageMapping("/chats/{roomNo}")
     @SendTo("/topic/chats/{roomNo}")
     public ChatRoomDto chat(ChatRoomDto chat) throws Exception {
-
         return new ChatRoomDto(chat.getName(), chat.getMessage());
     }
 

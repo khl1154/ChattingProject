@@ -6,6 +6,7 @@ import lombok.*;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Getter
 @Setter
@@ -13,5 +14,6 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "user")
 public class User extends UserBase {
-
+    @Transient
+    String token;
 }
