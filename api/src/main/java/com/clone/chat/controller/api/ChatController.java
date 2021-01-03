@@ -3,6 +3,8 @@ package com.clone.chat.controller.api;
 import com.clone.chat.domain.ChatMessage;
 import com.clone.chat.domain.ChatRoom;
 import com.clone.chat.domain.UserInChatRoom;
+import com.clone.chat.dto.ChatRoomListDto;
+import com.clone.chat.dto.ProfileDto;
 import com.clone.chat.model.ChatRoomDto;
 import com.clone.chat.model.Greeting;
 import com.clone.chat.model.ResponseForm;
@@ -11,6 +13,7 @@ import com.clone.chat.service.TestService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -35,33 +38,30 @@ import java.util.Map;
 public class ChatController {
     public static final String URI_PREFIX = ApiController.URI_PREFIX + "/chats";
 
-    @Autowired
-    TestService testService;
-
-    @Autowired
-    ChatService chatService;
-
-    @Autowired
-    private SimpMessagingTemplate messagingTemplate;
+    private final TestService testService;
+    private final ChatService chatService;
+    private final SimpMessagingTemplate messagingTemplate;
 
     @ApiOperation(value = "방만들기")
     @PostMapping("/rooms")
     public CreateChatRoomResponse createRoom(@RequestBody CreateChatRoomRequest request) {
 
         ChatRoom chatRoom = ChatRoom.builder()
-                .adminId(request.adminId)
-                .chatRoomName(request.chatRoomName)
+                .adminId(request.getAdminId())
+                .chatRoomName(request.getChatRoomName())
                 .build();
         chatService.createChatRoom(chatRoom);
+        request.getInUserIds().add(request.getAdminId());
         chatService.invite(request.getInUserIds(),chatRoom.getId());
 
         return new CreateChatRoomResponse(chatRoom.getId());
     }
 
-//    @GetMapping("/rooms")
-//    public List<UserInChatRoom> chatRoomList(@RequestBody String userId ) {
-//        return chatService.getList(userId, search);
-//    }
+    @ApiOperation(value = "방리스트")
+    @GetMapping("/rooms")
+    public List<ChatRoomListDto> chatRoomList(@RequestParam String userId) {
+        return chatService.getList(userId);
+    }
 
     //채팅 송신
     @MessageMapping("/chats/{roomNo}")
@@ -85,6 +85,5 @@ public class ChatController {
     static class CreateChatRoomResponse {
         private Long chatRoomId;
     }
-
 
 }

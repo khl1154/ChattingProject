@@ -1,8 +1,10 @@
 package com.clone.chat;
 
+import com.clone.chat.domain.File;
 import com.clone.chat.domain.Friend;
 import com.clone.chat.domain.User;
 import com.clone.chat.domain.base.UserBase;
+import com.clone.chat.repository.FileRepository;
 import com.clone.chat.repository.FriendRepository;
 import com.clone.chat.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -39,6 +41,9 @@ public class ChatApplication {
     FriendRepository friendRepository;
 
     @Autowired
+    FileRepository fileRepository;
+
+    @Autowired
     PasswordEncoder passwordEncoder;
 
     public static void main(String[] args) {
@@ -51,6 +56,15 @@ public class ChatApplication {
     public void applicationStartedEvent(ApplicationStartedEvent applicationStartedEvent) {
         log.debug("applicationStartedEvent done!! -> " + activeProfile);
         if ("dev".equals(activeProfile)) {
+            File file = File.builder()
+                    .id(1L)
+                    .fileName("5db96de3e32fa818dc0d0aecfe82869f")
+                    .filePath("https://dt8upu5cibhp1.cloudfront.net/5db96de3e32fa818dc0d0aecfe82869f")
+                    .fileSize(18912L)
+                    .originalFileName("기본이미지.jpg")
+                    .build();
+            fileRepository.save(file);
+
             List<User> users = Arrays.asList(
                     UserBase.builder().id("user1").password(passwordEncoder.encode("1234")).nickName("user1-nick").build().map(User.class),
                     UserBase.builder().id("user2").password(passwordEncoder.encode("1234")).nickName("user2-nick").build().map(User.class),
@@ -59,6 +73,9 @@ public class ChatApplication {
                     UserBase.builder().id("user5").password(passwordEncoder.encode("1234")).nickName("user5-nick").build().map(User.class),
                     UserBase.builder().id("user6").password(passwordEncoder.encode("1234")).nickName("user6-nick").build().map(User.class)
             );
+            for (User user : users) {
+                user.setFile(file);
+            }
             userRepository.saveAll(users);
 
 
@@ -69,6 +86,7 @@ public class ChatApplication {
                     Friend.builder().userId("user2").userFriend(userRepository.findById("user5").get()).build()
             );
             friendRepository.saveAll(friends);
+
 
         }
     }
