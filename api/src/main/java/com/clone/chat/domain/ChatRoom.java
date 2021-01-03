@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.clone.chat.domain.base.BaseTimeEntity;
@@ -14,6 +15,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Getter 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
@@ -21,10 +24,12 @@ import lombok.NoArgsConstructor;
 public class ChatRoom extends BaseTimeEntity{
 	
 	@Id @Column(name = "chatroom_id", nullable = false)
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String chatRoomName;
 	private String adminId;
+	@OneToMany(mappedBy = "chatRoom")
+	private List<UserInChatRoom> inUsers;
 
 	@Builder
 	public ChatRoom(Long id, String chatRoomName, String adminId) {
@@ -32,6 +37,4 @@ public class ChatRoom extends BaseTimeEntity{
 		this.chatRoomName = chatRoomName;
 		this.adminId = adminId;
 	}
-
-
 }

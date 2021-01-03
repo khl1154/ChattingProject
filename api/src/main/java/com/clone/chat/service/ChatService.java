@@ -1,10 +1,14 @@
 package com.clone.chat.service;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
+import com.clone.chat.dto.ChatRoomListDto;
+import com.clone.chat.dto.ProfileDto;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,19 +36,50 @@ public class ChatService {
         return chatRoomRepository.save(chatRoom);
     }
 
-//    public List<UserInChatRoom> getList(String userId, String search) {
-//        return userInChatRoomRepository.findByUser(userId, search);
-//    }
+    public List<ChatRoomListDto> getList(String userId) {
+        List<UserInChatRoom> userInChatRooms = userInChatRoomRepository.findAllByUserId(userId);
+        List<ChatRoom> chatRooms = new LinkedList<>();
+        for (UserInChatRoom userInChatRoom : userInChatRooms) {
+            Optional<ChatRoom> optionalChatRoom = chatRoomRepository.findById(userInChatRoom.getChatRoom().getId());
+            if(optionalChatRoom.isPresent())
+                chatRooms.add(optionalChatRoom.get());
+        }
+
+        List<ChatRoomListDto> chatRoomListDtos = new LinkedList<>();
+        for (ChatRoom chatRoom : chatRooms) {
+            List<ProfileDto> profileDtos = new LinkedList<>();
+            for(UserInChatRoom userInChatRoom : chatRoom.getInUsers()) {
+                User user = userInChatRoom.getUser();
+                ProfileDto profileDto = ProfileDto.builder()
+                        .userId(user.getId())
+                        .nickName(user.getNickName())
+                        .statusMsg(user.getStatusMsg())
+                        .build();
+                if(user.getFile() != null)
+                    profileDto.setFilePath(user.getFile().getFilePath());
+                profileDtos.add(profileDto);
+            }
+            ChatRoomListDto chatRoomListDto = ChatRoomListDto.builder()
+                    .chatRoomId(chatRoom.getId())
+                    .chatRoomName(chatRoom.getChatRoomName())
+                    .adminId(chatRoom.getAdminId())
+                    .inUserCount(profileDtos.size())
+                    .profiles(profileDtos)
+                    .build();
+            chatRoomListDtos.add(chatRoomListDto);
+        }
+        return chatRoomListDtos;
+    }
 
     @Transactional
     public void invite(List<String> userIds, Long chatRoomId) {
-
-        ChatRoom chatRoom = chatRoomRepository.getOne(chatRoomId);
-
+        ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId).get();
         for (String userId : userIds) {
-            User user = userRepository.getOne(userId);
-            UserInChatRoom userInChatRoom = new UserInChatRoom(chatRoom, user);
-            userInChatRoomRepository.save(userInChatRoom);
+            Optional<User> user = userRepository.findById(userId);
+            if(user.isPresent()) {
+                UserInChatRoom userInChatRoom = new UserInChatRoom(chatRoom, user.get());
+                userInChatRoomRepository.save(userInChatRoom);
+            }
         }
     }
 }

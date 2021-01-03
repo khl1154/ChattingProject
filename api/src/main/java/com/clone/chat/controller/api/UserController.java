@@ -48,7 +48,7 @@ public class UserController {
 	private final UserService userService;
 
 	@PostMapping("/joins")
-	public void join(@RequestBody UserDto userDto,@RequestParam(required = false) MultipartFile file) {
+	public void join(UserDto userDto,MultipartFile file) {
 		userService.join(userDto, file);
 	}
 
