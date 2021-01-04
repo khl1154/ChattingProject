@@ -1,36 +1,25 @@
 package com.clone.chat.service;
 
 import com.clone.chat.ChatApplication;
-import com.clone.chat.domain.File;
-import com.clone.chat.domain.Friend;
-import com.clone.chat.domain.FriendInfoId;
 import com.clone.chat.domain.User;
-import com.clone.chat.dto.FileDto;
 import com.clone.chat.dto.FriendDto;
 import com.clone.chat.dto.ProfileDto;
-import com.clone.chat.dto.UserDto;
 import com.clone.chat.repository.FileRepository;
 import com.clone.chat.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
+
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.beans.HasPropertyWithValue.hasProperty;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.List;
-import java.util.Optional;
 
 @SpringBootTest(classes = ChatApplication.class)
 @ActiveProfiles("dev")
