@@ -6,6 +6,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -20,17 +21,20 @@ import lombok.NoArgsConstructor;
 @Getter 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
+@IdClass(UserInChatRoomId.class)
 @Table(name = "user_in_chatroom")
 public class UserInChatRoom extends BaseTimeEntity {
 
-	@Id @Column(name = "user_in_chatroom_id", nullable = false)
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+//	@Id @Column(name = "user_in_chatroom_id", nullable = false)
+//	@GeneratedValue(strategy = GenerationType.IDENTITY)
+//	private Long id;
 
+	@Id
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "chatroom_id", nullable = false)
 	private ChatRoom chatRoom;
 
+	@Id
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id", nullable = false)
 	private User user;

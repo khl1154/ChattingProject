@@ -1,17 +1,22 @@
 package com.clone.chat.service;
 
 import com.clone.chat.ChatApplication;
+import com.clone.chat.code.MsgCode;
 import com.clone.chat.domain.User;
 import com.clone.chat.dto.FriendDto;
 import com.clone.chat.dto.ProfileDto;
+import com.clone.chat.exception.BusinessException;
 import com.clone.chat.repository.FileRepository;
 import com.clone.chat.repository.UserRepository;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasProperty;
 
 import lombok.extern.slf4j.Slf4j;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,9 +91,39 @@ class FriendServiceTest {
         List<ProfileDto> list = friendService.getList(user1.getId());
 
         //then
-//        assertThat(list,contains(
-//                hasProperty("userId", is(user2.getId())),
-//                hasProperty("userId", is(user3.getId()))
-//                ));
+        assertThat(list,contains(
+                hasProperty("userId", is(user2.getId())),
+                hasProperty("userId", is(user3.getId()))
+                ));
+    }
+
+    @Test
+    public void 존재하지않는친구추가() throws Exception{
+        //given
+        FriendDto friend = new FriendDto();
+        friend.setUserId(user1.getId());
+        friend.setFriendId("empty userId");
+        //when
+        //then
+        try {
+            friendService.saveFriend(friend);
+        } catch (BusinessException e) {
+            Assertions.assertThat(e.getCode()).isEqualTo((MsgCode.ERROR_ENTITY_NOT_FOUND));
+        }
+    }
+
+    @Test
+    public void 잘못된친구관계() throws Exception{
+        //given
+        FriendDto friend = new FriendDto();
+        friend.setUserId(user1.getId());
+        friend.setFriendId(user1.getId());
+        //when
+        //then
+        try {
+            friendService.saveFriend(friend);
+        } catch (BusinessException e) {
+            Assertions.assertThat(e.getCode()).isEqualTo((MsgCode.ERROR_INVALID_FRIEND_RELATIONSHIP));
+        }
     }
 }

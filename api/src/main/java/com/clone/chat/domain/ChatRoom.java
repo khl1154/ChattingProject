@@ -15,6 +15,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.LinkedList;
 import java.util.List;
 
 @Getter 
@@ -32,7 +33,7 @@ public class ChatRoom extends BaseTimeEntity{
 	private String adminId;
 
 	@OneToMany(mappedBy = "chatRoom")
-	private List<UserInChatRoom> inUsers;
+	private List<UserInChatRoom> inUsers = new LinkedList<>();
 
 	@Builder
 	public ChatRoom(Long id, String chatRoomName, String adminId) {
