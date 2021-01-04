@@ -51,7 +51,6 @@ public class ChatController {
                 .chatRoomName(request.getChatRoomName())
                 .build();
         chatService.createChatRoom(chatRoom);
-        request.getInUserIds().add(request.getAdminId());
         chatService.invite(request.getInUserIds(),chatRoom.getId());
 
         return new CreateChatRoomResponse(chatRoom.getId());

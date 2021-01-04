@@ -17,6 +17,8 @@ import com.clone.chat.exception.BusinessException;
 import com.clone.chat.exception.ErrorTrace;
 import com.clone.chat.service.UserService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -48,8 +50,8 @@ public class UserController {
 	private final UserService userService;
 
 	@PostMapping("/joins")
-	public void join(UserDto userDto,MultipartFile file) {
-		userService.join(userDto, file);
+	public void join(@RequestBody(required = false) UserDto userDto,@RequestParam (required = false) MultipartFile file) {
+//		userService.join(userDto, file);
 	}
 
 	@GetMapping("/duplicate_check")
