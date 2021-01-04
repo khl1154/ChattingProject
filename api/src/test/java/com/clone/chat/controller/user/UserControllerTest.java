@@ -1,5 +1,6 @@
 package com.clone.chat.controller.user;
 
+import com.clone.chat.controller.api.UserController;
 import com.clone.chat.dto.UserDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -38,7 +39,7 @@ class UserControllerTest {
         //given
         UserDto userDto = new UserDto();
         userDto.setId("123");
-        userDto.setPw("1234");
+        userDto.setPassword("1234");
         userDto.setPhone("010-1111-11111");
         MockHttpServletRequestBuilder builder = post("/user/join")
                 .param("id", "123")

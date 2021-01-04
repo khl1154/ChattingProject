@@ -16,15 +16,15 @@ import javax.persistence.*;
 @IdClass(FriendInfoId.class)
 public class Friend extends ModelBase {
 
-	//친구 정보
-	@Id
-	@OneToOne
-	@JoinColumn(name = "friend_id")
-	private User friend;
-
 	@Id
 	@Column(name = "user_id")
 	private String userId;
+
+	@Id
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "friend_id")
+	private User friend;
+
 
 	@Builder
 	public Friend(String userId, User userFriend) {

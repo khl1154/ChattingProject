@@ -15,7 +15,6 @@ import javax.persistence.Id;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class File {
 
-
     @Id
     @GeneratedValue
     @Column(name = "file_id")

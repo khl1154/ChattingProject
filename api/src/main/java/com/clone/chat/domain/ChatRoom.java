@@ -26,8 +26,11 @@ public class ChatRoom extends BaseTimeEntity{
 	@Id @Column(name = "chatroom_id", nullable = false)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+
 	private String chatRoomName;
+
 	private String adminId;
+
 	@OneToMany(mappedBy = "chatRoom")
 	private List<UserInChatRoom> inUsers;
 
