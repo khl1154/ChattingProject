@@ -66,8 +66,10 @@ public class ChatController {
     @MessageMapping("/chats/{roomNo}")
     @SendTo("/topic/chats/{roomNo}")
     public ChatRoomDto chat(ChatRoomDto chat) throws Exception {
-
-        return new ChatRoomDto(chat.getName(), chat.getMessage());
+        //1. 메시지 저장후 시퀀스 리턴
+        String chatSeq = "chatService.chatMessageSave(chat)";
+        //보낸사람이름, 보낸 메시지, 메시지 시퀀스 , 이미지, 보낸시간
+        return new ChatRoomDto(chat.getName(), chat.getMessage(),chatSeq,"img", "chatSendTime");
     }
 
     @Data

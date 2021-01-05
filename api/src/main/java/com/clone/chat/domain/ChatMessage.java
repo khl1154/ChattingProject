@@ -23,6 +23,7 @@ public class ChatMessage extends BaseTimeEntity {
 	Long id;
 	String userId;
 	String text;
+	String chatSeq;
 
 
 
@@ -34,5 +35,8 @@ public class ChatMessage extends BaseTimeEntity {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	public void setchatSeq(String chatSeq) {
+		this.chatSeq = chatSeq;
 	}
 }
