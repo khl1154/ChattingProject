@@ -29,10 +29,16 @@ public class ChatRoomDto {
 
     private String name;
     private String message;
+    private String chatImg;
+    private String chatSeq;
+    private String chatTime;
 
-    public ChatRoomDto(String name, String message) {
+    public ChatRoomDto(String name, String message, String chatSeq, String chatImg,String chatTime) {
         this.name = name;
         this.message = message;
+        this.chatImg = chatImg;
+        this.chatSeq = chatSeq;
+        this.chatTime = chatTime;
     }
 
     public String getName() {
@@ -42,4 +48,6 @@ public class ChatRoomDto {
     public String getMessage() {
         return message;
     }
+
+    public String getChatSeq() { return chatSeq; }
 }

@@ -7,15 +7,13 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import com.clone.chat.domain.UserInChatRoomId;
+import com.clone.chat.domain.*;
 import com.clone.chat.dto.ChatRoomListDto;
 import com.clone.chat.dto.ProfileDto;
+import com.clone.chat.repository.ChatMessageRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.clone.chat.domain.ChatRoom;
-import com.clone.chat.domain.User;
-import com.clone.chat.domain.UserInChatRoom;
 import com.clone.chat.model.ChatRoomDto;
 import com.clone.chat.repository.ChatRoomRepository;
 import com.clone.chat.repository.UserInChatRoomRepository;
@@ -31,6 +29,7 @@ public class ChatService {
     private final UserRepository userRepository;
     private final ChatRoomRepository chatRoomRepository;
     private final UserInChatRoomRepository userInChatRoomRepository;
+    private final ChatMessageRepository chatMessageRepository;
 
     public ChatRoom findOne(Long id) {return chatRoomRepository.findById(id).get();}
 
@@ -89,4 +88,16 @@ public class ChatService {
             }
         }
     }
+
+
+    public String chatMessageSave(ChatMessage chatMessage){
+        //1. 메시지 시퀀스 구하기(jpql로 구하기)
+        String chatseq = "chatMessageRepository.selectChatSeq()";
+        //2. 시퀀스 set
+        chatMessage.setchatSeq(chatseq);
+       //3. 방번호, 메시지 시퀀스,메시지 내용, 송신자 저장
+        //chatMessageRepository.save(chatMessage);
+       return "chatSeq";
+    }
+
 }
