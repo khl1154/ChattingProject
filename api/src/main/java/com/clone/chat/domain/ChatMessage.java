@@ -1,10 +1,6 @@
 package com.clone.chat.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import com.clone.chat.domain.base.BaseTimeEntity;
 
@@ -15,6 +11,10 @@ import lombok.NoArgsConstructor;
 @Getter 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
+@SequenceGenerator(
+		name = "CHAT_SEQ_GENERATOR",
+		sequenceName = "CHAT_SEQ", // 매핑할 시퀀스 이름
+		initialValue = 1, allocationSize = 1)
 @Table(name = "chat_message")
 public class ChatMessage extends BaseTimeEntity {
 
@@ -23,8 +23,11 @@ public class ChatMessage extends BaseTimeEntity {
 	Long id;
 	String userId;
 	String text;
-	String chatSeq;
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE,
+			generator = "CHAT_SEQ_GENERATOR")
+	String chatSeq;
 
 
 	//chat message

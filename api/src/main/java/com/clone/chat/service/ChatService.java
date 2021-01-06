@@ -96,11 +96,11 @@ public class ChatService {
 
     public String chatMessageSave(ChatMessage chatMessage){
         //1. 메시지 시퀀스 구하기(jpql로 구하기)
-        //String chatseq = chatMessageRepository.selectChatSeq();
+        String chatseq = "chatMessageRepository.selectChatSeq()";
         //2. 시퀀스 set
-        //chatMessage.setchatSeq(chatSeq);
-        //3. 방번호, 메시지 시퀀스,메시지 내용, 송신자 저장
-        chatMessageRepository.save(chatMessage);
+        chatMessage.setchatSeq(chatseq);
+       //3. 방번호, 메시지 시퀀스,메시지 내용, 송신자 저장
+        //chatMessageRepository.save(chatMessage);
        return "chatSeq";
     }
 
