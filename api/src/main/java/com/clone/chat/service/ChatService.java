@@ -57,13 +57,9 @@ public class ChatService {
             List<ProfileDto> profileDtos = new LinkedList<>();
             for(UserInChatRoom userInChatRoom : chatRoom.getInUsers()) {
                 User user = userInChatRoom.getUser();
-                ProfileDto profileDto = ProfileDto.builder()
-                        .userId(user.getId())
-                        .nickName(user.getNickName())
-                        .statusMsg(user.getStatusMsg())
-                        .build();
-                if(user.getFile() != null)
-                    profileDto.setFilePath(user.getFile().getFilePath());
+                String filePath = "";
+                if(user.getFile() != null) filePath = user.getFile().getFilePath();
+                ProfileDto profileDto = new ProfileDto(user.getId(),filePath,user.getNickName(),user.getStatusMsg());
                 profileDtos.add(profileDto);
             }
             ChatRoomListDto chatRoomListDto = ChatRoomListDto.builder()

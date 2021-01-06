@@ -151,5 +151,4 @@ class ChatServiceTest {
         //then
         Assertions.assertThat(chatRoom.getInUsers().size()).isEqualTo(2);
     }
-
 }

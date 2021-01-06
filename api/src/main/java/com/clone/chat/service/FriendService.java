@@ -59,12 +59,8 @@ public class FriendService {
             if(friend.getFriend().getFile() != null)
                 profileImagePath = friend.getFriend().getFile().getFilePath();
 
-            profileDtos.add(ProfileDto.builder()
-                    .userId(friend.getFriend().getId())
-                    .filePath(profileImagePath)
-                    .nickName(friend.getFriend().getNickName())
-                    .statusMsg(friend.getFriend().getStatusMsg())
-                    .build());
+            profileDtos.add(new ProfileDto(friend.getFriend().getId(),profileImagePath
+                    ,friend.getFriend().getNickName(),friend.getFriend().getStatusMsg()));
         }
         return profileDtos;
     }

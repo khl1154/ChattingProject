@@ -7,6 +7,7 @@ import com.clone.chat.dto.FriendDto;
 import com.clone.chat.dto.ProfileDto;
 import com.clone.chat.exception.BusinessException;
 import com.clone.chat.repository.FileRepository;
+import com.clone.chat.repository.FriendRepository;
 import com.clone.chat.repository.UserRepository;
 
 import static org.assertj.core.api.Assertions.*;
@@ -25,10 +26,10 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @SpringBootTest(classes = ChatApplication.class)
 @ActiveProfiles("dev")
-@Slf4j
 @Transactional
 class FriendServiceTest {
 
@@ -38,6 +39,8 @@ class FriendServiceTest {
     FriendService friendService;
     @Autowired
     FileRepository fileRepository;
+    @Autowired
+    FriendRepository friendRepository;
 
     User user1;
     User user2;
@@ -125,5 +128,17 @@ class FriendServiceTest {
         } catch (BusinessException e) {
             Assertions.assertThat(e.getCode()).isEqualTo((MsgCode.ERROR_INVALID_FRIEND_RELATIONSHIP));
         }
+    }
+
+    @Test
+    public void 친구찾기() throws Exception {
+        //given
+        User user = userRepository.findById("user1").get();
+
+        //when
+        User findUser = userRepository.findByIdEquals("user1").get();
+
+        //then
+        Assertions.assertThat(user).isEqualTo(findUser);
     }
 }

@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.clone.chat.code.MsgCode;
 import com.clone.chat.domain.base.UserBase;
+import com.clone.chat.dto.ProfileDto;
 import com.clone.chat.dto.UserDto;
 import com.clone.chat.exception.BusinessException;
 import com.clone.chat.exception.ErrorTrace;
@@ -49,8 +50,13 @@ public class UserController {
 	@Autowired
 	private final UserService userService;
 
+	@GetMapping("/search")
+	public ProfileDto searchUser(String userId) {
+		return userService.search(userId);
+	}
+
 	@PostMapping("/joins")
-	public void join(@RequestBody(required = false) UserDto userDto,@RequestParam (required = false) MultipartFile file) {
+	public void join(@RequestParam UserDto userDto,@RequestPart(name = "profile", required = false) MultipartFile file) {
 //		userService.join(userDto, file);
 	}
 

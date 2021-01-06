@@ -3,6 +3,7 @@ package com.clone.chat.service;
 import com.clone.chat.code.MsgCode;
 import com.clone.chat.domain.File;
 import com.clone.chat.domain.User;
+import com.clone.chat.dto.ProfileDto;
 import com.clone.chat.dto.UserDto;
 import com.clone.chat.exception.BusinessException;
 import com.clone.chat.exception.ErrorTrace;
@@ -39,6 +40,20 @@ public class UserService {
 
 	public User find(String userId) {
 		return userRepository.findById(userId).get();
+	}
+
+	@Transactional
+	public ProfileDto search(String userId) {
+		Optional<User> findUser = userRepository.findByIdEquals(userId);
+		ProfileDto profileDto = new ProfileDto();
+
+		if(findUser.isPresent()) {
+			User user = findUser.get();
+			String filePath = "";
+			if(user.getFile() != null) filePath = user.getFile().getFilePath();
+			profileDto = new ProfileDto(user.getId(),filePath,user.getNickName(),user.getStatusMsg());
+		}
+		return profileDto;
 	}
 
 	@Transactional
