@@ -4,7 +4,7 @@ kakaoClone
 # 실행
  - -Dspring.profiles.active=dev
  - java -Dspring.profiles.active=prod -jar api.jar(운영배포)
- - java -Dspring.profiles.active=prod -jar api.jar(개발배포)
+ - java -Dspring.profiles.active=dev -jar api.jar(개발배포)
 
 tip
 ===
