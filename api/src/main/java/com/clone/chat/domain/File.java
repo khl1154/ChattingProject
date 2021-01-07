@@ -1,5 +1,6 @@
 package com.clone.chat.domain;
 
+import com.clone.chat.domain.base.BaseTimeEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,7 +14,7 @@ import javax.persistence.Id;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class File {
+public class File extends BaseTimeEntity {
 
     @Id
     @GeneratedValue

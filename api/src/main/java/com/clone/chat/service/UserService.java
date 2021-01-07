@@ -62,7 +62,7 @@ public class UserService {
 			throw new BusinessException(MsgCode.ERROR_DUPLICATED_ID, ErrorTrace.getName());
 		User user = dto.toEntity();
 		if(file != null) {
-			File userFile = fileService.save(file).toEntity();
+			File userFile = fileService.save(file);
 			user.setFile(userFile);
 		}
 		String password = user.getPassword();

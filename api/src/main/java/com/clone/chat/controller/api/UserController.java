@@ -20,6 +20,7 @@ import com.clone.chat.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -47,25 +48,29 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 public class UserController {
 
 	public static final String URI_PREFIX = ApiController.URI_PREFIX+"/users";
-	@Autowired
 	private final UserService userService;
 
+	@ApiOperation(value = "회원검색")
 	@GetMapping("/search")
 	public ProfileDto searchUser(String userId) {
 		return userService.search(userId);
 	}
 
+	@ApiOperation(value = "회원가입")
 	@PostMapping("/joins")
-	public void join(@RequestParam UserDto userDto,@RequestPart(name = "profile", required = false) MultipartFile file) {
-//		userService.join(userDto, file);
+	public void join(UserDto userDto,@RequestPart(name = "file", required = false) MultipartFile file) {
+		System.out.println("file.getContentType() = " + file.getContentType());
+		userService.join(userDto, file);
 	}
 
+	@ApiOperation(value = "중복체크")
 	@GetMapping("/duplicate_check")
 	public CheckDuplicationResponse duplicate(String id) {
 		boolean isDuplication = userService.duplicateId(id);
 		return new CheckDuplicationResponse(isDuplication);
 	}
 
+	@ApiOperation(value = "회원목록")
 	@GetMapping("/list")
 	public List<String> getUsers() {
 		return userService.getList();

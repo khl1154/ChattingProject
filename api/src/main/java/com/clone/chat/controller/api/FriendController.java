@@ -4,6 +4,7 @@ import com.clone.chat.dto.FriendDto;
 import com.clone.chat.dto.ProfileDto;
 import com.clone.chat.service.FriendService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -29,13 +30,13 @@ public class FriendController {
     public static final String URI_PREFIX = ApiController.URI_PREFIX+"/friends";
     private final FriendService friendService;
 
-    // 친구 추가
+    @ApiOperation(value = "친구추가")
     @PostMapping("/add")
     public void addFriend(@RequestBody @Valid FriendDto friendDto) {
         friendService.saveFriend(friendDto);
     }
 
-    // 친구 리스트 불러오기
+    @ApiOperation(value = "친구목록")
     @GetMapping("/list")
     public Result<List<ProfileDto>> getFriendsProfile(String userId) {
         List<ProfileDto> friendsProfile = friendService.getList(userId);
