@@ -20,6 +20,18 @@ const routes: Routes = [
                 path: 'home',
                 loadChildren: () => import('./features/home/home.module').then(m => m.HomeModule),
             },
+            {
+                path: 'firends',
+                loadChildren: () => import('./features/friends/friend.module').then(m => m.FriendModule),
+            },
+            {
+                path: 'talks',
+                loadChildren: () => import('./features/talks/talk.module').then(m => m.TalkModule),
+            },
+            {
+                path: 'settings',
+                loadChildren: () => import('./features/settings/setting.module').then(m => m.SettingModule),
+            },
             // {
             //     path: 'users',
             //     loadChildren: () => import('./features/brds/brd.module').then(m => m.BrdModule),

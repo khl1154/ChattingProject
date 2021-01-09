@@ -11,8 +11,8 @@ import {
     rxStompServiceFactory,
     StompConfig,
     StompService
-} from "@stomp/ng2-stompjs";
-import {myRxStompConfig} from "@app/my-rx-stomp.config";
+} from '@stomp/ng2-stompjs';
+import {myRxStompConfig} from '@app/my-rx-stomp.config';
 
 /*
 declarations - 이 모듈에서 사용하는 뷰 클래스를 정의한다. Angular에는 컴포넌트, 디렉티브, 파이프 세 종류의 뷰 클래스가 있다.

@@ -25,6 +25,9 @@ import {
     User,
     Twitch,
     Twitter,
+    UserPlus,
+    FilePlus,
+    FolderPlus
 } from 'angular-feather/icons';
 import {FeatherModule} from 'angular-feather';
 import {ModalModule} from 'ngx-bootstrap/modal';
@@ -101,6 +104,9 @@ const toolbarOptions = [
             Package,
             Twitch,
             Twitter,
+            UserPlus,
+            FilePlus,
+            FolderPlus
         }),
         FormsModule,
         ReactiveFormsModule,
