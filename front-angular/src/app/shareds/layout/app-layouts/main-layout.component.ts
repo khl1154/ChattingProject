@@ -30,7 +30,7 @@ export class MainLayoutComponent implements OnInit {
             if (event instanceof NavigationEnd) {
                 // Hide loading indicator
                 const regExp: RegExp = /[?&]+([^=&]+)=([^&]*)/gi;
-                const queryParams: {[name: string]: string} = {}
+                const queryParams: {[name: string]: string} = {};
                 event.url.replace(regExp, (str: string, key: string, value: string) => {queryParams[key] = value; return str; });
                 if (viewtype.strip === queryParams.viewtype) {
                     this.strp();

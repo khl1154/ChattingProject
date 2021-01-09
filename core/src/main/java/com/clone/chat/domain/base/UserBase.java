@@ -14,6 +14,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
 @Getter @Setter
 @MappedSuperclass
@@ -23,12 +24,15 @@ public class UserBase extends ModelBase {
 
 
 	@Id
-	@Column(name = "user_id", nullable = false)
+//	@Column(name = "user_id", nullable = false)
 	@JsonView({JsonViewApi.class})
 	String id;
+
 	String password;
+
 	@JsonView({JsonViewApi.class})
 	String nickName;
+
 	@JsonView({JsonViewApi.class})
 	String phone;
 
@@ -45,17 +49,22 @@ public class UserBase extends ModelBase {
 		this.role = role;
 	}
 
-	@CreatedDate
-	private LocalDateTime createdDate;
+//	@CreatedDate
+	private ZonedDateTime regDt;
 
-	@LastModifiedDate
-	private LocalDateTime modifiedDate;
+//	@LastModifiedDate
+	private ZonedDateTime updDt;
 
-	public LocalDateTime getCreatedDate() {
-		return createdDate;
+	@PrePersist
+	public void onPrePersist() {
+		if(null == this.regDt) {
+			this.regDt = ZonedDateTime.now();
+		}
 	}
 
-	public LocalDateTime getModifiedDate() {
-		return modifiedDate;
+	@PreUpdate
+	public void onPreUpdate() {
+		this.updDt = ZonedDateTime.now();
 	}
+
 }

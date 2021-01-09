@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
 import {ProjectService} from '@app/services/project.service';
 import {QuillModule} from 'ngx-quill';
-import {DatepickerDirective} from '@app/directives/form/input/datepicker.directive';
+import {DatepickerDirective} from '@app/shareds/directives/form/input/datepicker.directive';
 import {
     AlignCenter,
     AlignJustify,
@@ -22,7 +22,9 @@ import {
     PlusSquare,
     Save,
     Settings,
-    User
+    User,
+    Twitch,
+    Twitter,
 } from 'angular-feather/icons';
 import {FeatherModule} from 'angular-feather';
 import {ModalModule} from 'ngx-bootstrap/modal';
@@ -96,7 +98,9 @@ const toolbarOptions = [
             AlignJustify,
             AlignLeft,
             AlignRight,
-            Package
+            Package,
+            Twitch,
+            Twitter,
         }),
         FormsModule,
         ReactiveFormsModule,

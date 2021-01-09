@@ -64,6 +64,7 @@ generateTypeScript {
     classPatterns = [
             'com.clone.chat.domain.**',
             'com.clone.chat.model.**',
+            'com.clone.chat.controller.api.**.model.**',
     ]
     mapClasses = 'asClasses'
     mapEnum = 'asEnum'
@@ -72,6 +73,7 @@ generateTypeScript {
     outputFileType = 'implementationFile'  //values are: declarationFile (.d.ts) or implementationFile (.ts)
     jsonLibrary = 'jackson2'
     outputKind = 'module'  // values are: global, module, ambientModule
+    mapPackagesToNamespaces = true
     outputFile = "${angularDir}/generate/models.ts"
     scanSpringApplication = true
     generateSpringApplicationClient = true

@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {MainLayoutComponent} from '@app/shareds/layout/app-layouts/main-layout.component';
-import {EmptyLayoutComponent} from '@app/layouts/empty/layout/empty-layout.component';
+import {EmptyLayoutComponent} from '@app/shareds/layout/empty/layout/empty-layout.component';
 import {UserService} from '@app/services/user.service';
 import {PageNotFoundComponent} from '@app/features/errors/page-not-found/page-not-found.component';
 

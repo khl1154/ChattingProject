@@ -15,15 +15,33 @@
 <!--                        </a>-->
 <!--                    </h6>-->
 
-<!--                    <ul class="nav flex-column mb-2">-->
-<!--                        <li class="nav-item" *ngFor="let subAuth of auth.childs" >-->
-<!--                            <a class="nav-link" (click)="closeCollapse()" [routerLink]="subAuth.url" [routerLinkActive]="['active']">-->
-<!--                                &nbsp;&nbsp;-->
-<!--                                <i-feather name="{{subAuth.menuIcon}}" class="sub-icon"></i-feather>-->
-<!--                                <a>{{subAuth.i18nCd | i18n}}</a>-->
-<!--                            </a>-->
-<!--                        </li>-->
-<!--                    </ul>-->
+                    <ul class="nav flex-column mb-2">
+                        <li class="nav-item">
+                            <a class="nav-link" (click)="closeCollapse()" [routerLink]="'/firends'" [routerLinkActive]="['active']">
+                                &nbsp;&nbsp;
+                                <i-feather name="user" class="sub-icon"></i-feather>
+                                <a>friends</a>
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="nav flex-column mb-2">
+                        <li class="nav-item">
+                            <a class="nav-link" (click)="closeCollapse()" [routerLink]="'/talks'" [routerLinkActive]="['active']">
+                                &nbsp;&nbsp;
+                                <i-feather name="twitch" class="sub-icon"></i-feather>
+                                <a>talks</a>
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="nav flex-column mb-2">
+                        <li class="nav-item">
+                            <a class="nav-link" (click)="closeCollapse()" [routerLink]="'/settings'" [routerLinkActive]="['active']">
+                                &nbsp;&nbsp;
+                                <i-feather name="settings" class="sub-icon"></i-feather>
+                                <a>settings</a>
+                            </a>
+                        </li>
+                    </ul>
 <!--                </ng-container>-->
             </div>
         </nav>

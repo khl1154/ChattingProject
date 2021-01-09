@@ -3,7 +3,7 @@ import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {RouterModule} from '@angular/router';
 
-import { EmptyLayoutComponent } from '@app/layouts/empty/layout/empty-layout.component';
+import { EmptyLayoutComponent } from '@app/shareds/layout/empty/layout/empty-layout.component';
 import { MainLayoutComponent } from './app-layouts/main-layout.component';
 import {HeaderModule} from './header/header.module';
 import {NavigationModule} from './navigation/navigation.module';

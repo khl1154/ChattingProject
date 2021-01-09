@@ -11,7 +11,7 @@
             <label for="username" class="sr-only">Username</label>
             <input type="text" id="username" [(ngModel)]="username" name="username" class="form-control my-1" formControlName="username" placeholder="ID" required autofocus>
             <label for="password" class="sr-only">Password</label>
-            <input type="password" id="password" name="password" [(ngModel)]="password" class="form-control" formControlName="password" placeholder="Password" required>
+            <input type="password" id="password" name="password" [(ngModel)]="password" class="form-control" formControlName="password" placeholder="Password" (keyup.enter)="submit($event)" required>
             <button class="btn btn-lg btn-primary btn-block" type="button" (click)="submit($event)">SignIn</button>
         </div>
         <div style="width: 100%; max-width:400px; margin: 0 auto">

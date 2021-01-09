@@ -81,7 +81,7 @@ export class LoginComponent implements OnInit {
             _csrf: new FormControl(this.cookieService.get('XSRF-TOKEN'), [Validators.required])
         });
 
-        this.userService.user$.pipe(filter(it => undefined != it.role)).subscribe(sit => {
+        this.userService.user$.pipe(filter(it => undefined !== it.role)).subscribe(sit => {
             this.router.navigate(['/home']);
         });
 
@@ -99,7 +99,6 @@ export class LoginComponent implements OnInit {
     }
 
     submit(e) {
-        // alert(1);
         this.userService.login(this.username, this.password);
     }
 
