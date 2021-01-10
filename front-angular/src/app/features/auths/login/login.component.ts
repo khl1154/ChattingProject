@@ -81,7 +81,7 @@ export class LoginComponent implements OnInit {
             _csrf: new FormControl(this.cookieService.get('XSRF-TOKEN'), [Validators.required])
         });
 
-        this.userService.user$.pipe(filter(it => undefined !== it.role)).subscribe(sit => {
+        this.userService.user$.pipe(filter(it => it.authorities && it.authorities.length > 0)).subscribe(sit => {
             this.router.navigate(['/home']);
         });
 

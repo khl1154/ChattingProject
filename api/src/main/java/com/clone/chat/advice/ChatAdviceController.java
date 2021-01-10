@@ -5,6 +5,8 @@ import com.clone.chat.model.error.Error;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.MessageExceptionHandler;
+import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.ServletWebRequest;
@@ -39,6 +41,12 @@ public class ChatAdviceController extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(e, HttpStatus.BAD_REQUEST);
     }
 
+
+    @MessageExceptionHandler
+    @SendToUser("/queue/errors")
+    public String handleException(Throwable exception) {
+        return exception.getMessage();
+    }
 
     private void logingAndSetMsg(Throwable ex, WebRequest webRequest) {
         ServletWebRequest sw = (ServletWebRequest) webRequest;

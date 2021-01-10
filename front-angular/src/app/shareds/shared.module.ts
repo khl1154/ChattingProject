@@ -46,6 +46,7 @@ import {MomentPipe} from '@app/shareds/pipes/date/moment.pipe';
 import {BootstrapTreeviewComponent} from '@app/shareds/tree/bootstrap-treeview.component';
 import {SplitPipe} from '@app/shareds/pipes/string/split.pipe';
 import {BasicModalComponent} from '@app/shareds/modals/basic-modal/basic-modal.component';
+import {SignOutComponent} from '@app/features/auths/signs/sign-out/sign-out.component';
 
 const toolbarOptions = [
     ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
@@ -125,7 +126,8 @@ const toolbarOptions = [
         MomentPipe,
         SplitPipe,
         BasicModalComponent,
-        BootstrapTreeviewComponent
+        BootstrapTreeviewComponent,
+        SignOutComponent
     ],
     providers: [ProjectService, MomentPipe],
     exports: [
@@ -138,7 +140,8 @@ const toolbarOptions = [
         ReactiveFormsModule,
         BasicModalComponent,
         BootstrapTreeviewComponent,
-        QuillModule
+        QuillModule,
+        SignOutComponent
     ]
 })
 

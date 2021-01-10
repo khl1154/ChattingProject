@@ -1,6 +1,6 @@
 package com.clone.chat;
 
-import com.clone.chat.controller.api.UserController;
+import com.clone.chat.controller.api.users.UsersController;
 import com.clone.chat.service.ChatService;
 import com.clone.chat.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -26,15 +26,11 @@ import org.springframework.web.context.WebApplicationContext;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
-import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.linkWithRel;
 import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.links;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
-import static org.springframework.restdocs.payload.PayloadDocumentation.subsectionWithPath;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -57,7 +53,7 @@ public class TestRestDocTest {
     private ChatService chatService;
 
     @MockBean
-    private UserController userController;
+    private UsersController userController;
     @MockBean
     private UserService userService;
 //    @Autowired

@@ -76,7 +76,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                 MessageHeaders headers = message.getHeaders();
                 StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
                 MultiValueMap<String, String> multiValueMap = headers.get(StompHeaderAccessor.NATIVE_HEADERS,MultiValueMap.class);
-                if (StompCommand.SUBSCRIBE.equals(accessor.getCommand()) || StompCommand.MESSAGE.equals(accessor.getCommand())) {
+                if (StompCommand.SUBSCRIBE.equals(accessor.getCommand()) || StompCommand.MESSAGE.equals(accessor.getCommand()) || StompCommand.SEND.equals(accessor.getCommand())) {
                     String token = multiValueMap.getFirst(HttpHeaders.AUTHORIZATION);
                     try {
                         Jws<Claims> claimsJws = tokenService.parserJwt(token);
@@ -117,7 +117,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         registry.addEndpoint("/websocket")
                 .setAllowedOrigins("*")
 //                .addInterceptors(new HttpHandshakeInterceptor(webSocketManagerService))
-                .setHandshakeHandler(new AssignPrincipalHandshakeHandler())
+//                .setHandshakeHandler(new AssignPrincipalHandshakeHandler())
 //                .setHandshakeHandler(new DefaultHandshakeHandler(){
 //                    public boolean beforeHandshake(
 //                            ServerHttpRequest request,
@@ -217,38 +217,39 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 //        log.debug("username is " + username);
 //    }
 
-    @Override
-    public void configureWebSocketTransport(WebSocketTransportRegistration registration) {
-        registration.addDecoratorFactory(new WebSocketHandlerDecoratorFactory() {
-            @Override
-            public WebSocketHandler decorate(final WebSocketHandler handler) {
-                return new WebSocketHandlerDecorator(handler) {
-
-                    @Override
-                    public void afterConnectionEstablished(final WebSocketSession session) throws Exception {
-
-                        // We will store current user's session into WebsocketSessionHolder after connection is established
-                        if(null!=session.getPrincipal()) {
-                            String username = session.getPrincipal().getName();
-                            WebsocketSessionHolder.addSession(username, session);
-                        }
-
-                        super.afterConnectionEstablished(session);
-                    }
-
-                    @Override
-                    public void afterConnectionClosed(WebSocketSession session, CloseStatus closeStatus) throws Exception {
-                        // We will store current user's session into WebsocketSessionHolder after connection is established
-                        if(null!=session.getPrincipal()) {
-                            String username = session.getPrincipal().getName();
-                            WebsocketSessionHolder.closeSessions(username);
-                        }
-                        super.afterConnectionClosed(session, closeStatus);
-                    }
-                };
-            }
-        });
-    }
+    //////////////////////////--
+//    @Override
+//    public void configureWebSocketTransport(WebSocketTransportRegistration registration) {
+//        registration.addDecoratorFactory(new WebSocketHandlerDecoratorFactory() {
+//            @Override
+//            public WebSocketHandler decorate(final WebSocketHandler handler) {
+//                return new WebSocketHandlerDecorator(handler) {
+//
+//                    @Override
+//                    public void afterConnectionEstablished(final WebSocketSession session) throws Exception {
+//
+//                        // We will store current user's session into WebsocketSessionHolder after connection is established
+//                        if(null!=session.getPrincipal()) {
+//                            String username = session.getPrincipal().getName();
+//                            WebsocketSessionHolder.addSession(username, session);
+//                        }
+//
+//                        super.afterConnectionEstablished(session);
+//                    }
+//
+//                    @Override
+//                    public void afterConnectionClosed(WebSocketSession session, CloseStatus closeStatus) throws Exception {
+//                        // We will store current user's session into WebsocketSessionHolder after connection is established
+//                        if(null!=session.getPrincipal()) {
+//                            String username = session.getPrincipal().getName();
+//                            WebsocketSessionHolder.closeSessions(username);
+//                        }
+//                        super.afterConnectionClosed(session, closeStatus);
+//                    }
+//                };
+//            }
+//        });
+//    }
 
 
 

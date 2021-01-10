@@ -17,6 +17,7 @@ import java.util.*;
 @NoArgsConstructor
 @Entity
 @Table(name = "user")
+@NamedEntityGraph(name = "User.friends", attributeNodes = @NamedAttributeNode("friends"))
 public class User extends UserBase {
     @Transient
     String token;

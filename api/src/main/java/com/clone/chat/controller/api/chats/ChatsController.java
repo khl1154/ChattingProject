@@ -1,9 +1,8 @@
-package com.clone.chat.controller.api;
+package com.clone.chat.controller.api.chats;
 
-import com.clone.chat.domain.ChatMessage;
+import com.clone.chat.controller.api.ApiController;
 import com.clone.chat.domain.UserInChatRoom;
 import com.clone.chat.model.ChatRoomDto;
-import com.clone.chat.model.Greeting;
 import com.clone.chat.model.ResponseForm;
 import com.clone.chat.service.ChatService;
 import com.clone.chat.service.TestService;
@@ -12,21 +11,17 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.HtmlUtils;
 
 import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(ChatController.URI_PREFIX)
+@RequestMapping(ChatsController.URI_PREFIX)
 @Slf4j
 @Api(tags = "체팅")
-public class ChatController {
+public class ChatsController {
     public static final String URI_PREFIX = ApiController.URI_PREFIX + "/chats";
 
     @Autowired
@@ -51,22 +46,22 @@ public class ChatController {
         return chatService.getList(userId, search);
     }
 
-    //방입장시 알림메시지
-    @MessageMapping("/joins/{roomNo}")
-    @SendTo("/topic/greetings/{roomNo}")
-    public Greeting greeting(ChatMessage message, SimpMessageHeaderAccessor accessor) throws Exception {
-        Thread.sleep(100); // delay
-//        messagingTemplate.
-//        accessor.getUser()
-        return new Greeting("Hello, " + HtmlUtils.htmlEscape(message.getName()) + "!");
-    }
-
-    //채팅 송신
-    @MessageMapping("/chats/{roomNo}")
-    @SendTo("/topic/chats/{roomNo}")
-    public ChatRoomDto chat(ChatRoomDto chat) throws Exception {
-        return new ChatRoomDto(chat.getName(), chat.getMessage());
-    }
+//    //방입장시 알림메시지
+//    @MessageMapping("/joins/{roomNo}")
+//    @SendTo("/topic/greetings/{roomNo}")
+//    public Greeting greeting(ChatMessage message, SimpMessageHeaderAccessor accessor) throws Exception {
+//        Thread.sleep(100); // delay
+////        messagingTemplate.
+////        accessor.getUser()
+//        return new Greeting("Hello, " + HtmlUtils.htmlEscape(message.getName()) + "!");
+//    }
+//
+//    //채팅 송신
+//    @MessageMapping("/chats/{roomNo}")
+//    @SendTo("/topic/chats/{roomNo}")
+//    public ChatRoomDto chat(ChatRoomDto chat) throws Exception {
+//        return new ChatRoomDto(chat.getName(), chat.getMessage());
+//    }
 
 
 }

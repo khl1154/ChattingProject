@@ -1,30 +1,13 @@
-package com.clone.chat.controller.api;
+package com.clone.chat.controller.api.securitys;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.nio.file.Files;
-import java.util.*;
-
-import javax.servlet.http.HttpServletResponse;
-
-import com.clone.chat.domain.User;
-import com.clone.chat.domain.base.UserBase;
-import com.clone.chat.model.Token;
+import com.clone.chat.controller.api.ApiController;
 import com.clone.chat.repository.UserRepository;
 import com.clone.chat.service.TokenService;
-import com.clone.chat.service.UserService;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.InsufficientAuthenticationException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-
-import com.clone.chat.model.ResponseForm;
 
 import lombok.RequiredArgsConstructor;
 

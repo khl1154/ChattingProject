@@ -1,4 +1,4 @@
-package com.clone.chat.controller.api;
+package com.clone.chat.controller.ws;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageExceptionHandler;

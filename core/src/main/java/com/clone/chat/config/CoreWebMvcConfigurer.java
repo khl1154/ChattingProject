@@ -1,6 +1,7 @@
 package com.clone.chat.config;
 
 import com.clone.chat.config.json.PageSerializer;
+import com.clone.chat.config.json.SimpleGrantedAuthoritySerializer;
 import com.clone.chat.filter.RequestLoggingFilter;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.Version;
@@ -15,6 +16,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect;
 import org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect;
@@ -60,6 +62,7 @@ public class CoreWebMvcConfigurer implements WebMvcConfigurer {
 
                 SimpleModule module = new SimpleModule("jackson-page-with-jsonview", Version.unknownVersion());
                 module.addSerializer(PageImpl.class, new PageSerializer());
+                module.addSerializer(SimpleGrantedAuthority.class, new SimpleGrantedAuthoritySerializer());
                 objectMapper.registerModule(module);
                 break;
             }

@@ -1,5 +1,6 @@
-package com.clone.chat.controller.api;
+package com.clone.chat.controller.api.users;
 
+import com.clone.chat.controller.api.ApiController;
 import com.clone.chat.domain.base.UserBase;
 import com.clone.chat.model.ResponseForm;
 import com.clone.chat.repository.UserRepository;
@@ -20,10 +21,10 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(UserController.URI_PREFIX)
+@RequestMapping(UsersController.URI_PREFIX)
 @Slf4j
 @Api(tags = "유저")
-public class UserController {
+public class UsersController {
     public static final String URI_PREFIX = ApiController.URI_PREFIX + "/users";
 
     @Autowired

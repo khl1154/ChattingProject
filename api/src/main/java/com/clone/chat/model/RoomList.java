@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class RoomList {
-String userId;
-String search;
+    String userId;
+    String search;
 }

@@ -73,7 +73,14 @@ generateTypeScript {
             'com.clone.chat.domain.**',
             'com.clone.chat.model.**',
             'com.clone.chat.controller.api.**.model.**',
+            'com.clone.chat.config.security.jwt.**',
+//            'org.springframework.http.**',
+
     ]
+//    classes = [
+//            'com.clone.chat.config.security.jwt.JwtConfig',
+//            'org.springframework.http.HttpHeaders'
+//    ]
     mapClasses = 'asClasses'
     mapEnum = 'asEnum'
     nonConstEnums = true

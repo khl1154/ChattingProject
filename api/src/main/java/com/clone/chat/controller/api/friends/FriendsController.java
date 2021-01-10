@@ -1,5 +1,6 @@
-package com.clone.chat.controller.api;
+package com.clone.chat.controller.api.friends;
 
+import com.clone.chat.controller.api.ApiController;
 import com.clone.chat.domain.User;
 import com.clone.chat.model.view.json.JsonViewApi;
 import com.clone.chat.service.TokenService;

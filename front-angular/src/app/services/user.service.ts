@@ -8,6 +8,8 @@ import {RxStompService, StompService} from '@stomp/ng2-stompjs';
 import {com} from '@generate/models';
 import User = com.clone.chat.domain.User;
 import Token = com.clone.chat.model.Token;
+import UserToken = com.clone.chat.model.UserToken;
+import {UserTokenContain} from '@app/models/UserTokenContain';
 
 declare let $: any;
 declare let moment: any;
@@ -16,28 +18,28 @@ declare let moment: any;
 
 const defaultUser = {
     id: 'Guest'
-} as User;
+} as UserTokenContain;
 
 // const defaultUser = userDetails;
 
 @Injectable()
 export class UserService { // implements CanActivate
 
-    public user$ = new BehaviorSubject<User>(Object.assign({}, defaultUser) as User);
+    public user$ = new BehaviorSubject<UserTokenContain>(Object.assign({}, defaultUser) as UserTokenContain);
 
     constructor(private rxStompService: RxStompService, private http: HttpClient, private alertService: AlertService, private api: JsonApiService, private httpClient: HttpClient, private router: Router) {
         this.reloadUserDetails();
     }
 
-    public next(userDetails: User) {
+    public next(userDetails: UserTokenContain) {
         this.user$.next(userDetails);
     }
 
-    public setUserDetails(userDetails: User) {
+    public setUserDetails(userDetails: UserTokenContain) {
         this.user$.next(userDetails);
     }
 
-    get userDetails(): User {
+    get userDetails(): UserTokenContain {
         return this.user$.getValue();
     }
 
@@ -57,10 +59,10 @@ export class UserService { // implements CanActivate
         let headers: HttpHeaders = new HttpHeaders();
         headers = headers.append('Authorization', token);
 
-        this.api.post<User>('/apis/auths/details', {headers}).subscribe((it: User) => {
+        this.api.post<UserToken>('/apis/auths/details', {headers}).subscribe((it: UserToken) => {
             it = Object.assign({}, it);
-            if (it.role) {
-                this.user$.next(it);
+            if (it.authorities && it.authorities.length > 0) {
+                this.user$.next(Object.assign(new UserTokenContain(), it));
                 // this.stompService.subscribe('/user/queue/friends').subscribe((msg) => {
                 //     console.log(msg);
                 // }, error => {
@@ -74,8 +76,13 @@ export class UserService { // implements CanActivate
             this.api.errorHandler(err);
             this.router.navigate(['/login'], {queryParams: {type: 'sign-out'}});
         });
-
     }
+
+    public logout() {
+        window.localStorage.removeItem('token');
+        // location.href = '/';
+    }
+
 
 
 }

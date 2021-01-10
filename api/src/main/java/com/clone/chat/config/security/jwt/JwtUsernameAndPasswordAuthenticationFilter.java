@@ -2,12 +2,11 @@ package com.clone.chat.config.security.jwt;
 
 
 import com.clone.chat.config.security.WebSecurityConfigurerAdapter;
-import com.clone.chat.model.Token;
+import com.clone.chat.model.UserToken;
 import com.clone.chat.repository.UserRepository;
 import com.clone.chat.service.TokenService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.net.HttpHeaders;
-import org.springframework.cache.CacheManager;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -79,7 +78,7 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
         String fullToken = jwtConfig.getTokenPrefix() + token;
         response.addHeader(HttpHeaders.AUTHORIZATION, fullToken);
 
-        Token tokenObj = Token.builder().name(authResult.getName()).token(fullToken).build();
+        UserToken tokenObj = UserToken.builder().id(authResult.getName()).token(fullToken).build();
         ObjectMapper objectMapper = new ObjectMapper();
         response.getWriter().write(objectMapper.writeValueAsString(tokenObj));
 //        if (null == userAuthToken) {

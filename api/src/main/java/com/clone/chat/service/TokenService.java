@@ -2,10 +2,12 @@ package com.clone.chat.service;
 
 import com.clone.chat.config.security.jwt.JwtConfig;
 import com.clone.chat.domain.User;
+import com.clone.chat.model.UserToken;
 import com.clone.chat.repository.UserRepository;
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +15,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class TokenService {
@@ -51,6 +54,18 @@ public class TokenService {
                 .setSigningKey(this.jwtConfig.getSecretKey().getBytes(StandardCharsets.UTF_8))
                 .parseClaimsJws(token);
         return claimsJws;
+    }
+    public UserToken parserJwtToUserToken(String header) throws JwtException {
+        Jws<Claims> claimsJws = parserJwt(header);
+        UserToken userToken = new UserToken();
+        Claims body = claimsJws.getBody();
+        userToken.setId(body.getSubject());
+        List<Map<String, String>> authorities = (List<Map<String, String>>) body.get("authorities");
+        Set<SimpleGrantedAuthority> simpleGrantedAuthorities = authorities.stream()
+                .map(m -> new SimpleGrantedAuthority(m.get("authority")))
+                .collect(Collectors.toSet());
+        userToken.setAuthorities(simpleGrantedAuthorities);
+        return userToken;
     }
 
     public User getUserFromJwtHeader(String header) throws JwtException {
