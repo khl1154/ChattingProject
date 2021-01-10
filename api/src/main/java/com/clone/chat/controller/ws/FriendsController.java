@@ -8,6 +8,7 @@ import com.clone.chat.model.UserToken;
 import com.clone.chat.repository.UserRepository;
 import com.clone.chat.service.WebSocketManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageExceptionHandler;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
@@ -35,14 +36,16 @@ public class FriendsController {
 
 
     @MessageMapping(URI_PREFIX)
-    @SendToUser("/queue"+URI_PREFIX)
-    public List<User> processMessageFromClient(UserBase user, @ModelAttributeMapping UserToken userToken, Principal principal, SimpMessageHeaderAccessor simpMessageHeaderAccessor) throws Exception {
+//    @SendToUser("/queue"+URI_PREFIX)
+    @SendToUser("/queue/friends")
+    //@Header("simpSessionId") String sessionId,
+    public List<User> processMessageFromClient(UserBase user, Principal principal, SimpMessageHeaderAccessor simpMessageHeaderAccessor) throws Exception {
 //        String name = new Gson().fromJson(message, Map.class).get("name").toString();
         //messagingTemplate.convertAndSendToUser(principal.getName(), "/queue/reply", name);
-//        Optional<User> user = webSocketManagerService.getUser(simpMessageHeaderAccessor);
+        Optional<UserToken> userToken = webSocketManagerService.getUser(simpMessageHeaderAccessor);
 //        user.orElseThrow(() -> new NoSuchElementException("no Such"));
 //        return friendRepository.findByUserId(user.get().getId());
-        Optional<User> data = userRepository.findById(userToken.getId());
+        Optional<User> data = userRepository.findById(userToken.get().getId());
         return data.get().getFriends();
     }
 }

@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.MultipartConfigFactory;
 import org.springframework.context.annotation.Bean;
@@ -64,6 +65,8 @@ public class CoreWebMvcConfigurer implements WebMvcConfigurer {
                 module.addSerializer(PageImpl.class, new PageSerializer());
                 module.addSerializer(SimpleGrantedAuthority.class, new SimpleGrantedAuthoritySerializer());
                 objectMapper.registerModule(module);
+
+                objectMapper.registerModule(new Hibernate5Module());
                 break;
             }
         }

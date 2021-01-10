@@ -80,7 +80,7 @@
 
         $("#friends").click(function () {
             ws.subscribe("/user/queue/friends", function (message) {
-                console.log(message.body);
+                console.log("----friend--->>", message.body);
             }, {'Authorization': token});
             var data = JSON.stringify({
                 'id': ""

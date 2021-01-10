@@ -24,6 +24,7 @@ const defaultUser = {
 
 @Injectable()
 export class UserService { // implements CanActivate
+    // https://git.fluig.com/projects/IN/repos/dependencies/browse/tools/projects/fluig-tools-lib/ngx-realtime/src/lib/ngx-realtime.service.ts?at=f355d44199b0a00dd7db631aad4e9cb8872f1a25&raw
 
     public user$ = new BehaviorSubject<UserTokenContain>(Object.assign({}, defaultUser) as UserTokenContain);
 

@@ -4,6 +4,7 @@ import com.clone.chat.config.ws.AssignPrincipalHandshakeHandler;
 import com.clone.chat.config.ws.WebsocketSessionHolder;
 import com.clone.chat.domain.ChatMessage;
 import com.clone.chat.domain.User;
+import com.clone.chat.model.UserToken;
 import com.clone.chat.repository.UserRepository;
 import com.clone.chat.service.TokenService;
 import com.clone.chat.service.WebSocketManagerService;
@@ -79,14 +80,12 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                 if (StompCommand.SUBSCRIBE.equals(accessor.getCommand()) || StompCommand.MESSAGE.equals(accessor.getCommand()) || StompCommand.SEND.equals(accessor.getCommand())) {
                     String token = multiValueMap.getFirst(HttpHeaders.AUTHORIZATION);
                     try {
-                        Jws<Claims> claimsJws = tokenService.parserJwt(token);
+                        UserToken userToken = tokenService.parserJwtToUserToken(token);
     //                    String sessionId = (String) accessor.getSessionAttributes().get("sessionId");
                         String sessionId = accessor.getSessionId();
-                        Optional<User> sessionUser = webSocketManagerService.getUser(sessionId);
+                        Optional<UserToken> sessionUser = webSocketManagerService.getUser(sessionId);
                         if (!sessionUser.isPresent()) {
-                            Optional<User> dbUser = userRepository.findById(claimsJws.getBody().getSubject());
-                            dbUser.orElseThrow(() -> new NoSuchElementException("no source user"));
-                            webSocketManagerService.putUser(sessionId, dbUser.get());
+                            webSocketManagerService.putUser(sessionId, userToken);
                         }
                     } catch (ClaimJwtException e) { // ExpiredJwtException
                         webSocketManagerService.removeByUserId(e.getClaims().getSubject());
