@@ -28,14 +28,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 public class WebSecurityConfigurerAdapter extends org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter {
 
-
-	@Value("${project.properties.username}")
-	String username;
-
-	@Value("${project.properties.password}")
-	String password;
-
-
 	@Autowired
 	PasswordEncoder passwordEncoder;
 

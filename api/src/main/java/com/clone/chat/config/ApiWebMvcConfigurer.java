@@ -1,5 +1,6 @@
 package com.clone.chat.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -10,6 +11,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 @EnableScheduling
 public class ApiWebMvcConfigurer implements WebMvcConfigurer {
+
+    @Value("${project.properties.angular-path}")
+    private String angularPath;
 
     //cors 관련 전역 설정
     @Override
@@ -33,6 +37,13 @@ public class ApiWebMvcConfigurer implements WebMvcConfigurer {
         registry.addResourceHandler("/resources/**")            .addResourceLocations("/WEB-INF/resources/");
         registry.addResourceHandler("/webjars/**")              .addResourceLocations("classpath:/META-INF/resources/webjars/");
         registry.addResourceHandler("/swagger/**")          	.addResourceLocations("classpath:/META-INF/resources/");
+
+        registry.addResourceHandler("/assets/**")	            .addResourceLocations(angularPath+"/assets/");
+        registry.addResourceHandler("/favicon.ico")	        .addResourceLocations(angularPath+"/favicon.ico");
+        registry.addResourceHandler("/*.html")	                .addResourceLocations(angularPath+"/");
+        registry.addResourceHandler("/*.map")	                .addResourceLocations(angularPath+"/");
+        registry.addResourceHandler("/*.js")	                .addResourceLocations(angularPath+"/");
+        registry.addResourceHandler("/*.css")	                .addResourceLocations(angularPath+"/");
     }
 
 }
