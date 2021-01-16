@@ -57,12 +57,10 @@ public class MessagesController {
     public void createRoom(ToRoomMessage message, Principal principal, SimpMessageHeaderAccessor simpMessageHeaderAccessor) throws Exception {
         Optional<UserToken> userToken = webSocketManagerService.getUser(simpMessageHeaderAccessor);
         UserToken user = userToken.orElseThrow(() -> new BusinessException(MsgCode.ERROR_AUTH));
-
         Message msg = Message.builder().userId(user.getId()).contents(message.getContents()).build();
         userRoomRepository.findAllByRoom(message.getRoomId()).stream().forEach(it -> {
             msg.addRoomMessage(RoomMessage.builder().roomId(message.getRoomId()).userId(it.getUserId()).build());
         });
-
         messageRepository.save(msg);
     }
 
