@@ -7,7 +7,6 @@ import {AlertService} from '@app/services/ui/alert.service';
 import {RxStompService, StompService} from '@stomp/ng2-stompjs';
 import {com} from '@generate/models';
 import User = com.clone.chat.domain.User;
-import Token = com.clone.chat.model.Token;
 import UserToken = com.clone.chat.model.UserToken;
 import {UserTokenContain} from '@app/models/UserTokenContain';
 
@@ -46,7 +45,7 @@ export class UserService { // implements CanActivate
 
     public login(username: string, password: string) {
         const params = {username, password};
-        this.api.post<Token>('/securitys/user-sign-in', {params}).subscribe((it: Token) => {
+        this.api.post<UserToken>('/securitys/user-sign-in', {params}).subscribe((it: UserToken) => {
             window.localStorage.setItem('token', it.token);
             this.reloadUserDetails();
         }, this.api.errorHandler.bind(this.api));

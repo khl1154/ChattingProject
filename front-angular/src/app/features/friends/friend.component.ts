@@ -38,7 +38,7 @@ export class FriendComponent implements OnInit {
             });
             // ws.send("/app/friends", {'Authorization': token}, data);
             const data = {
-                id: "zz"
+                id: 'test'
             };
             this.rxStompService.publish({destination: '/app/friends', body: JSON.stringify(data), headers: sit.authorizationHeaders});
         });
