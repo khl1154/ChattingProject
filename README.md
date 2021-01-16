@@ -19,7 +19,7 @@ websocket
  - channel: https://medium.com/@hardeek.sharma/accessing-header-in-stomp-web-socket-connection-with-spring-boot-3d4a962a0f00
  - session관리: https://stackoverflow.com/questions/28552033/disconnect-client-session-from-spring-websocket-stomp-server
    - https://stackoverflow.com/questions/56497055/principal-is-null-for-every-spring-websocket-event 
-
+ - pathvariable and url mapping: https://stackoverflow.com/questions/27047310/path-variables-in-spring-websockets-sendto-mapping
 
 h2
 - http://h2database.com/html/features.html#connection_modes

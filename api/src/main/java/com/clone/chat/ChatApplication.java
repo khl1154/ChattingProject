@@ -1,8 +1,11 @@
 package com.clone.chat;
 
 import com.clone.chat.code.UserRole;
+import com.clone.chat.domain.Room;
 import com.clone.chat.domain.User;
+import com.clone.chat.domain.UserRoom;
 import com.clone.chat.domain.base.UserBase;
+import com.clone.chat.repository.ChatRoomRepository;
 import com.clone.chat.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +20,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.event.EventListener;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -36,6 +40,9 @@ public class ChatApplication implements CommandLineRunner {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    ChatRoomRepository roomRepository;
+
 
     @Autowired
     PasswordEncoder passwordEncoder;
@@ -48,6 +55,7 @@ public class ChatApplication implements CommandLineRunner {
     }
 
     @EventListener
+    @Transactional
     public void applicationStartedEvent(ApplicationStartedEvent applicationStartedEvent) {
         log.debug("applicationStartedEvent done!! -> " + activeProfile);
         if ("dev".equals(activeProfile)) {
@@ -66,6 +74,25 @@ public class ChatApplication implements CommandLineRunner {
             user4.addFirend(user3, user5);
             user5.addFirend(user1, user2, user3, user4, user6);
             userRepository.saveAll(Arrays.asList(admin, user1, user2, user3, user4, user5, user6));
+
+
+            Room room1 = Room.builder().name("room1").build();
+            room1.addUserRoom(UserRoom.builder().userId(user1.getId()).build());
+            room1.addUserRoom(UserRoom.builder().userId(user2.getId()).build());
+            room1.addUserRoom(UserRoom.builder().userId(user3.getId()).build());
+            roomRepository.save(room1);
+
+            Room room2 = Room.builder().name("room2").build();
+            room2.addUserRoom(UserRoom.builder().userId(user4.getId()).build());
+            room2.addUserRoom(UserRoom.builder().userId(user5.getId()).build());
+            room2.addUserRoom(UserRoom.builder().userId(user6.getId()).build());
+            roomRepository.save(room2);
+
+            Room u1u2 = Room.builder().name("u1u2").build();
+            u1u2.addUserRoom(UserRoom.builder().userId(user1.getId()).build());
+            u1u2.addUserRoom(UserRoom.builder().userId(user2.getId()).build());
+            roomRepository.save(u1u2);
+
 
         }
     }

@@ -9,6 +9,17 @@ import {BsModalRef, BsModalService} from 'ngx-bootstrap/modal';
 // import {BsModalRef, BsModalService} from "@target/ngx-bootstrap/modal";
 // import {BsModalRef, BsModalService} from "../../../../../../../thesis/thesis-angular/node_modules/ngx-bootstrap/modal";
 // import {BsModalRef, BsModalService} from "@tar /ngx-bootstrap/modal";
+export type ButtonsInputType =  {
+  name: string,
+  // style: string,
+  class: string,
+  // callback: (data?: any) => unknown;
+};
+export type ButtonsClickType =  {
+  name: string,
+  data?: any,
+  // callback: (data?: any) => unknown;
+};
 
 @Component({
   selector: 'basic-modal',
@@ -21,15 +32,42 @@ export class BasicModalComponent implements OnInit{
 
   @Input()
   titleIcon: string;
+
+
+
+
   @Input()
-  public config = {
+  public buttons: ButtonsInputType[] = [];
+
+  @Input()
+  public config: {
+    class?: string
+    disableCloseBtn?: boolean,
+    closeBtnName?: string,
+    header_class?: string[],
+    ignoreBackdropClick?: boolean
+  } = {
     // class: 'modal-lg',
     // ignoreBackdropClick: true
+    // animated: false
+    // initialState:  {
+    //   list: [
+    //     'Open a modal with component',
+    //     'Pass your data',
+    //     'Do something else',
+    //     '...',
+    //     'PROFIT!!!'
+    //   ],
+    //   title: 'Modal with component',
+    //   closeBtnName: 'Close'
+    // }
   };
+
   @Input()
   public title;
 
-  @Output() complete = new EventEmitter();
+  @Output() completed = new EventEmitter();
+  @Output() buttonClick = new EventEmitter<ButtonsClickType>();
 
   constructor(private modalService: BsModalService) {
   }
@@ -45,7 +83,17 @@ export class BasicModalComponent implements OnInit{
   // }
 
   private closeAndComplet() {
-    this.complete.emit();
+    this.completed.emit();
+    this.close();
+  }
+  public close() {
     this.bsModalRef.hide();
+  }
+
+  buttonEmitter(it: ButtonsClickType) {
+    // this.buttonClick.subscribe(its => {
+    //   console.log('emitter subscripbe', its);
+    // });
+    this.buttonClick.emit(it);
   }
 }

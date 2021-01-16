@@ -16,7 +16,7 @@ import java.util.*;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "user")
+@Table(name = "USER")
 @NamedEntityGraph(name = "User.friends", attributeNodes = @NamedAttributeNode("friends"))
 public class User extends UserBase {
     @Transient
@@ -26,6 +26,7 @@ public class User extends UserBase {
     @ManyToMany(cascade = CascadeType.ALL)
 //    @JoinColumn(name = "user_no", referencedColumnName = "no", insertable = false, updatable = false)
 //    @JoinColumn(name = "id")
+    @JoinTable(name = "USER_FRIEND")
     @JsonView({JsonViewFrontEnd.class})
     private List<User> friends;
 

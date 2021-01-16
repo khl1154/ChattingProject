@@ -40,7 +40,6 @@ public class Scheduler {
 //    @Scheduled(cron = "1 1 1 * * *")
     @Scheduled(cron = "*/2 * * * * *")
     public void finishAdmPtcpCdChange() {
-
 //        Optional<Map.Entry<String, User>> user1 = webSocketManagerService.findEntreSetByUserId("user1");
 //        if (user1.isPresent() && null != user1.get().getValue()) {
 //            SimpMessageHeaderAccessor headerAccessor = SimpMessageHeaderAccessor.create(SimpMessageType.MESSAGE);

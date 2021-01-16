@@ -7,7 +7,7 @@ import {Router} from '@angular/router';
 import {filter} from 'rxjs/operators';
 import {HttpClient} from '@angular/common/http';
 import {RxStompService} from '@stomp/ng2-stompjs';
-import {UserService} from '@app/services';
+import {UserService, WsService} from '@app/services';
 import {UserTokenContain} from '@app/models/UserTokenContain';
 import {com} from '@generate/models';
 import User = com.clone.chat.domain.User;
@@ -22,32 +22,19 @@ export class FriendComponent implements OnInit {
     @ViewChild(HomeListComponent) modal: HomeListComponent;
     private friends: User[];
 
-    constructor(private rxStompService: RxStompService, private userService: UserService, private http: HttpClient, private alertService: AlertService, public router: Router, private api: JsonApiService) {
+    constructor(private wsService: WsService, private userService: UserService, private http: HttpClient, private alertService: AlertService, public router: Router, private api: JsonApiService) {
     }
 
     ngOnInit() {
-        // this.stompService.subscribe('/user/queue/friends').subscribe((msg) => {
-        //     console.log(msg);
-        // }, error => {
-        //     console.log(error);
-        // })
-        // this.rxStompService.watch('/user/queue/friends',{'Authorization': token});
         this.userService.user$.pipe(filter(it => it.authorities && it.authorities.length > 0)).subscribe((sit: UserTokenContain) => {
-            this.rxStompService.watch('/user/queue/friends', sit.authorizationHeaders).subscribe((wit) => {
-                this.friends = JSON.parse(wit.body) as User[];
+            this.wsService.watch<User[]>('/user/queue/friends').subscribe((wit) => {
+                this.friends = wit;
             });
-            // ws.send("/app/friends", {'Authorization': token}, data);
-            const data = {
-                id: 'test'
-            };
-            this.rxStompService.publish({destination: '/app/friends', body: JSON.stringify(data), headers: sit.authorizationHeaders});
+            this.send();
         });
     }
 
     public send() {
-        const data = {
-            // id: "zz"
-        };
-        this.rxStompService.publish({destination: '/app/friends', body: JSON.stringify(data), headers: this.userService.userDetails.authorizationHeaders});
+        this.wsService.publish('/app/friends');
     }
 }

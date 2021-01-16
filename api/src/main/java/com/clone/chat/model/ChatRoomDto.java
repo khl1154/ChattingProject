@@ -1,30 +1,25 @@
 package com.clone.chat.model;
 
-import com.clone.chat.domain.ChatRoom;
-import com.clone.chat.domain.UserInChatRoom;
+import com.clone.chat.domain.Room;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
-public class ChatRoomDto {
+public class ChatRoomDto extends ModelBase {
 
     @ApiModelProperty(notes = "방이름")
     String chatRoomName;
     @ApiModelProperty(notes = "사용자이이디")
     String userId;
 
-    public ChatRoom toEntity() {
-        return ChatRoom.builder()
-                .name(chatRoomName)
-                .admin(userId)
-                .build();
-    }
+//    public Room toEntity() {
+//        return Room.builder()
+//                .name(chatRoomName)
+//                .admin(userId)
+//                .build();
+//    }
 
 
     private String name;

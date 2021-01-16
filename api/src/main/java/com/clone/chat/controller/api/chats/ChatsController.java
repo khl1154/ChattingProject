@@ -1,7 +1,7 @@
 package com.clone.chat.controller.api.chats;
 
 import com.clone.chat.controller.api.ApiController;
-import com.clone.chat.domain.UserInChatRoom;
+import com.clone.chat.domain.UserRoom;
 import com.clone.chat.model.ChatRoomDto;
 import com.clone.chat.model.ResponseForm;
 import com.clone.chat.service.ChatService;
@@ -42,7 +42,7 @@ public class ChatsController {
     }
 
     @GetMapping("/rooms")
-    public List<UserInChatRoom> roomList(String userId, String search) {
+    public List<UserRoom> roomList(String userId, String search) {
         return chatService.getList(userId, search);
     }
 

@@ -17,4 +17,8 @@ public class BusinessException extends RuntimeException {
 		this.code = code;
 		this.function = function;
 	}
+	public BusinessException(MsgCode code) {
+		this.code = code;
+		this.function = code.name();
+	}
 }

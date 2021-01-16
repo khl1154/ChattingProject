@@ -43,15 +43,28 @@ public class ChatAdviceController extends ResponseEntityExceptionHandler {
 
 
     @MessageExceptionHandler
-    @SendToUser("/queue/errors")
-    public String handleException(Throwable exception) {
-        return exception.getMessage();
+    @SendToUser(value = "/queue/errors", broadcast = false)
+    public Error handleException(Throwable ex) {
+        logingAndSetMsg(ex);
+        Error e = new Error();
+        e.setCode(MsgCode.ERROR_UNKNOWN.name());
+        e.setMessage(Optional.ofNullable(ex.getMessage()).orElseGet(ex::toString));
+        return e;
     }
 
+    private void logingAndSetMsg(Throwable ex) {
+        logingAndSetMsg(ex, null);
+    }
     private void logingAndSetMsg(Throwable ex, WebRequest webRequest) {
-        ServletWebRequest sw = (ServletWebRequest) webRequest;
-        HttpServletRequest request = sw.getRequest();
-        String param = request.getParameterMap().entrySet().stream().map(it -> it.getKey() + "=" + String.join(", ", Arrays.asList(it.getValue()))).collect(Collectors.joining("&"));
-        log.error(ex.getMessage() + "|" + request.getRequestURI() + "|" + param, ex);
+
+        String uri = "noUri";
+        String param = "noParam";
+        if (null != webRequest) {
+            ServletWebRequest sw = (ServletWebRequest) webRequest;
+            HttpServletRequest request = sw.getRequest();
+            param = request.getParameterMap().entrySet().stream().map(it -> it.getKey() + "=" + String.join(", ", Arrays.asList(it.getValue()))).collect(Collectors.joining("&"));
+            uri = request.getRequestURI();
+        }
+        log.error(ex.getMessage() + "|" + uri + "|" + param, ex);
     }
 }

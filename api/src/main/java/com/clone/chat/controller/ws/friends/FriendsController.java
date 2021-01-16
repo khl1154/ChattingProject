@@ -1,9 +1,11 @@
-package com.clone.chat.controller.ws;
+package com.clone.chat.controller.ws.friends;
 
 import com.clone.chat.annotation.ModelAttributeMapping;
+import com.clone.chat.code.MsgCode;
 import com.clone.chat.controller.api.ApiController;
 import com.clone.chat.domain.User;
 import com.clone.chat.domain.base.UserBase;
+import com.clone.chat.exception.BusinessException;
 import com.clone.chat.model.UserToken;
 import com.clone.chat.repository.UserRepository;
 import com.clone.chat.service.WebSocketManagerService;
@@ -14,6 +16,7 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.messaging.simp.annotation.SendToUser;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 
 import java.security.Principal;
@@ -34,18 +37,22 @@ public class FriendsController {
     @Autowired
     UserRepository userRepository;
 
+//    @Autowired
+//    SimpMessageTemplate
+
 
     @MessageMapping(URI_PREFIX)
 //    @SendToUser("/queue"+URI_PREFIX)
     @SendToUser("/queue/friends")
     //@Header("simpSessionId") String sessionId,
-    public List<User> processMessageFromClient(UserBase user, Principal principal, SimpMessageHeaderAccessor simpMessageHeaderAccessor) throws Exception {
+    public List<User> processMessageFromClient(Principal principal, SimpMessageHeaderAccessor simpMessageHeaderAccessor) throws Exception {
 //        String name = new Gson().fromJson(message, Map.class).get("name").toString();
         //messagingTemplate.convertAndSendToUser(principal.getName(), "/queue/reply", name);
         Optional<UserToken> userToken = webSocketManagerService.getUser(simpMessageHeaderAccessor);
+        UserToken user = userToken.orElseThrow(() -> new BusinessException(MsgCode.ERROR_AUTH));
 //        user.orElseThrow(() -> new NoSuchElementException("no Such"));
 //        return friendRepository.findByUserId(user.get().getId());
-        Optional<User> data = userRepository.findById(userToken.get().getId());
+        Optional<User> data = userRepository.findById(user.getId());
         return data.get().getFriends();
     }
 }

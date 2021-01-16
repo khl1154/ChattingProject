@@ -4,14 +4,28 @@
         <span>
            채팅
         </span>
-        <span class="mx-1 float-right btn">
+        <span class="mx-1 float-right btn" (click)="createRoom(); modal.show()">
            <i-feather name="plus-square" style="margin-right:10px; float: left" ></i-feather>
         </span>
     </div>
 
-    <div class="row">
-        talks
+    <div class="container">
+        <ul class="list-group">
+            <li class="list-group-item" *ngFor="let it of rooms">{{it.id}} {{it.name}}</li>
+        </ul>
+        <!--        <div *ngFor="let it of friends" class="row">-->
+        <!--            <div class="col-3"><span class="mr-2 my-1 fa fa-pencil-square-o"></span>{{it.id}}</div>-->
+        <!--            <div class="col-3">{{it.nickName}}</div>-->
+        <!--        </div>-->
     </div>
+    <button class="btn btn-info" (click)="send()">aaa</button>
+    <button class="btn btn-info" (click)="create()">create</button>
 </main>
 
 
+<basic-modal #modal [buttons]="[{name:'ok', class:'btn-primary'}]" (buttonClick) = "check($event)">
+    <div>name: <input type="text" [(ngModel)]="newRoomName"/></div>
+    <div *ngFor="let it of this.friends">
+        {{it.id}} <input type="checkbox" [(ngModel)]="it.value"/>
+    </div>
+</basic-modal>

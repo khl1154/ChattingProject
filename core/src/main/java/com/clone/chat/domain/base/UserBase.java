@@ -24,20 +24,24 @@ public class UserBase extends ModelBase {
 
 
 	@Id
-//	@Column(name = "user_id", nullable = false)
+	@Column(name = "ID")
 	@JsonView({JsonViewApi.class})
 	String id;
 
+	@Column(name = "PASSWORD")
 	String password;
 
+	@Column(name = "NICK_NAME")
 	@JsonView({JsonViewApi.class})
 	String nickName;
 
+	@Column(name = "PHONE")
 	@JsonView({JsonViewApi.class})
 	String phone;
 
 	@Enumerated(EnumType.STRING)
 	@JsonView({JsonViewApi.class})
+	@Column(name = "ROLE")
 	UserRole role;
 
 	@Builder
@@ -50,9 +54,11 @@ public class UserBase extends ModelBase {
 	}
 
 //	@CreatedDate
+	@Column(name = "REG_DT")
 	private ZonedDateTime regDt;
 
 //	@LastModifiedDate
+	@Column(name = "UPD_DT")
 	private ZonedDateTime updDt;
 
 	@PrePersist

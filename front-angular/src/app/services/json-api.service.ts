@@ -104,24 +104,34 @@ export class JsonApiService {
                     }
                 }, new HttpParams());
         }
-        if (apiHttpOptions.headers) {
-            options.headers = apiHttpOptions.headers;
+        if (undefined === apiHttpOptions.headers) {
+            apiHttpOptions.headers = new HttpHeaders();
         }
+        const token = window.localStorage.getItem('token');
+        if (!apiHttpOptions.headers.get('Authorization') && token) {
+            apiHttpOptions.headers = apiHttpOptions.headers.append('Authorization', token);
+        }
+        options.headers = apiHttpOptions.headers;
         return options;
     }
 
-    private toPostPutHttpOption(url: string, apiHttpOption: ApiHttpOption): {url: string, params: any, httpOptions: HttpOption}{
+    private toPostPutHttpOption(url: string, apiHttpOptions: ApiHttpOption): {url: string, params: any, httpOptions: HttpOption}{
         const options: HttpOption = {};
-        apiHttpOption.params = apiHttpOption.params || {};
-        if (apiHttpOption.params instanceof FormData) {
+        apiHttpOptions.params = apiHttpOptions.params || {};
+        if (apiHttpOptions.params instanceof FormData) {
             // url += '?_csrf=' + this.getCSRF();
         } else {
-            apiHttpOption.params._csrf = this.getCSRF();
+            apiHttpOptions.params._csrf = this.getCSRF();
         }
-        if (apiHttpOption.headers) {
-            options.headers = apiHttpOption.headers;
+        if (undefined === apiHttpOptions.headers) {
+            apiHttpOptions.headers = new HttpHeaders();
         }
-        return {url, params: apiHttpOption.params, httpOptions: options};
+        const token = window.localStorage.getItem('token');
+        if (!apiHttpOptions.headers.get('Authorization') && token) {
+            apiHttpOptions.headers = apiHttpOptions.headers.append('Authorization', token);
+        }
+        options.headers = apiHttpOptions.headers;
+        return {url, params: apiHttpOptions.params, httpOptions: options};
     }
 
     public get<T>(url: string, options: ApiHttpOption = {}): Observable<T> {

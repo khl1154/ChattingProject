@@ -2,12 +2,16 @@ package com.clone.chat.service;
 
 import com.clone.chat.domain.User;
 import com.clone.chat.model.UserToken;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
+import org.springframework.messaging.simp.SimpMessageType;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -15,7 +19,10 @@ import java.util.Optional;
 @Scope(value = ConfigurableBeanFactory.SCOPE_SINGLETON)
 public class WebSocketManagerService {
 
-    public Map<String, UserToken> users = new HashMap<>();
+    @Autowired
+    SimpMessagingTemplate template;
+
+    public static Map<String, UserToken> users = new HashMap<>();
 
     public void putUser(String sessionId, UserToken user){
         this.users.put(sessionId, user);
@@ -49,5 +56,54 @@ public class WebSocketManagerService {
         } else {
             return this.getUser((String)simpMessageHeaderAccessor.getHeader("simpSessionId"));
         }
+    }
+
+
+    public void send(String destination, Object data) {
+
+            SimpMessageHeaderAccessor headerAccessor = SimpMessageHeaderAccessor.create(SimpMessageType.MESSAGE);
+            headerAccessor.setLeaveMutable(true);
+            template.convertAndSend(destination, data, headerAccessor.getMessageHeaders());
+    }
+
+
+    public void sendToUserByUserId(String destination, Object data, List<String> userIds) {
+        sendToUserByUserId(destination, data, userIds.stream().toArray(String[]::new));
+    }
+    public void sendToUserByUserId(String destination, Object data, String ... userIds) {
+        for (String userId : userIds) {
+            if (findEntreSetByUserId(userId).isPresent()) {
+                this.sendToUser(destination, data, findEntreSetByUserId(userId).get().getKey());
+            }
+        }
+    }
+
+    public void sendToUser(String destination, Object data, String ... sessionIds) {
+
+        //"/queue/friends"
+//        Optional<Map.Entry<String, User>> user1 = webSocketManagerService.findEntreSetByUserId("user1");
+//        if (user1.isPresent() && null != user1.get().getValue()) {
+        for (String sessionId : sessionIds) {
+            SimpMessageHeaderAccessor headerAccessor = SimpMessageHeaderAccessor.create(SimpMessageType.MESSAGE);
+            headerAccessor.setSessionId(sessionId);
+            headerAccessor.setLeaveMutable(true);
+            template.convertAndSendToUser(sessionId, destination, data, headerAccessor.getMessageHeaders());
+        }
+
+        //
+//        }
+
+//        for (String listener : listeners) {
+//            log.info("Sending notification to " + listener);
+//            SimpMessageHeaderAccessor headerAccessor = SimpMessageHeaderAccessor.create(SimpMessageType.MESSAGE);
+//            headerAccessor.setSessionId(listener);
+//            headerAccessor.setLeaveMutable(true);
+//            int value = (int) Math.round(Math.random() * 100d);
+//            template.convertAndSendToUser(
+//                    listener,
+//                    "/notification/item",
+//                    new Notification(Integer.toString(value)),
+//                    headerAccessor.getMessageHeaders());
+//        }
     }
 }

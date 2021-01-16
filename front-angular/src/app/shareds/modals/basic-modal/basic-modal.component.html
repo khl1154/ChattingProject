@@ -12,7 +12,8 @@
         <ng-content></ng-content>
     </div>
     <div class="modal-footer" style="padding: 3px;">
-        <button type="button" style="width:80px; font-size: 0.8rem;" class="btn btn-secondary btn-sm" data-dismiss="modal" (click)="closeAndComplet()">Close</button>
+        <button *ngFor="let it of buttons" type="button" style="width:80px; font-size: 0.8rem;" class="btn btn-sm {{it.class || 'btn-secondary'}}" data-dismiss="modal" (click)="buttonEmitter(it)">{{it.name}}</button>
+        <button *ngIf="!config.disableCloseBtn" type="button" style="width:80px; font-size: 0.8rem;" class="btn btn-secondary btn-sm" data-dismiss="modal" (click)="closeAndComplet()">{{(config.closeBtnName || 'Close') }}</button>
 <!--        <button type="button" style="width:80px; font-size: 0.8rem;" class="btn btn-primary btn-sm" (click)="update()">{{'Yes' | i18n}}</button>-->
     </div>
 </ng-template>
