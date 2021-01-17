@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import springfox.documentation.annotations.Cacheable;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,7 +25,6 @@ public class RoomService {
 
     @Autowired
     RoomRepository roomRepository;
-
 
     public List<Room> userRoomFindAllByUserId(String id) {
         List<Room> allByUserRoom_userId = roomRepository.findAllByUserRoom_UserId(id);

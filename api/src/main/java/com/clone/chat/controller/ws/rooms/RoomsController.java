@@ -45,7 +45,6 @@ public class RoomsController {
     @Autowired
     RoomRepository roomRepository;
 
-
     @Autowired
     UserRoomRepository userRoomRepository;
 
