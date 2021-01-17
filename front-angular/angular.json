@@ -59,7 +59,7 @@
 
               "node_modules/datatables.net-fixedheader/js/dataTables.fixedHeader.js",
               "node_modules/datatables.net-fixedheader-bs4/js/fixedHeader.bootstrap4.js",
-
+              "node_modules/popper.js/dist/umd/popper.min.js",
               "node_modules/bootstrap/dist/js/bootstrap.js"
             ]
           },

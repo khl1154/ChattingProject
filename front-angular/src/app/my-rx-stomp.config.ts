@@ -2,7 +2,7 @@ import { InjectableRxStompConfig } from '@stomp/ng2-stompjs';
 import * as SockJS from 'sockjs-client';
 export const myRxStompConfig: InjectableRxStompConfig = {
     // Which server?
-    brokerURL: 'ws://127.0.0.1:15674/ws',
+    // brokerURL: 'ws://127.0.0.1:15674/ws',
 
     webSocketFactory() {
         return new SockJS('http://localhost:9000/websocket');
@@ -22,12 +22,12 @@ export const myRxStompConfig: InjectableRxStompConfig = {
     // Wait in milliseconds before attempting auto reconnect
     // Set to 0 to disable
     // Typical value 500 (500 milli seconds)
-    reconnectDelay: 200,
+    reconnectDelay: 5000,
 
     // Will log diagnostics on console
     // It can be quite verbose, not recommended in production
     // Skip this key to stop logging to console
-    debug: (msg: string): void => {
-        console.log(new Date(), msg);
-    },
+    // debug: (msg: string): void => {
+    //     console.log(new Date(), msg);
+    // },
 };

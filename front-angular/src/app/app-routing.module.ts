@@ -25,8 +25,8 @@ const routes: Routes = [
                 loadChildren: () => import('./features/friends/friend.module').then(m => m.FriendModule),
             },
             {
-                path: 'talks',
-                loadChildren: () => import('./features/talks/talk.module').then(m => m.TalkModule),
+                path: 'rooms',
+                loadChildren: () => import('./features/rooms/room.module').then(m => m.RoomModule),
             },
             {
                 path: 'settings',

@@ -16,11 +16,11 @@ public class UserMessage extends ModelBase {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	Long id;
 
-//	@Column(name = "MESSAGE_ID")
-//	String messageId;
-
 	@Column(name = "USER_ID")
 	String userId;
+
+	@Column(name = "CONFIRM")
+	Boolean confirm;
 
 	@ManyToOne
 	@JoinColumn(name = "MESSAGE_ID", referencedColumnName = "ID", nullable = false, insertable = false, updatable = false)
@@ -29,8 +29,10 @@ public class UserMessage extends ModelBase {
 
 
 	@Builder
-	public UserMessage(Long id, String userId) {
+	public UserMessage(Long id, String userId, Boolean confirm, Message message) {
 		this.id = id;
 		this.userId = userId;
+		this.confirm = confirm;
+		this.message = message;
 	}
 }

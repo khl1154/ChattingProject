@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @Getter
 @Setter
-public class CreateRoom {
+public class RequestCreateRoom {
     String name;
     List<String> users;
 //    String targetUser;

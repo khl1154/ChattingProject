@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageExceptionHandler;
 import org.springframework.messaging.simp.annotation.SendToUser;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.ServletWebRequest;
@@ -22,6 +23,15 @@ import java.util.stream.Collectors;
 @Slf4j
 @RestControllerAdvice
 public class ChatAdviceController extends ResponseEntityExceptionHandler {
+
+    @ExceptionHandler(UsernameNotFoundException.class)
+    protected ResponseEntity<Object> usename(Throwable ex, WebRequest webRequest) {
+        logingAndSetMsg(ex, webRequest);
+        Error e = new Error();
+        e.setCode(MsgCode.ERROR_AUTH.name());
+        e.setMessage(Optional.ofNullable(ex.getMessage()).orElseGet(ex::toString));
+        return new ResponseEntity<>(e, HttpStatus.BAD_REQUEST);
+    }
 
     @ExceptionHandler(NoSuchElementException.class)
     protected ResponseEntity<Object> noSuchElementException(Throwable ex, WebRequest webRequest) {

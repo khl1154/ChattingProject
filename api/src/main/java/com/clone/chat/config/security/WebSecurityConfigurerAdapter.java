@@ -69,7 +69,8 @@ public class WebSecurityConfigurerAdapter extends org.springframework.security.c
 				"/websocket/**",
 //				"/web-core-assets/**",
 //				"/*.js"
-				"/h2-console","/h2-console/**",
+				"/h2-console",
+				"/h2-console/**",
 //				"/*.map",
 				"/favicon.ico"
 		);

@@ -4,8 +4,12 @@ import javax.persistence.*;
 
 
 import com.clone.chat.model.ModelBase;
+import com.clone.chat.model.view.json.JsonViewApi;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonView;
 import lombok.*;
 
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -19,20 +23,34 @@ public class Message extends ModelBase {
 	@Id
 	@Column(name = "ID")
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@JsonView({JsonViewApi.class})
 	Long id;
 
 	@Column(name = "USER_ID")
+	@JsonView({JsonViewApi.class})
 	String userId;
 
 	@Column(name = "CONTENTS")
+	@JsonView({JsonViewApi.class})
 	String contents;
 
-
 	@OneToMany(mappedBy = "message", cascade = CascadeType.ALL) //mappedBy = "room", , cascade = CascadeType.ALL
+	@JsonManagedReference
+	@JsonView({JsonViewApi.class})
 	List<UserMessage> userMessages;
 
 	@OneToMany(mappedBy = "message", cascade = CascadeType.ALL) //mappedBy = "room", , cascade = CascadeType.ALL
+	@JsonManagedReference
+	@JsonView({JsonViewApi.class})
 	List<RoomMessage> roomMessages;
+
+	@Column(name = "REG_DT")
+	@JsonView({JsonViewApi.class})
+	private ZonedDateTime regDt;
+
+//	@Column(name = "UPD_DT")
+//	private ZonedDateTime updDt;
+
 
 
 	@Builder
@@ -52,4 +70,16 @@ public class Message extends ModelBase {
 		message.setMessage(this);
 		this.roomMessages.add(message);
 	}
+
+	@PrePersist
+	public void onPrePersist() {
+		if(null == this.regDt) {
+			this.regDt = ZonedDateTime.now();
+		}
+	}
+
+//	@PreUpdate
+//	public void onPreUpdate() {
+//		this.updDt = ZonedDateTime.now();
+//	}
 }

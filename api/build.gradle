@@ -73,6 +73,7 @@ generateTypeScript {
             'com.clone.chat.domain.**',
             'com.clone.chat.model.**',
             'com.clone.chat.controller.api.**.model.**',
+            'com.clone.chat.controller.ws.**.model.**',
             'com.clone.chat.config.security.jwt.**',
 //            'org.springframework.http.**',
 
@@ -83,6 +84,8 @@ generateTypeScript {
 //    ]
     mapClasses = 'asClasses'
     mapEnum = 'asEnum'
+//    generateConstructors = true
+//    optionalProperties = cz.habarta.typescript.generator.OptionalProperties.useLibraryDefinition
     nonConstEnums = true
     //http://www.habarta.cz/typescript-generator/doc/ModulesAndNamespaces.html
     outputFileType = 'implementationFile'  //values are: declarationFile (.d.ts) or implementationFile (.ts)

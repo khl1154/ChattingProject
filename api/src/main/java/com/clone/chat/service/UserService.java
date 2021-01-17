@@ -17,7 +17,6 @@ import com.clone.chat.domain.User;
 import com.clone.chat.repository.UserRepository;
 import com.clone.chat.exception.BusinessException;
 import com.clone.chat.code.MsgCode;
-import com.clone.chat.exception.ErrorTrace;
 
 import lombok.RequiredArgsConstructor;
 
@@ -34,7 +33,7 @@ public class UserService {
 	public void join(UserBase dto) {
 		Optional<User> user = userRepository.findById(dto.getId());
 		if (user.isPresent())
-			throw new BusinessException(MsgCode.ERROR_DUPLICATED_ID, ErrorTrace.getName());
+			throw new BusinessException(MsgCode.ERROR_DUPLICATED_ID);
 
 		userRepository.save(dto.map(User.class));
 	}
@@ -42,7 +41,7 @@ public class UserService {
 	public void duplicateId(String userId) {
 		Optional<User> user = userRepository.findById(userId);
 		if (user.isPresent())
-			throw new BusinessException(MsgCode.ERROR_DUPLICATED_ID, ErrorTrace.getName());
+			throw new BusinessException(MsgCode.ERROR_DUPLICATED_ID);
 
 	}
 

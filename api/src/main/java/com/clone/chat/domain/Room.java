@@ -3,6 +3,9 @@ package com.clone.chat.domain;
 import javax.persistence.*;
 
 import com.clone.chat.model.ModelBase;
+import com.clone.chat.model.view.json.JsonViewApi;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,21 +20,32 @@ import java.util.Optional;
 @NoArgsConstructor
 @Entity
 @Table(name = "ROOM")
+@NamedEntityGraph(name = "Room.userRooms", attributeNodes = @NamedAttributeNode("userRooms"))
 public class Room extends ModelBase {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	@Column(name = "ID")
+	@JsonView({JsonViewApi.class})
 	private Long id;
 
 	@Column(name = "NAME")
+	@JsonView({JsonViewApi.class})
 	private String name;
 //	private Long msgCount;
 //	private String admin;
 
 	@OneToMany(mappedBy = "room", cascade = CascadeType.ALL) //mappedBy = "room", , cascade = CascadeType.ALL
 //	@JoinColumn(name = "ROOM_IDS", referencedColumnName = "ID", insertable = true, updatable = true)
+	@JsonManagedReference
+	@JsonView({JsonViewApi.class})
 	List<UserRoom> userRooms;
+
+	@OneToMany
+	@JoinColumn(name = "ROOM_ID", referencedColumnName = "ID", insertable = true, updatable = true)
+	@JsonManagedReference
+	@JsonView({JsonViewApi.class})
+	List<RoomMessage> roomMessages;
 
 	@Builder
 	public Room(Long id, String name, List<UserRoom> userRooms) {

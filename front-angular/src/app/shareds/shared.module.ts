@@ -27,7 +27,9 @@ import {
     Twitter,
     UserPlus,
     FilePlus,
-    FolderPlus
+    FolderPlus,
+    RefreshCcw,
+    RefreshCw
 } from 'angular-feather/icons';
 import {FeatherModule} from 'angular-feather';
 import {ModalModule} from 'ngx-bootstrap/modal';
@@ -107,7 +109,9 @@ const toolbarOptions = [
             Twitter,
             UserPlus,
             FilePlus,
-            FolderPlus
+            FolderPlus,
+            RefreshCcw,
+            RefreshCw
         }),
         FormsModule,
         ReactiveFormsModule,

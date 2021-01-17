@@ -4,6 +4,7 @@ import com.clone.chat.code.MsgCode;
 import com.clone.chat.model.msg.Msg;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.ArrayList;
@@ -11,14 +12,12 @@ import java.util.List;
 
 @Getter
 @Setter
-//@NoArgsConstructor
+@NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 public class Error<T> extends Msg<T> {
 
     List<Error> errors;
 
-    public Error() {
-    }
 
     public Error(String code) {
         this(code, null);

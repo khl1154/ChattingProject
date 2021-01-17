@@ -42,8 +42,7 @@ public class FriendsController {
 
 
     @MessageMapping(URI_PREFIX)
-//    @SendToUser("/queue"+URI_PREFIX)
-    @SendToUser("/queue/friends")
+    @SendToUser("/queue"+URI_PREFIX)
     //@Header("simpSessionId") String sessionId,
     public List<User> processMessageFromClient(Principal principal, SimpMessageHeaderAccessor simpMessageHeaderAccessor) throws Exception {
 //        String name = new Gson().fromJson(message, Map.class).get("name").toString();

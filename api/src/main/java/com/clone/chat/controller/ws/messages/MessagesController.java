@@ -1,7 +1,7 @@
 package com.clone.chat.controller.ws.messages;
 
 import com.clone.chat.code.MsgCode;
-import com.clone.chat.controller.ws.messages.model.ToRoomMessage;
+import com.clone.chat.controller.ws.rooms.model.RequestSendRoomMessage;
 import com.clone.chat.controller.ws.messages.model.ToUserMessage;
 import com.clone.chat.domain.Message;
 import com.clone.chat.domain.RoomMessage;
@@ -23,6 +23,7 @@ import java.security.Principal;
 import java.util.Optional;
 
 @Controller("ws-messages-controller")
+@Deprecated
 public class MessagesController {
     public static final String URI_PREFIX = "/messages";
 
@@ -54,7 +55,7 @@ public class MessagesController {
     }
 
     @MessageMapping(URI_PREFIX+"/send-room-messages")
-    public void createRoom(ToRoomMessage message, Principal principal, SimpMessageHeaderAccessor simpMessageHeaderAccessor) throws Exception {
+    public void createRoom(RequestSendRoomMessage message, Principal principal, SimpMessageHeaderAccessor simpMessageHeaderAccessor) throws Exception {
         Optional<UserToken> userToken = webSocketManagerService.getUser(simpMessageHeaderAccessor);
         UserToken user = userToken.orElseThrow(() -> new BusinessException(MsgCode.ERROR_AUTH));
         Message msg = Message.builder().userId(user.getId()).contents(message.getContents()).build();
