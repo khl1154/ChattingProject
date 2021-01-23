@@ -46,10 +46,9 @@ export class RoomComponent implements OnInit, AfterViewInit {
             this.wsService.watch<Room[]>('/user/queue/rooms').subscribe((it) => {
                 this.rooms = it;
             });
-
-            this.wsService.watch<string>(`/topic/rooms/${userTokenContain.authorizationHeaders}`).subscribe((it) => {
-                console.log(it);
-            });
+            // this.wsService.watch<string>(`/topic/rooms/${userTokenContain.authorizationHeaders}`).subscribe((it) => {
+            //     console.log(it);
+            // });
             this.send();
         });
     }
@@ -99,12 +98,10 @@ export class RoomComponent implements OnInit, AfterViewInit {
 
         this.roomMessagesSubscription?.unsubscribe();
         this.roomMessageSubscription?.unsubscribe();
-        this.roomMessagesSubscription = this.wsService.watch<Message[]>(`/user/queue/rooms/${this.choiceRoom.id}/messages`)
-            .subscribe((it) => {
+        this.roomMessagesSubscription = this.wsService.watch<Message[]>(`/user/queue/rooms/${this.choiceRoom.id}/messages`).subscribe((it) => {
                 this.choiceRoomMessages = it;
-            });
-        this.roomMessageSubscription = this.wsService.watch<Message>(`/user/queue/rooms/${this.choiceRoom.id}/message`)
-            .subscribe((it) => {
+        });
+        this.roomMessageSubscription = this.wsService.watch<Message>(`/user/queue/rooms/${this.choiceRoom.id}/message`).subscribe((it) => {
                 this.choiceRoomMessages.push(it);
         });
         this.wsService.publish(`/app/rooms/${this.choiceRoom.id}/messages`);

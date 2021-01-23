@@ -6,10 +6,6 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ToUserMessage extends ModelBase {
-
-    String userId;
+public class RequestMessage extends ModelBase {
     String contents;
-
-
 }

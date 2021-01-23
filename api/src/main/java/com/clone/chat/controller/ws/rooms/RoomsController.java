@@ -58,11 +58,6 @@ public class RoomsController {
     RoomService roomService;
 
 
-//    @MessageMapping("/fleet/{fleetId}/driver/{driverId}")
-//    @SubscribeMapping("/fleet/{fleetId}/driver/{driverId}")
-//    @SendTo("/topic/rooms/{userId}")
-    //@DestinationVariable("userId") String userId,
-//        Message m,
     @MessageMapping(URI_PREFIX+"/create-room")
     public void createRoom(RequestCreateRoom createRoom, Principal principal, SimpMessageHeaderAccessor simpMessageHeaderAccessor) throws Exception {
         UserToken user = webSocketManagerService.getUser(simpMessageHeaderAccessor).orElseThrow(() -> new BusinessException(MsgCode.ERROR_AUTH));

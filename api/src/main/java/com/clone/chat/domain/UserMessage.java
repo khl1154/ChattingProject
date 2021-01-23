@@ -3,6 +3,7 @@ package com.clone.chat.domain;
 import javax.persistence.*;
 
 import com.clone.chat.model.ModelBase;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 
 @Getter @Setter
@@ -23,7 +24,8 @@ public class UserMessage extends ModelBase {
 	Boolean confirm;
 
 	@ManyToOne
-	@JoinColumn(name = "MESSAGE_ID", referencedColumnName = "ID", nullable = false, insertable = false, updatable = false)
+	@JoinColumn(name = "MESSAGE_ID")
+	@JsonBackReference
 	private Message message;
 
 
