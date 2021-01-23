@@ -41,7 +41,6 @@ export class FriendComponent implements OnInit {
 
             this.wsService.watch<Message[]>('/user/queue/messages').subscribe((it) => {
                 it.forEach(m => this.userMessage.push(m));
-                console.log('--messages subscribe ', it, this.userMessage);
             });
 
             this.send();

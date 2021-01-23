@@ -55,6 +55,7 @@ public class MessagesController {
         UserToken user = webSocketManagerService.getUser(simpMessageHeaderAccessor).orElseThrow(() -> new BusinessException(MsgCode.ERROR_AUTH));
         Message msg = Message.builder().userId(user.getId()).contents(message.getContents()).build();
         msg.addUserMessage(UserMessage.builder().userId(toUserId).confirm(false).build());
+        msg.addUserMessage(UserMessage.builder().userId(user.getId()).confirm(false).build());
         msg = messageRepository.save(msg);
         webSocketManagerService.sendToUserByUserId("/queue"+URI_PREFIX, Arrays.asList(msg), user.getId(), toUserId);
 
