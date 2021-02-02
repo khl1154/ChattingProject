@@ -19,9 +19,9 @@ import java.util.*;
 @Table(name = "USER")
 @NamedEntityGraph(name = "User.friends", attributeNodes = @NamedAttributeNode("friends"))
 public class User extends UserBase {
+
     @Transient
     String token;
-
 
     @ManyToMany(cascade = CascadeType.ALL)
 //    @JoinColumn(name = "user_no", referencedColumnName = "no", insertable = false, updatable = false)
@@ -30,6 +30,9 @@ public class User extends UserBase {
     @JsonView({JsonViewFrontEnd.class})
     private List<User> friends;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "file_id")
+    private File file;
 
 //    @ManyToOne(optional = true, fetch = FetchType.LAZY)
 //    @JoinTable(name = "ITEMINCENTIVESMAPPING",

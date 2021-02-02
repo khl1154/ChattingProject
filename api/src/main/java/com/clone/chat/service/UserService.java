@@ -5,11 +5,15 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 
+import com.clone.chat.domain.File;
 import com.clone.chat.domain.base.UserBase;
+import com.clone.chat.exception.ErrorTrace;
+import com.clone.chat.model.UserDto;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +23,7 @@ import com.clone.chat.exception.BusinessException;
 import com.clone.chat.code.MsgCode;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -27,23 +32,32 @@ import lombok.RequiredArgsConstructor;
 public class UserService {
 
 	private final UserRepository userRepository;
+	private final FileService fileService;
+	private final PasswordEncoder passwordEncoder;
 
 
 	@Transactional
-	public void join(UserBase dto) {
-		Optional<User> user = userRepository.findById(dto.getId());
-		if (user.isPresent())
-			throw new BusinessException(MsgCode.ERROR_DUPLICATED_ID);
-
-		userRepository.save(dto.map(User.class));
+	public void join(UserDto dto, MultipartFile file) {
+		if(duplicateId(dto.getId()))
+			throw new BusinessException(MsgCode.ERROR_DUPLICATED_ID, ErrorTrace.getName());
+		User user = dto.toEntity();
+		if(file != null) {
+			File userFile = fileService.save(file);
+			user.setFile(userFile);
+		}
+		String password = user.getPassword();
+		user.setPassword(passwordEncoder.encode(password));
+		userRepository.save(user);
 	}
 
-	public void duplicateId(String userId) {
+	public boolean duplicateId(String userId) {
 		Optional<User> user = userRepository.findById(userId);
 		if (user.isPresent())
-			throw new BusinessException(MsgCode.ERROR_DUPLICATED_ID);
-
+			return true;
+		return false;
 	}
+
+
 
 	public List<String> getList(String id) {
 		List<User> list = userRepository.findAll();
