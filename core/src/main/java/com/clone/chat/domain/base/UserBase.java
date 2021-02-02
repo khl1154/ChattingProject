@@ -44,13 +44,18 @@ public class UserBase extends ModelBase {
 	@Column(name = "ROLE")
 	UserRole role;
 
+	@Column(name = "STATUS_MSG")
+	@JsonView({JsonViewApi.class})
+	String statusMsg;
+
 	@Builder
-	public UserBase(String id, String password, String nickName, String phone, UserRole role) {
+	public UserBase(String id, String password, String nickName, String phone, UserRole role, String statusMsg) {
 		this.id = id;
 		this.password = password;
 		this.nickName = nickName;
 		this.phone = phone;
 		this.role = role;
+		this.statusMsg = statusMsg;
 	}
 
 //	@CreatedDate

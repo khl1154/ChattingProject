@@ -3,15 +3,21 @@ package com.clone.chat.controller.api.users;
 import com.clone.chat.controller.api.ApiController;
 import com.clone.chat.domain.base.UserBase;
 import com.clone.chat.model.ResponseForm;
+import com.clone.chat.model.UserDto;
 import com.clone.chat.repository.UserRepository;
 import com.clone.chat.service.TokenService;
 import com.clone.chat.service.UserService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
@@ -33,10 +39,8 @@ public class UsersController {
     @Autowired
     private final TokenService tokenService;
 
-
     @Autowired
     private UserRepository userRepository;
-
 
     @Autowired
     PasswordEncoder passwordEncoder;
@@ -47,21 +51,25 @@ public class UsersController {
 //		return friendRepository.findByUserId(id);
 //	}
 
-    @GetMapping("/lists")
-    public ResponseForm list(String id) {
-        List<String> list = userService.getList(id);
-        return new ResponseForm("list", list);
-    }
-
+    @ApiOperation(value = "회원가입")
     @PostMapping("/joins")
-    public void join(@RequestBody UserBase dto) {
-        userService.join(dto);
+    public void join(UserDto userDto, @RequestPart(name = "file", required = false) MultipartFile file) {
+        System.out.println("file.getContentType() = " + file.getContentType());
+        userService.join(userDto, file);
     }
 
+    @ApiOperation(value = "중복체크")
     @GetMapping("/duplicate_check")
-    public ResponseForm duplicate(String id) {
-        userService.duplicateId(id);
-        return new ResponseForm();
+    public CheckDuplicationResponse duplicate(String id) {
+        boolean isDuplication = userService.duplicateId(id);
+        return new CheckDuplicationResponse(isDuplication);
+    }
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    static class CheckDuplicationResponse {
+        private boolean isDuplication;
     }
 
 

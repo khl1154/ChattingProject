@@ -36,12 +36,8 @@
             "scripts": [
               "node_modules/jquery/dist/jquery.js",
               "node_modules/jquery-ui-npm/jquery-ui.js",
-
-
               "node_modules/datatables.net/js/jquery.dataTables.js",
               "node_modules/datatables.net-bs4/js/dataTables.bootstrap4.js",
-
-
               "node_modules/datatables.net-buttons/js/dataTables.buttons.js",
               "node_modules/datatables.net-buttons-bs4/js/buttons.bootstrap4.js",
               "node_modules/jszip/dist/jszip.js",
@@ -49,14 +45,8 @@
               "node_modules/pdfmake/build/vfs_fonts.js",
               "node_modules/datatables.net-buttons/js/buttons.html5.js",
               "node_modules/datatables.net-buttons/js/buttons.print.js",
-
-
-
-
-
               "node_modules/datatables.net-fixedcolumns/js/dataTables.fixedColumns.js",
               "node_modules/datatables.net-fixedcolumns-bs4/js/fixedColumns.bootstrap4.js",
-
               "node_modules/datatables.net-fixedheader/js/dataTables.fixedHeader.js",
               "node_modules/datatables.net-fixedheader-bs4/js/fixedHeader.bootstrap4.js",
               "node_modules/popper.js/dist/umd/popper.min.js",
@@ -75,7 +65,6 @@
               "outputHashing": "all",
               "sourceMap": false,
               "namedChunks": false,
-//              "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
               "budgets": [
@@ -156,5 +145,8 @@
       }
     }
   },
-  "defaultProject": "ceragem-iot"
+  "defaultProject": "ceragem-iot",
+  "cli": {
+    "analytics": "5a45a477-8f48-4df0-8edf-e51382ae24e1"
+  }
 }
