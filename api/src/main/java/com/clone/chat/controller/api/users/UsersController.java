@@ -1,6 +1,7 @@
 package com.clone.chat.controller.api.users;
 
 import com.clone.chat.controller.api.ApiController;
+import com.clone.chat.domain.User;
 import com.clone.chat.domain.base.UserBase;
 import com.clone.chat.model.ResponseForm;
 import com.clone.chat.model.UserDto;
@@ -45,11 +46,11 @@ public class UsersController {
     @Autowired
     PasswordEncoder passwordEncoder;
 
-
-//	@GetMapping("/friends")
-//	public List<Friend> friends(@RequestParam("id") String id) {
-//		return friendRepository.findByUserId(id);
-//	}
+    @ApiOperation(value = "회원검색")
+    @GetMapping("/search")
+    public User searchUser(String userId) {
+        return userService.search(userId);
+    }
 
     @ApiOperation(value = "회원가입")
     @PostMapping("/joins")

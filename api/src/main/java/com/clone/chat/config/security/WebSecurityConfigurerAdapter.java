@@ -31,7 +31,6 @@ public class WebSecurityConfigurerAdapter extends org.springframework.security.c
 	@Autowired
 	PasswordEncoder passwordEncoder;
 
-
 	@Autowired
 	UserRepository userRepository;
 
@@ -55,7 +54,6 @@ public class WebSecurityConfigurerAdapter extends org.springframework.security.c
 	public static final String USERNAME_PARAMETER           = "username";
 	public static final String USERPWD_PARAMETER            = "password";
 	public static final String DEFAULT_SUCCESS_URL          = "/";
-
 
 	@Override
 	public void configure(WebSecurity web) throws Exception {

@@ -35,6 +35,15 @@ public class UserService {
 	private final FileService fileService;
 	private final PasswordEncoder passwordEncoder;
 
+	@Transactional
+	public User search(String userId) {
+		Optional<User> findUser = userRepository.findByIdEquals(userId);
+
+		if(findUser.isPresent()) {
+			return findUser.get();
+		}
+		return null;
+	}
 
 	@Transactional
 	public void join(UserDto dto, MultipartFile file) {
