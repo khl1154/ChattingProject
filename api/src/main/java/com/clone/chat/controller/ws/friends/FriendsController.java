@@ -54,4 +54,6 @@ public class FriendsController {
         Optional<User> data = userRepository.findById(user.getId());
         return data.get().getFriends();
     }
+
+
 }
