@@ -8,8 +8,8 @@ import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, String> {
 
-    @EntityGraph(attributePaths = {"User.friends","file"}, type = EntityGraph.EntityGraphType.LOAD)
+    @EntityGraph(value = "User.friends", type = EntityGraph.EntityGraphType.LOAD)
     public Optional<User> findById(String id);
-    @EntityGraph(attributePaths = {"file"}, type = EntityGraph.EntityGraphType.LOAD)
+    @EntityGraph(attributePaths = "file", type = EntityGraph.EntityGraphType.LOAD)
     Optional<User> findByIdEquals(String userId);
 }

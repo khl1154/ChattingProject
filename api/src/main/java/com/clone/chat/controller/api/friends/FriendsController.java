@@ -6,10 +6,12 @@ import com.clone.chat.domain.User;
 import com.clone.chat.model.UserToken;
 import com.clone.chat.model.view.json.JsonViewApi;
 import com.clone.chat.repository.UserRepository;
+import com.clone.chat.service.FriendService;
 import com.clone.chat.service.TokenService;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.google.common.net.HttpHeaders;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,13 +30,24 @@ import java.util.Optional;
 public class FriendsController {
     public static final String URI_PREFIX = ApiController.URI_PREFIX + "/friends";
 
-    @Autowired
-    TokenService tokenService;
+    public final TokenService tokenService;
 
-    @Autowired
-    UserRepository userRepository;
+    public final FriendService friendService;
 
+    public final UserRepository userRepository;
 
+    @ApiOperation(value = "친구검색")
+    @GetMapping("/search")
+    @JsonView({JsonViewApi.class})
+    public User searchUser(String userId) {
+        return friendService.search(userId);
+    }
+
+    @ApiOperation(value = "친구추가")
+    @PostMapping(value = "/add")
+    public void addFriend(@RequestBody String friendId, @ModelAttributeMapping UserToken userToken) {
+        friendService.addFriend(friendId, userToken);
+    }
 
     @GetMapping(value = {"", "/"})
     @JsonView({JsonViewApi.class})
