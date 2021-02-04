@@ -46,11 +46,6 @@ public class UsersController {
     @Autowired
     PasswordEncoder passwordEncoder;
 
-    @ApiOperation(value = "회원검색")
-    @GetMapping("/search")
-    public User searchUser(String userId) {
-        return userService.search(userId);
-    }
 
     @ApiOperation(value = "회원가입")
     @PostMapping("/joins")

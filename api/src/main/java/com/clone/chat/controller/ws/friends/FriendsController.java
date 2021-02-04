@@ -7,8 +7,10 @@ import com.clone.chat.domain.User;
 import com.clone.chat.domain.base.UserBase;
 import com.clone.chat.exception.BusinessException;
 import com.clone.chat.model.UserToken;
+import com.clone.chat.model.view.json.JsonViewApi;
 import com.clone.chat.repository.UserRepository;
 import com.clone.chat.service.WebSocketManagerService;
+import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageExceptionHandler;
@@ -43,6 +45,7 @@ public class FriendsController {
 
     @MessageMapping(URI_PREFIX)
     @SendToUser("/queue"+URI_PREFIX)
+    @JsonView({JsonViewApi.class})
     //@Header("simpSessionId") String sessionId,
     public List<User> processMessageFromClient(Principal principal, SimpMessageHeaderAccessor simpMessageHeaderAccessor) throws Exception {
 //        String name = new Gson().fromJson(message, Map.class).get("name").toString();

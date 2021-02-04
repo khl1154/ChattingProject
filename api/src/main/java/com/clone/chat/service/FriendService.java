@@ -1,0 +1,49 @@
+package com.clone.chat.service;
+
+import com.clone.chat.code.MsgCode;
+import com.clone.chat.domain.User;
+import com.clone.chat.exception.BusinessException;
+import com.clone.chat.exception.ErrorTrace;
+import com.clone.chat.model.UserToken;
+import com.clone.chat.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
+
+@Transactional(readOnly = true)
+@RequiredArgsConstructor
+@Service
+@Slf4j
+public class FriendService {
+
+    private final UserRepository userRepository;
+
+    @Transactional
+    public User search(String userId) {
+        Optional<User> findUser = userRepository.findByIdEquals(userId);
+
+        if(findUser.isPresent()) {
+            return findUser.get();
+        }
+        return null;
+    }
+
+    @Transactional
+    public void addFriend(String friendId, UserToken userToken) {
+        Optional<User> findUser = userRepository.findById(userToken.getId());
+        Optional<User> findFriend = userRepository.findById(friendId);
+
+        if(!findUser.isPresent() || !findFriend.isPresent()) {
+            throw new BusinessException(MsgCode.ERROR_ENTITY_NOT_FOUND, ErrorTrace.getName());
+        }
+        // 사용자 id와 등록할 친구 id가 같은 경우
+        if(findUser.get().getId() == findFriend.get().getId()) {
+            throw new BusinessException(MsgCode.ERROR_INVALID_FRIEND_RELATIONSHIP, ErrorTrace.getName());
+        }
+        findUser.get().addFirend(findFriend.get());
+        userRepository.save(findUser.get());
+    }
+}

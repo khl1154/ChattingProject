@@ -80,7 +80,6 @@ public class WebSocketManagerService {
         }
     }
 
-
     public void sendToUser(String destination, Object data, String ... sessionIds) {
         //"/queue/friends"
         for (String sessionId : sessionIds) {
