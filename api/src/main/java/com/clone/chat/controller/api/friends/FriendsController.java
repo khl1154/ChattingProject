@@ -8,6 +8,8 @@ import com.clone.chat.model.view.json.JsonViewApi;
 import com.clone.chat.repository.UserRepository;
 import com.clone.chat.service.FriendService;
 import com.clone.chat.service.TokenService;
+import com.clone.chat.service.UserService;
+import com.clone.chat.service.WebSocketManagerService;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.google.common.net.HttpHeaders;
 import io.swagger.annotations.Api;
@@ -34,7 +36,11 @@ public class FriendsController {
 
     public final FriendService friendService;
 
+    public final UserService userService;
+
     public final UserRepository userRepository;
+
+    public final WebSocketManagerService webSocketManagerService;
 
     @ApiOperation(value = "친구검색")
     @GetMapping("/search")
@@ -46,7 +52,15 @@ public class FriendsController {
     @ApiOperation(value = "친구추가")
     @PostMapping(value = "/add")
     public void addFriend(@RequestBody String friendId, @ModelAttributeMapping UserToken userToken) {
-        friendService.addFriend(friendId, userToken);
+        friendService.addFriend(userToken.getId(), friendId);
+        User user = userService.find(userToken.getId());
+        List<User> friendsOfUser = user.getFriends();
+        webSocketManagerService.sendToUserByUserId("/queue/friends",friendsOfUser,user.getId());
+
+        friendService.addFriend(friendId, userToken.getId());
+        User friend = userService.find(friendId);
+        List<User> friendsOfFriend = friend.getFriends();
+        webSocketManagerService.sendToUserByUserId("/queue/friends",friendsOfFriend,friendId);
     }
 
     @GetMapping(value = {"", "/"})
@@ -54,7 +68,6 @@ public class FriendsController {
     public List<User> friends(HttpServletRequest request, HttpServletResponse response, @ModelAttributeMapping UserToken userToken) {
         return userRepository.findById(userToken.getId()).get().getFriends();
     }
-
 
     @PostMapping(value = "/details")
     @JsonView({JsonViewApi.class})
@@ -65,5 +78,4 @@ public class FriendsController {
             ) {
         return tokenService.getUserFromJwtHeader(authorization_header);
     }
-
 }

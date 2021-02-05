@@ -36,6 +36,13 @@ public class UserService {
 	private final PasswordEncoder passwordEncoder;
 
 
+	public User find(String userId) {
+		Optional<User> findUser = userRepository.findById(userId);
+		if(findUser.isPresent())
+			return findUser.get();
+		return null;
+	}
+
 	@Transactional
 	public void join(UserDto dto, MultipartFile file) {
 		if(duplicateId(dto.getId()))

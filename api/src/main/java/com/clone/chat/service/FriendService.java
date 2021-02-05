@@ -32,8 +32,8 @@ public class FriendService {
     }
 
     @Transactional
-    public void addFriend(String friendId, UserToken userToken) {
-        Optional<User> findUser = userRepository.findById(userToken.getId());
+    public void addFriend(String userId, String friendId) {
+        Optional<User> findUser = userRepository.findById(userId);
         Optional<User> findFriend = userRepository.findById(friendId);
 
         if(!findUser.isPresent() || !findFriend.isPresent()) {
