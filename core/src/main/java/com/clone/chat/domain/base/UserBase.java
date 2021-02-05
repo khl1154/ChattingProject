@@ -22,7 +22,6 @@ import java.time.ZonedDateTime;
 @EntityListeners(AuditingEntityListener.class)
 public class UserBase extends ModelBase {
 
-
 	@Id
 	@Column(name = "ID")
 	@JsonView({JsonViewApi.class})
