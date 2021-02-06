@@ -10,7 +10,7 @@ import java.util.List;
 public interface UserMessageRepository extends JpaRepository<UserMessage, Long> {
 
     @Query(
-            "select b from UserMessage a join a.message b where a.userId = :userId and b.userId = :fromUserId"
+            "select b from UserMessage a join a.message b where (a.userId = :userId and b.userId = :fromUserId) or (a.userId = :fromUserId and b.userId = :userId)"
     )
     List<Message> findByUserIdAndMessageUserId(String userId, String fromUserId);
 }
