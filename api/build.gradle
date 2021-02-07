@@ -32,6 +32,7 @@ ext {
 //ext['spring-restdocs.version'] = '2.0.6.BUILD-SNAPSHOT'
 
 dependencies {
+    compile('org.springframework.boot:spring-boot-starter-cache')
 
 
     // https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-aws

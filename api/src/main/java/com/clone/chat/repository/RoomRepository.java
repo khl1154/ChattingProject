@@ -2,6 +2,8 @@ package com.clone.chat.repository;
 
 import com.clone.chat.domain.Message;
 import com.clone.chat.domain.Room;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -19,6 +21,7 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
             " a.id in (select b.room from a.userRooms b where b.userId = :userId)" +
             "")
     List<Room> findAllByUserRoom_UserId(String userId);
+
 
     @EntityGraph(value = "Room.userRooms", type = EntityGraph.EntityGraphType.LOAD)
     Optional<Room> findById(Long id);

@@ -7,9 +7,11 @@ import com.clone.chat.repository.UserRoomRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import springfox.documentation.annotations.Cacheable;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,8 +28,13 @@ public class RoomService {
     @Autowired
     RoomRepository roomRepository;
 
+    @Cacheable(value = "roomList", key = "#id")
     public List<Room> userRoomFindAllByUserId(String id) {
         List<Room> allByUserRoom_userId = roomRepository.findAllByUserRoom_UserId(id);
         return allByUserRoom_userId;
+    }
+
+    @CacheEvict(value = "roomList", key = "#id")
+    public void refreshRoomList(String id) {
     }
 }
