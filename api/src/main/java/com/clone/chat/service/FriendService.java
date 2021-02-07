@@ -8,6 +8,8 @@ import com.clone.chat.model.UserToken;
 import com.clone.chat.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,12 +21,12 @@ import java.util.Optional;
 @Slf4j
 public class FriendService {
 
+    private final UserService userService;
     private final UserRepository userRepository;
 
     @Transactional
     public User search(String userId) {
         Optional<User> findUser = userRepository.findByIdEquals(userId);
-
         if(findUser.isPresent()) {
             return findUser.get();
         }
@@ -44,6 +46,19 @@ public class FriendService {
             throw new BusinessException(MsgCode.ERROR_INVALID_FRIEND_RELATIONSHIP, ErrorTrace.getName());
         }
         findUser.get().addFirend(findFriend.get());
-        userRepository.save(findUser.get());
+        userService.save(findUser.get());
+        refreshFriends(userId);
+    }
+
+    @Cacheable(value = "friends", key = "#userId")
+    public User findFriends(String userId) {
+        Optional<User> findUser = userRepository.findById(userId);
+        if(findUser.isPresent())
+            return findUser.get();
+        return null;
+    }
+
+    @CacheEvict(value = "friends", key = "#userId")
+    public void refreshFriends(String userId) {
     }
 }

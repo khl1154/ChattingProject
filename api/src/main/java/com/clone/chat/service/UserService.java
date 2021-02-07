@@ -44,6 +44,11 @@ public class UserService {
 	}
 
 	@Transactional
+	public void save(User user) {
+		userRepository.save(user);
+	}
+
+	@Transactional
 	public void join(UserDto dto, MultipartFile file) {
 		if(duplicateId(dto.getId()))
 			throw new BusinessException(MsgCode.ERROR_DUPLICATED_ID, ErrorTrace.getName());

@@ -9,9 +9,11 @@ import com.clone.chat.exception.BusinessException;
 import com.clone.chat.model.UserToken;
 import com.clone.chat.model.view.json.JsonViewApi;
 import com.clone.chat.repository.UserRepository;
+import com.clone.chat.service.FriendService;
 import com.clone.chat.service.WebSocketManagerService;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageExceptionHandler;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -37,7 +39,7 @@ public class FriendsController {
     private SimpMessageSendingOperations messagingTemplate;
 
     @Autowired
-    UserRepository userRepository;
+    FriendService friendService;
 
 //    @Autowired
 //    SimpMessageTemplate
@@ -54,9 +56,7 @@ public class FriendsController {
         UserToken user = userToken.orElseThrow(() -> new BusinessException(MsgCode.ERROR_AUTH));
 //        user.orElseThrow(() -> new NoSuchElementException("no Such"));
 //        return friendRepository.findByUserId(user.get().getId());
-        Optional<User> data = userRepository.findById(user.getId());
-        return data.get().getFriends();
+        User data = friendService.findFriends(user.getId());
+        return data.getFriends();
     }
-
-
 }

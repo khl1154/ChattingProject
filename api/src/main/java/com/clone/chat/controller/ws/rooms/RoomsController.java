@@ -71,6 +71,7 @@ public class RoomsController {
         room = roomRepository.save(room);
 
         room.getUserRooms().stream().forEach(it -> {
+            roomService.refreshRoomList(it.getUserId());
             List<Room> rooms = roomService.userRoomFindAllByUserId(it.getUserId());
             webSocketManagerService.sendToUserByUserId("/queue/rooms", rooms, it.getUserId());
         });
