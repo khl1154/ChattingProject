@@ -1,5 +1,6 @@
 package com.clone.chat.config;
 
+import com.clone.chat.model.UserToken;
 import com.fasterxml.classmate.TypeResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -41,8 +42,9 @@ public class SwaggerConfig {
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.clone.chat.controller.api"))
                 .paths(PathSelectors.any())
+
 //                .paths(Predicates.not(PathSelectors.regex("/basic-error-controller.*")))
-                .build()
+                .build().ignoredParameterTypes(UserToken.class)
 //                .additionalModels(typeResolver.resolve(Msg.class, Error.class))
 
 //                .additionalModels(typeResolver.resolve(OsType.class))
