@@ -28,13 +28,8 @@ public class RoomService {
     @Autowired
     RoomRepository roomRepository;
 
-    @Cacheable(value = "roomList", key = "#id")
     public List<Room> userRoomFindAllByUserId(String id) {
         List<Room> allByUserRoom_userId = roomRepository.findAllByUserRoom_UserId(id);
         return allByUserRoom_userId;
-    }
-
-    @CacheEvict(value = "roomList", key = "#id")
-    public void refreshRoomList(String id) {
     }
 }

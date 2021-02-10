@@ -3,7 +3,7 @@
     <div class="d-flex mt-3 mb-3 ">
         <div class="mr-auto p-2"> 친구</div>
         <div class="p-2"><i-feather name="refresh-Cw" style="margin-right:10px; cursor: pointer" (click)="send()"></i-feather></div>
-        <div class="p-2"><i-feather name="user-plus" style="margin-right:10px; cursor: pointer" ></i-feather></div>
+        <div class="p-2"><i-feather name="user-plus" style="margin-right:10px; cursor: pointer" (click)="openAddFriendModal()"></i-feather></div>
     </div>
 
     <div class="container">
@@ -20,7 +20,20 @@
 </main>
 
 
-
+<!--<basic-modal #addFriendModal [buttons]="[{name:'ok', class:'btn-primary'}]" (buttonClick)="createRoomCheck($event)">-->
+<basic-modal #addFriendModal [buttons]="[{name:'ok', class:'btn-primary'}]" (buttonClick)="addFriend($event)">
+    <div>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon2">아이디</span>
+            </div>
+            <input type="text" class="form-control" placeholder="검색할 아이디를 입력하세요" aria-label="Username" aria-describedby="basic-addon1" (keyup)="search($event)" [(ngModel)]="searchUserId">
+        </div>
+    </div>
+    <div *ngIf="findUser">
+    <span >{{findUser.id}}</span>&nbsp;&nbsp;<span >{{findUser.nickName}}</span>
+    </div>
+</basic-modal>
 
 
 

@@ -5,15 +5,16 @@ import {JsonApiService} from '@app/services/json-api.service';
 
 import {Router} from '@angular/router';
 import {filter} from 'rxjs/operators';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {RxStompService} from '@stomp/ng2-stompjs';
 import {UserService, WsService} from '@app/services';
 import {UserTokenContain} from '@app/models/UserTokenContain';
 import {com} from '@generate/models';
 import User = com.clone.chat.domain.User;
-import {BasicModalComponent} from '@app/shareds/modals/basic-modal/basic-modal.component';
+import {BasicModalComponent, ButtonsClickType} from '@app/shareds/modals/basic-modal/basic-modal.component';
 import Message = com.clone.chat.domain.Message;
 import RequestMessage = com.clone.chat.controller.ws.messages.model.RequestMessage;
+import {Observable} from "rxjs/index";
 
 @Component({
     selector: 'app-home',
@@ -23,8 +24,11 @@ import RequestMessage = com.clone.chat.controller.ws.messages.model.RequestMessa
 export class FriendComponent implements OnInit {
 
     @ViewChild('userModal') userModal: BasicModalComponent;
+    @ViewChild('addFriendModal') addFriendModal: BasicModalComponent;
 
+    private searchUserId: String;
     private choiceUser: User;
+    private findUser: User;
     private friends: User[];
     private userMessage: Message[] = [];
     private userTokenContain: UserTokenContain;
@@ -62,5 +66,28 @@ export class FriendComponent implements OnInit {
         const requestMsg = new RequestMessage();
         requestMsg.contents = value;
         this.wsService.publish(`/app/messages/${this.choiceUser.id}/send`, requestMsg);
+    }
+
+    public openAddFriendModal() {
+        this.addFriendModal.show();
+    }
+
+    search(event) {
+        if(event.key === 'Enter') {
+            this.api.get<User>('/apis/friends/search?userId='+this.searchUserId).subscribe(it => {
+                this.findUser = it
+            });
+        }
+    }
+
+    addFriend($event: ButtonsClickType) {
+        let params = new HttpParams();
+        console.log(22)
+        console.log(this.findUser.id)
+        params.append("friendId",this.findUser.id);
+        if ($event.name === 'ok') {
+            console.log(2333)
+            this.api.post('/apis/friends/add',{params})
+        }
     }
 }

@@ -11,6 +11,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -34,6 +35,14 @@ public class Room extends ModelBase {
 	private String name;
 //	private Long msgCount;
 //	private String admin;
+
+	@Column(name = "LAST_MSG_DT")
+	@JsonView({JsonViewApi.class})
+	private ZonedDateTime lastMsgDt;
+
+	@Column(name = "LAST_MSG_CONTENTS")
+	@JsonView({JsonViewApi.class})
+	private String lastMsgContents;
 
 	@OneToMany(mappedBy = "room", cascade = CascadeType.ALL) //mappedBy = "room", , cascade = CascadeType.ALL
 //	@JoinColumn(name = "ROOM_IDS", referencedColumnName = "ID", insertable = true, updatable = true)
