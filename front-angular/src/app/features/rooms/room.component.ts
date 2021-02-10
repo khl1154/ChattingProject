@@ -112,6 +112,7 @@ export class RoomComponent implements OnInit, AfterViewInit {
         const requestSendRoomMessage = new RequestSendRoomMessage();
         requestSendRoomMessage.roomId = room.id;
         requestSendRoomMessage.contents = value;
+        requestSendRoomMessage.sendDt = new Date();
         this.wsService.publish('/app/rooms/send-messages', requestSendRoomMessage);
 
     }

@@ -52,6 +52,7 @@ public class FriendsController {
     @ApiOperation(value = "친구추가")
     @PostMapping(value = "/add")
     public void addFriend(@RequestBody String friendId, @ModelAttributeMapping UserToken userToken) {
+        System.out.println("여긴데");
         friendService.addFriend(userToken.getId(), friendId);
         User user = userService.find(userToken.getId());
         List<User> friendsOfUser = user.getFriends();

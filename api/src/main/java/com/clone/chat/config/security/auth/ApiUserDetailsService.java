@@ -29,6 +29,7 @@ public class ApiUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
             Optional<User> userOptional = userRepository.findById(username);
             User user = userOptional.orElseThrow(() -> new UsernameNotFoundException(("msg.error.login.fail")));
 

@@ -71,7 +71,6 @@ public class RoomsController {
         room = roomRepository.save(room);
 
         room.getUserRooms().stream().forEach(it -> {
-            roomService.refreshRoomList(it.getUserId());
             List<Room> rooms = roomService.userRoomFindAllByUserId(it.getUserId());
             webSocketManagerService.sendToUserByUserId("/queue/rooms", rooms, it.getUserId());
         });
@@ -96,8 +95,15 @@ public class RoomsController {
         });
         Message saveMsg = messageRepository.save(msg);
 
-        roomRepository.findById(message.getRoomId()).get().getUserRooms().forEach(it -> {
+        Room room = roomRepository.findById(message.getRoomId()).get();
+        room.setLastMsgContents(message.getContents());
+        room.setLastMsgDt(message.getSendDt());
+        roomRepository.save(room);
+
+        room.getUserRooms().forEach(it -> {
             webSocketManagerService.sendToUserByUserId("/queue"+URI_PREFIX+"/"+message.getRoomId()+"/message", saveMsg, it.getUserId());
+            List<Room> rooms = roomService.userRoomFindAllByUserId(it.getUserId());
+            webSocketManagerService.sendToUserByUserId("/queue/rooms", rooms, it.getUserId());
         });
     }
 

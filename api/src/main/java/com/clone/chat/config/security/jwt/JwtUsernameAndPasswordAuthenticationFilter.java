@@ -47,7 +47,6 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request,
                                                 HttpServletResponse response) throws AuthenticationException {
-
         try {
             UsernameAndPasswordAuthenticationRequest authenticationRequest = objectMapper
                     .readValue(request.getInputStream(), UsernameAndPasswordAuthenticationRequest.class);
@@ -58,13 +57,11 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
                     authenticationRequest.getPassword()
             );
             Authentication authenticate = authenticationManager.authenticate(authentication);
-
             return authenticate;
 
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
     }
 
     @Override
@@ -78,9 +75,11 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
         String fullToken = jwtConfig.getTokenPrefix() + token;
         response.addHeader(HttpHeaders.AUTHORIZATION, fullToken);
 
+        // response에 바디에도 UserToken 저장
         UserToken tokenObj = UserToken.builder().id(authResult.getName()).token(fullToken).build();
         ObjectMapper objectMapper = new ObjectMapper();
         response.getWriter().write(objectMapper.writeValueAsString(tokenObj));
+
 //        if (null == userAuthToken) {
 //            ListOperations<String, Object> stringObjectListOperations = redisTemplate.opsForList();
 //            redisTemplate.opsForHash().put("api-user-tokens", authResult.getName(),

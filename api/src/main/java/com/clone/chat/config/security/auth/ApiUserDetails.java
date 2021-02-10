@@ -37,6 +37,7 @@ public class ApiUserDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+
         return grantedAuthorities;
     }
 

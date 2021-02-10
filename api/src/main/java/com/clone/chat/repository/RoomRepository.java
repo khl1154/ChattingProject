@@ -18,7 +18,8 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
             " distinct a " +
             "from Room a left join fetch a.userRooms b " +
             "where" +
-            " a.id in (select b.room from a.userRooms b where b.userId = :userId)" +
+            " a.id in (select b.room from a.userRooms b where b.userId = :userId) " +
+            "order by a.lastMsgDt desc " +
             "")
     List<Room> findAllByUserRoom_UserId(String userId);
 

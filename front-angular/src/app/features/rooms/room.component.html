@@ -12,7 +12,7 @@
         <ul class="list-group">
             <li class="list-group-item" *ngFor="let it of rooms" style="cursor: pointer" (click)="showRoom(it)">
                 <div>
-                    {{it.id}} {{it.name}}
+                   {{it.name}} {{it.lastMsgContents}} {{it.lastMsgDt | date: 'yyyy/MM/dd HH:mm:ss'}}
                 </div>
                 <div *ngIf="it.userRooms">
                     <span *ngFor="let sit of it.userRooms" class="badge badge-primary m-1">{{sit.id}}

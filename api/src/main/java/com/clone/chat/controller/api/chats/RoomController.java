@@ -20,7 +20,6 @@ import java.util.List;
 public class RoomController {
     public static final String URI_PREFIX = ApiController.URI_PREFIX + "/rooms";
 
-
     @Autowired
     UserRoomRepository userRoomRepository;
 
