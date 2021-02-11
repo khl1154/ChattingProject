@@ -6,6 +6,7 @@ import com.clone.chat.domain.User;
 import com.clone.chat.domain.UserRoom;
 import com.clone.chat.domain.base.UserBase;
 import com.clone.chat.repository.ChatRoomRepository;
+import com.clone.chat.repository.FileRepository;
 import com.clone.chat.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +46,6 @@ public class ChatApplication implements CommandLineRunner {
     @Autowired
     ChatRoomRepository roomRepository;
 
-
     @Autowired
     PasswordEncoder passwordEncoder;
 
@@ -71,10 +71,9 @@ public class ChatApplication implements CommandLineRunner {
             userRepository.saveAll(Arrays.asList(admin, user1, user2, user3, user4, user5, user6));
             userRepository.flush();
             user1.addFirend(user2, user3, user4);
-            user2.addFirend(user3, user4);
-            user3.addFirend(user1, user5);
-            user4.addFirend(user3, user5);
-            user5.addFirend(user1, user2, user3, user4, user6);
+            user2.addFirend(user1, user3, user4);
+            user3.addFirend(user1, user2);
+            user4.addFirend(user1, user2);
             userRepository.saveAll(Arrays.asList(admin, user1, user2, user3, user4, user5, user6));
 
 

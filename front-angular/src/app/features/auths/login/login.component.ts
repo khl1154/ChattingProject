@@ -115,7 +115,6 @@ export class LoginComponent implements OnInit {
 
     signUp($event: ButtonsClickType) {
 
-
         const headers = new HttpHeaders();
         headers.append('Content-Type', 'multipart/form-data');
 
@@ -134,7 +133,12 @@ export class LoginComponent implements OnInit {
             .subscribe(_ => {
                 this.signUpModal.close();
             }, (err) => {
-                this.alertService.dangerAlertHttpErrorResponse('error', '실패하셨습니다.');
+                if(err.error.code === 'ERROR_DUPLICATED_ID')
+                    this.alertService.dangerAlertHttpErrorResponse('error', '중복된 아이디입니다.');
+                if(err.error.code === 'ERROR_SIGNUP_VALIDATION')
+                    this.alertService.dangerAlertHttpErrorResponse('error', '항목을 모두 입력해주세요.');
+                else
+                    this.alertService.dangerAlertHttpErrorResponse('error', '에러');
             });
     }
 

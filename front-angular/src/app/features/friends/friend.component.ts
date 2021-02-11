@@ -66,6 +66,7 @@ export class FriendComponent implements OnInit {
     }
 
     public openAddFriendModal() {
+        this.findUser = undefined;
         this.addFriendModal.show();
         this.addFriendModal.resetForm();
     }
@@ -81,7 +82,10 @@ export class FriendComponent implements OnInit {
         if (this.findUser?.id && 'ok' === $event?.name) {
             const addFriend = new RequestAddFriend();
             addFriend.id = this.findUser.id;
-            this.api.post<void>('/apis/friends/add', {params: addFriend}).subscribe(_ => this.addFriendModal.close());
+            this.api.post<void>('/apis/friends/add', {params: addFriend}).subscribe(_ => this.addFriendModal.close()
+                , (err) => {
+                this.alertService.dangerAlertHttpErrorResponse('error', '잘못된 친구추가입니다.');
+            });
         }
     }
 }

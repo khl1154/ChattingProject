@@ -40,6 +40,7 @@ public class AnonApisController {
     @ApiOperation(value = "회원가입")
     @PostMapping("/sign-up")
     public void join(@ModelAttribute RequestSignUp requestSignUp) {
+
         userService.signUp(requestSignUp);
     }
 

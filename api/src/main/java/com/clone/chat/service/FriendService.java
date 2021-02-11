@@ -41,10 +41,14 @@ public class FriendService {
         if(!findUser.isPresent() || !findFriend.isPresent()) {
             throw new BusinessException(MsgCode.ERROR_ENTITY_NOT_FOUND, ErrorTrace.getName());
         }
-        // 사용자 id와 등록할 친구 id가 같은 경우
+
         if(findUser.get().getId() == findFriend.get().getId()) {
             throw new BusinessException(MsgCode.ERROR_INVALID_FRIEND_RELATIONSHIP, ErrorTrace.getName());
         }
+
+        if(findUser.get().getFriends().contains(findFriend.get()))
+            throw new BusinessException(MsgCode.ERROR_INVALID_FRIEND_RELATIONSHIP, ErrorTrace.getName());
+
         findUser.get().addFirend(findFriend.get());
         userService.save(findUser.get());
         refreshFriends(userId);

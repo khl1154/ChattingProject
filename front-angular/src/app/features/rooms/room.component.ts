@@ -68,14 +68,18 @@ export class RoomComponent implements OnInit, AfterViewInit {
     }
 
     createRoom() {
+        this.newRoomName = '';
         this.api.get<User[]>('/apis/friends').subscribe(it => {
             this.friends = it.map(sit => Object.assign(new UserCheck(), sit));
-            this.newRoomName = uuidv4();
         });
     }
 
     createRoomCheck($event: ButtonsClickType) {
         if ($event.name === 'ok') {
+            if(this.newRoomName === '') {
+                this.alertService.dangerAlertHttpErrorResponse('error', '방 이름을 입력해주세요');
+                return;
+            }
             console.log(this.friends);
             const data = new RequestCreateRoom();
             data.name = this.newRoomName;
