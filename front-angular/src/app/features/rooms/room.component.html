@@ -2,7 +2,7 @@
 
 
     <div class="d-flex mt-3 mb-3 ">
-        <div class="mr-auto p-2"> 친구</div>
+        <div class="mr-auto p-2" style="margin-left: 50px"> 대화방</div>
         <div class="p-2"><i-feather name="refresh-Cw" style="margin-right:10px; cursor: pointer" (click)="send()"></i-feather></div>
         <div class="p-2"><i-feather name="plus-square" style="margin-right:10px; cursor: pointer" (click)="createRoom(); modal.show()"></i-feather></div>
     </div>
@@ -12,11 +12,10 @@
         <ul class="list-group">
             <li class="list-group-item" *ngFor="let it of rooms" style="cursor: pointer" (click)="showRoom(it)">
                 <div>
-                   {{it.name}} {{it.lastMsgContents}} {{it.lastMsgDt | date: 'yyyy/MM/dd HH:mm:ss'}}
+                    <b>{{it.name}}</b> <br *ngIf="it.lastMsgContents">{{it.lastMsgContents}}&nbsp;&nbsp;&nbsp; {{it.lastMsgDt | date: 'yyyy/MM/dd HH:mm:ss'}}
                 </div>
                 <div *ngIf="it.userRooms">
-                    <span *ngFor="let sit of it.userRooms" class="badge badge-primary m-1">{{sit.id}}
-                        - {{sit.userId}}</span>
+                    <span *ngFor="let sit of it.userRooms" class="badge badge-primary m-1">{{sit.user.nickName}}</span>
                 </div>
 
             </li>
@@ -29,9 +28,9 @@
     <div>
         <div class="input-group mb-3">
             <div class="input-group-prepend">
-                <span class="input-group-text" id="basic-addon1">name</span>
+                <span class="input-group-text" id="basic-addon1">방이름</span>
             </div>
-            <input type="text" class="form-control" readonly placeholder="name" aria-label="Username" aria-describedby="basic-addon1" [(ngModel)]="newRoomName">
+            <input type="text" class="form-control" placeholder="방이름을 입력해주세요" aria-label="Username" aria-describedby="basic-addon1" [(ngModel)]="newRoomName">
         </div>
     </div>
     <div *ngFor="let it of this.friends">

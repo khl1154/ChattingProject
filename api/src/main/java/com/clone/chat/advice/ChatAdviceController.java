@@ -1,8 +1,11 @@
 package com.clone.chat.advice;
 
 import com.clone.chat.code.MsgCode;
+import com.clone.chat.exception.BusinessException;
 import com.clone.chat.model.error.Error;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.http.HttpException;
+import org.apache.http.client.HttpResponseException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageExceptionHandler;
@@ -46,7 +49,7 @@ public class ChatAdviceController extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> throwable(Throwable ex, WebRequest webRequest) {
         logingAndSetMsg(ex, webRequest);
         Error e = new Error();
-        e.setCode(MsgCode.ERROR_UNKNOWN.name());
+        e.setCode(((BusinessException) ex).getCode().toString());
         e.setMessage(Optional.ofNullable(ex.getMessage()).orElseGet(ex::toString));
         return new ResponseEntity<>(e, HttpStatus.BAD_REQUEST);
     }

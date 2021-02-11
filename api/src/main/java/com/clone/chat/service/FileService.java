@@ -18,7 +18,6 @@ public class FileService {
 
     @Transactional
     public com.clone.chat.domain.File save(MultipartFile file){
-        System.out.println("FileService.save111");
         String originalFileName = "";
         String fileName = "";
         String filePath = "";
@@ -42,7 +41,8 @@ public class FileService {
         return fileRepository.save(fileEntity);
     }
 
-    public com.clone.chat.domain.File findOne(Long id) {
+    public com.clone.chat.domain.File
+    findOne(Long id) {
         return fileRepository.getOne(id);
     }
 

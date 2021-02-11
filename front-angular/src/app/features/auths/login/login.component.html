@@ -8,9 +8,9 @@
             <input type="text" id="username" [(ngModel)]="username" name="username" class="form-control my-1" placeholder="ID" required autofocus>
             <label for="password" class="sr-only">Password</label>
             <input type="password" id="password" name="password" [(ngModel)]="password" class="form-control" placeholder="Password" (keyup.enter)="submit($event)" required>
-            <button class="btn btn-lg btn-primary btn-block" type="button" (click)="submit($event)">SignIn</button>
+            <button class="btn btn-lg btn-primary btn-block" type="button" (click)="submit($event)">Sign-in</button>
+        <button class="btn btn-lg btn-primary btn-block" type="button" (click)="openSignUpModal()">Sign-up</button>
         </div>
-        <button class="btn btn-lg btn-primary btn-block" type="button" (click)="openSignUpModal()">SignUp</button>
         <div style="width: 100%; max-width:400px; margin: 0 auto">
         </div>
     </div>
@@ -36,7 +36,7 @@
         <div class="row mb-3">
             <label class="col-sm-2 col-form-label">phone</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" [(ngModel)]="requestSignUp.phone" [ngModelOptions]="{standalone: true}">
+                <input type="text" class="form-control" ng-required="true" [(ngModel)]="requestSignUp.phone" [ngModelOptions]="{standalone: true}">
             </div>
         </div>
         <div class="row mb-3">
@@ -54,7 +54,7 @@
         <div class="row mb-3">
             <label class="col-sm-2 col-form-label">file</label>
             <div class="col-sm-10">
-                <input #file class="form-control" type="file" id="formFile"  (change)="fileList = file.files">
+                <input #file class="form-control" type="file" accept="image/gif,image/jpeg,image/png" id="formFile"  (change)="fileList = file.files">
             </div>
         </div>
     </form>

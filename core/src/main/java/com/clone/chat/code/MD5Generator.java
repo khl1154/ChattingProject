@@ -13,6 +13,8 @@ public class MD5Generator {
     private String result;
 
     public MD5Generator(InputStream input) throws UnsupportedEncodingException, NoSuchAlgorithmException, IOException {
+
+
         BufferedImage buffImg = ImageIO.read(input);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         ImageIO.write(buffImg, "png", outputStream);

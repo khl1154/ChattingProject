@@ -45,6 +45,7 @@ public class UserService {
             File userFile = fileService.save(requestSignUp.getFile());
             user.setFile(userFile);
         }
+
         String password = user.getPassword();
         user.setPassword(passwordEncoder.encode(password));
         userRepository.save(user);
