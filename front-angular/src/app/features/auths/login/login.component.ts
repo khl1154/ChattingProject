@@ -116,7 +116,7 @@ export class LoginComponent implements OnInit {
     signUp($event: ButtonsClickType) {
 
 
-        let headers = new HttpHeaders();
+        const headers = new HttpHeaders();
         headers.append('Content-Type', 'multipart/form-data');
 
         const requestFormData = new FormData();
@@ -133,7 +133,9 @@ export class LoginComponent implements OnInit {
             {params: requestFormData, headers})
             .subscribe(_ => {
                 this.signUpModal.close();
-            }, this.api.errorHandler.bind(this.api));
+            }, (err) => {
+                this.alertService.dangerAlertHttpErrorResponse('error', '실패하셨습니다.');
+            });
     }
 
     openSignUpModal() {
