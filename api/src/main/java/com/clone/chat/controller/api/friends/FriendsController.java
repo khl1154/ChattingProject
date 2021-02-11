@@ -1,8 +1,12 @@
 package com.clone.chat.controller.api.friends;
 
 import com.clone.chat.annotation.ModelAttributeMapping;
+import com.clone.chat.code.MsgCode;
 import com.clone.chat.controller.api.ApiController;
+import com.clone.chat.controller.api.friends.model.RequestAddFriend;
 import com.clone.chat.domain.User;
+import com.clone.chat.exception.BusinessException;
+import com.clone.chat.exception.ErrorTrace;
 import com.clone.chat.model.UserToken;
 import com.clone.chat.model.view.json.JsonViewApi;
 import com.clone.chat.repository.UserRepository;
@@ -51,17 +55,16 @@ public class FriendsController {
 
     @ApiOperation(value = "친구추가")
     @PostMapping(value = "/add")
-    public void addFriend(@RequestBody String friendId, @ModelAttributeMapping UserToken userToken) {
-        System.out.println("여긴데");
-        friendService.addFriend(userToken.getId(), friendId);
-        User user = userService.find(userToken.getId());
+    public void addFriend(@RequestBody RequestAddFriend requestAddFriend, @ModelAttributeMapping UserToken userToken) {
+        friendService.addFriend(userToken.getId(), requestAddFriend.getId());
+        User user = userService.find(userToken.getId()).orElseThrow(() -> new BusinessException(MsgCode.ERROR_ENTITY_NOT_FOUND, ErrorTrace.getName()));
         List<User> friendsOfUser = user.getFriends();
         webSocketManagerService.sendToUserByUserId("/queue/friends",friendsOfUser,user.getId());
 
-        friendService.addFriend(friendId, userToken.getId());
-        User friend = userService.find(friendId);
+        friendService.addFriend(requestAddFriend.getId(), userToken.getId());
+        User friend = userService.find(requestAddFriend.getId()).orElseThrow(() -> new BusinessException(MsgCode.ERROR_ENTITY_NOT_FOUND, ErrorTrace.getName()));
         List<User> friendsOfFriend = friend.getFriends();
-        webSocketManagerService.sendToUserByUserId("/queue/friends",friendsOfFriend,friendId);
+        webSocketManagerService.sendToUserByUserId("/queue/friends",friendsOfFriend,requestAddFriend.getId());
     }
 
     @GetMapping(value = {"", "/"})

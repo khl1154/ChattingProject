@@ -1,20 +1,18 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {AlertService} from '@app/services/ui/alert.service';
-import {HomeListComponent} from '@app/features/home/modal/home-list.component';
 import {JsonApiService} from '@app/services/json-api.service';
 
 import {Router} from '@angular/router';
 import {filter} from 'rxjs/operators';
 import {HttpClient, HttpParams} from '@angular/common/http';
-import {RxStompService} from '@stomp/ng2-stompjs';
 import {UserService, WsService} from '@app/services';
 import {UserTokenContain} from '@app/models/UserTokenContain';
 import {com} from '@generate/models';
-import User = com.clone.chat.domain.User;
 import {BasicModalComponent, ButtonsClickType} from '@app/shareds/modals/basic-modal/basic-modal.component';
+import User = com.clone.chat.domain.User;
 import Message = com.clone.chat.domain.Message;
 import RequestMessage = com.clone.chat.controller.ws.messages.model.RequestMessage;
-import {Observable} from "rxjs/index";
+import RequestAddFriend = com.clone.chat.controller.api.friends.model.RequestAddFriend;
 
 @Component({
     selector: 'app-home',
@@ -26,7 +24,6 @@ export class FriendComponent implements OnInit {
     @ViewChild('userModal') userModal: BasicModalComponent;
     @ViewChild('addFriendModal') addFriendModal: BasicModalComponent;
 
-    private searchUserId: String;
     private choiceUser: User;
     private findUser: User;
     private friends: User[];
@@ -70,24 +67,21 @@ export class FriendComponent implements OnInit {
 
     public openAddFriendModal() {
         this.addFriendModal.show();
+        this.addFriendModal.resetForm();
     }
 
-    search(event) {
-        if(event.key === 'Enter') {
-            this.api.get<User>('/apis/friends/search?userId='+this.searchUserId).subscribe(it => {
-                this.findUser = it
-            });
-        }
+    searchFriend(name: string) {
+        this.findUser = undefined;
+        this.api.get<User>(`/apis/friends/search?userId=${name}`).subscribe(it => {
+            this.findUser = it;
+        }, this.api.errorHandler.bind(this.api));
     }
 
     addFriend($event: ButtonsClickType) {
-        let params = new HttpParams();
-        console.log(22)
-        console.log(this.findUser.id)
-        params.append("friendId",this.findUser.id);
-        if ($event.name === 'ok') {
-            console.log(2333)
-            this.api.post('/apis/friends/add',{params})
+        if (this.findUser?.id && 'ok' === $event?.name) {
+            const addFriend = new RequestAddFriend();
+            addFriend.id = this.findUser.id;
+            this.api.post<void>('/apis/friends/add', {params: addFriend}).subscribe(_ => this.addFriendModal.close());
         }
     }
 }

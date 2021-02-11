@@ -65,7 +65,8 @@ public class WebSecurityConfigurerAdapter extends org.springframework.security.c
 				"/*.ico",
 				"/websocket",
 				"/websocket/**",
-//				"/web-core-assets/**",
+				"/anon-apis",
+				"/anon-apis/**",
 //				"/*.js"
 				"/h2-console",
 				"/h2-console/**",
@@ -102,7 +103,7 @@ public class WebSecurityConfigurerAdapter extends org.springframework.security.c
 					.logoutSuccessUrl(DEFAULT_SUCCESS_URL)
 				.and()
 				.addFilter(new JwtUsernameAndPasswordAuthenticationFilter(authenticationManager(), jwtConfig, tokenService, userRepository,objectMapper))
-				.addFilterAfter(new JwtTokenVerifier(jwtConfig, tokenService),JwtUsernameAndPasswordAuthenticationFilter.class)
+				.addFilterAfter(new JwtTokenVerifier(jwtConfig, tokenService), JwtUsernameAndPasswordAuthenticationFilter.class)
 				.authorizeRequests()
 				.antMatchers("/", "index","/favicon.ico", "*.css","/css/*", "/js/*").permitAll()
 				.antMatchers("/apis","/apis/**").hasAnyRole(UserRole.USER.name(), UserRole.ADMIN.name())

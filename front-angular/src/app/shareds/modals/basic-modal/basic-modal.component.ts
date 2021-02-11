@@ -20,7 +20,7 @@ export type ButtonsClickType =  {
   data?: any,
   // callback: (data?: any) => unknown;
 };
-
+declare let $: any;
 @Component({
   selector: 'basic-modal',
   templateUrl: './basic-modal.component.html',
@@ -95,5 +95,11 @@ export class BasicModalComponent implements OnInit{
     //   console.log('emitter subscripbe', its);
     // });
     this.buttonClick.emit(it);
+  }
+
+  public resetForm() {
+    $('.modal-body form').each(function() {
+      this.reset();
+    });
   }
 }

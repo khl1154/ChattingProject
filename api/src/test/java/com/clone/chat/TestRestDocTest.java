@@ -1,6 +1,6 @@
 package com.clone.chat;
 
-import com.clone.chat.controller.api.users.UsersController;
+import com.clone.chat.controller.api.anon.AnonApisController;
 import com.clone.chat.service.ChatService;
 import com.clone.chat.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -53,7 +53,7 @@ public class TestRestDocTest {
     private ChatService chatService;
 
     @MockBean
-    private UsersController userController;
+    private AnonApisController userController;
     @MockBean
     private UserService userService;
 //    @Autowired

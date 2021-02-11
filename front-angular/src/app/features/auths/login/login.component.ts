@@ -8,7 +8,7 @@ import {
     ViewContainerRef
 } from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {UserService} from '@app/services/user.service';
 import {JsonApiService} from '@app/services/json-api.service';
 import {AlertService} from '@app/services/ui/alert.service';
@@ -16,6 +16,9 @@ import {MomentService} from '@app/services/date/moment.service';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {CookieService} from 'ngx-cookie-service';
 import {filter} from 'rxjs/operators';
+import {BasicModalComponent, ButtonsClickType} from '@app/shareds/modals/basic-modal/basic-modal.component';
+import {com} from '@generate/models';
+import RequestSignUp = com.clone.chat.controller.api.anon.model.RequestSignUp;
 declare var $;
 
 @Component({
@@ -29,12 +32,11 @@ export class LoginComponent implements OnInit {
     note: string;
     username: string;
     password: string;
-    formdata: FormGroup;
+    requestSignUp = new RequestSignUp();
+    fileList: FileList;
     @ViewChild('from') someInput: ElementRef;
+    @ViewChild('signUpModal') signUpModal: BasicModalComponent;
     private type: string;
-
-    private forceProfile: string;
-
     // https://stackoverflow.com/questions/38093727/angular2-insert-a-dynamic-component-as-child-of-a-container-in-the-dom
     constructor(private router: Router, private userService: UserService, private cookieService: CookieService,
                 private http: HttpClient, private route: ActivatedRoute, private api: JsonApiService, private alertService: AlertService,
@@ -69,17 +71,14 @@ export class LoginComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.requestSignUp = new RequestSignUp();
         this.type = this.route.snapshot.queryParamMap.get('type');
         if ('sign-fail' === this.type) {
             this.note = 'msg.error.login.fail';
         } else if ('sign-out' === this.type) {
             this.note = 'msg.error.login.logout';
         }
-        this.formdata = new FormGroup({
-            username: new FormControl('', [Validators.required]),
-            password: new FormControl('', [Validators.required]),
-            _csrf: new FormControl(this.cookieService.get('XSRF-TOKEN'), [Validators.required])
-        });
+
 
         this.userService.user$.pipe(filter(it => it.authorities && it.authorities.length > 0)).subscribe(sit => {
             this.router.navigate(['/home']);
@@ -110,5 +109,35 @@ export class LoginComponent implements OnInit {
 
     showFindIdPwd() {
         // this.idpwdFindModal.show();
+    }
+
+
+
+    signUp($event: ButtonsClickType) {
+
+
+        let headers = new HttpHeaders();
+        headers.append('Content-Type', 'multipart/form-data');
+
+        const requestFormData = new FormData();
+        Object.keys(this.requestSignUp).filter(it => this.requestSignUp[it]).forEach(it => {
+            requestFormData.append(it, this.requestSignUp[it]);
+        });
+
+        /* 이미지 업로드 관련 */
+        if (this.fileList !== undefined && this.fileList.length > 0){
+            requestFormData.append('file', this.fileList[0]);
+        }
+        this.api.post<void>(
+            `/anon-apis/sign-up`,
+            {params: requestFormData, headers})
+            .subscribe(_ => {
+                this.signUpModal.close();
+            }, this.api.errorHandler.bind(this.api));
+    }
+
+    openSignUpModal() {
+        this.requestSignUp = new RequestSignUp();
+        this.signUpModal.show();
     }
 }
