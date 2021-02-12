@@ -9,6 +9,7 @@ import {com} from '@generate/models';
 import User = com.clone.chat.domain.User;
 import UserToken = com.clone.chat.model.UserToken;
 import {UserTokenContain} from '@app/models/UserTokenContain';
+import error = com.clone.chat.model.error;
 
 declare let $: any;
 declare let moment: any;
@@ -48,7 +49,14 @@ export class UserService { // implements CanActivate
         this.api.post<UserToken>('/securitys/user-sign-in', {params}).subscribe((it: UserToken) => {
             window.localStorage.setItem('token', it.token);
             this.reloadUserDetails();
-        }, this.api.errorHandler.bind(this.api));
+            
+        }, (error) => {
+                this.alertService.dangerAlertHttpErrorResponse('error', '계정정보를 확인해주세요');
+            }
+        // this.api.errorHandler.bind(this.api)
+            ,
+            
+        );
     }
 
     public reloadUserDetails() {

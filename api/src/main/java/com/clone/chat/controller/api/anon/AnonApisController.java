@@ -2,6 +2,7 @@ package com.clone.chat.controller.api.anon;
 
 import com.clone.chat.code.MsgCode;
 import com.clone.chat.controller.api.anon.model.RequestSignUp;
+import com.clone.chat.domain.User;
 import com.clone.chat.exception.BusinessException;
 import com.clone.chat.exception.ErrorTrace;
 import com.clone.chat.repository.UserRepository;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @RestController
@@ -48,8 +50,9 @@ public class AnonApisController {
 
     @ApiOperation(value = "회원찾기")
     @GetMapping("/users/{id}")
-    public void findUser(@PathVariable("id") String id) {
-        userService.find(id).orElseThrow(() -> new BusinessException(MsgCode.ERROR_ENTITY_NOT_FOUND, ErrorTrace.getName()));
+    public User findUser(@PathVariable("id") String id) {
+        Optional<User> user = userService.find(id);
+        user.orElseThrow(() -> new BusinessException(MsgCode.ERROR_ENTITY_NOT_FOUND, ErrorTrace.getName()));
+        return user.get();
     }
-
 }

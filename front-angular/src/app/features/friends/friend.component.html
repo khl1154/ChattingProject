@@ -15,8 +15,8 @@
         <ul class="list-group">
             <li class="list-group-item" style="cursor:pointer" *ngFor="let it of friends" (click)="showUser(it)">
                 <img  style="width: 20px; height: 20px" src="{{it.file?.filePath}}">
-                <span class="badge badge-pill badge-primary ml-2 mr-2 ">{{it.id}}</span> <span
-                    class="badge badge-secondary ml-2 mr-2">{{it.nickName}}</span>
+                <span class="badge badge-pill badge-primary ml-2 mr-2 ">{{it.nickName}}</span> <span
+                    class="badge badge-secondary ml-2 mr-2">{{it.statusMsg}}</span>
             </li>
         </ul>
         <!--        <div *ngFor="let it of friends" class="row">-->
@@ -41,7 +41,7 @@
             </div>
         </div>
         <div *ngIf="findUser" style="text-align: center">
-            <img *ngIf="findUser" style="width: 50%; height: 50%" src="{{findUser.file?.filePath}}" onerror="this.src = 'https://dt8upu5cibhp1.cloudfront.net/5db96de3e32fa818dc0d0aecfe82869f'" class="img-responsive" alt="">
+            <img *ngIf="findUser" style="width: 50%; height: 50%" src="{{findUser.file?.filePath}}" class="img-responsive" alt="">
 
             <div style="font-size: 15px">{{findUser.nickName}}</div>
         </div>

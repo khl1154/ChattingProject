@@ -107,17 +107,23 @@ export class LoginComponent implements OnInit {
             .subscribe(_ => {
                 this.signUpModal.close();
             }, (error => {
-                const err = error.error as Error<FieldError<string>>;
-                let details = '에러<br/> ';
-                err.errors.forEach((it: FieldError<string>) => {
-                    details +=  it.message + '<br/>' + it.field;
-                });
-                this.alertService.dangerAlert(err.message, details);
+                console.log(error)
+                if(error.error.code === 'ERROR_BIND') {
+                    const err = error.error as Error<FieldError<string>>;
+                    let details = '에러<br/> ';
+                    err.errors.forEach((it: FieldError<string>) => {
+                        details +=  it.message + '<br/>' + it.field;
+                    });
+                    this.alertService.dangerAlert(err.message, details);
+                }
+                else if(error.error.code === 'ERROR_DUPLICATED_ID')
+                    this.alertService.dangerAlert('에러', '중복된 아이디입니다.');
             }));
     }
 
     openSignUpModal() {
         this.requestSignUp = new RequestSignUp();
         this.signUpModal.show();
+        this.setFormGroup();
     }
 }

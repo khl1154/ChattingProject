@@ -28,7 +28,7 @@ public class User extends UserBase {
 //    @JoinColumn(name = "id")
     @JoinTable(name = "USER_FRIEND")
     @JsonView({JsonViewFrontEnd.class})
-    private List<User> friends;
+    private List<User> friends = new ArrayList<>();
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "file_id")

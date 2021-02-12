@@ -62,10 +62,10 @@ public class ChatApplication implements CommandLineRunner {
         log.debug("applicationStartedEvent done!! -> " + activeProfile);
         if ("dev".equals(activeProfile)) {
             User admin = UserBase.builder().id("admin").password(passwordEncoder.encode("1234")).nickName("admin-nick").role(UserRole.ADMIN).build().map(User.class);
-            User user1 = UserBase.builder().id("user1").password(passwordEncoder.encode("1234")).nickName("user1-nick").role(UserRole.USER).build().map(User.class);
-            User user2 = UserBase.builder().id("user2").password(passwordEncoder.encode("1234")).nickName("user2-nick").role(UserRole.USER).build().map(User.class);
-            User user3 = UserBase.builder().id("user3").password(passwordEncoder.encode("1234")).nickName("user3-nick").role(UserRole.USER).build().map(User.class);
-            User user4 = UserBase.builder().id("user4").password(passwordEncoder.encode("1234")).nickName("user4-nick").role(UserRole.USER).build().map(User.class);
+            User user1 = UserBase.builder().id("user1").password(passwordEncoder.encode("1234")).nickName("user1-nick").role(UserRole.USER).statusMsg("아 심심하다").build().map(User.class);
+            User user2 = UserBase.builder().id("user2").password(passwordEncoder.encode("1234")).nickName("user2-nick").role(UserRole.USER).statusMsg("신남").build().map(User.class);
+            User user3 = UserBase.builder().id("user3").password(passwordEncoder.encode("1234")).nickName("user3-nick").role(UserRole.USER).statusMsg("배고파").build().map(User.class);
+            User user4 = UserBase.builder().id("user4").password(passwordEncoder.encode("1234")).nickName("user4-nick").role(UserRole.USER).statusMsg("놀러가고싶다").build().map(User.class);
             User user5 = UserBase.builder().id("user5").password(passwordEncoder.encode("1234")).nickName("user5-nick").role(UserRole.USER).build().map(User.class);
             User user6 = UserBase.builder().id("user6").password(passwordEncoder.encode("1234")).nickName("user6-nick").role(UserRole.USER).build().map(User.class);
             userRepository.saveAll(Arrays.asList(admin, user1, user2, user3, user4, user5, user6));
