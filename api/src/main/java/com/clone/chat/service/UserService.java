@@ -1,6 +1,7 @@
 package com.clone.chat.service;
 
 import com.clone.chat.code.MsgCode;
+import com.clone.chat.code.UserRole;
 import com.clone.chat.controller.api.anon.model.RequestSignUp;
 import com.clone.chat.domain.File;
 import com.clone.chat.domain.User;
@@ -45,9 +46,8 @@ public class UserService {
             File userFile = fileService.save(requestSignUp.getFile());
             user.setFile(userFile);
         }
-
-        String password = user.getPassword();
-        user.setPassword(passwordEncoder.encode(password));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setRole(UserRole.USER);
         userRepository.save(user);
     }
 
