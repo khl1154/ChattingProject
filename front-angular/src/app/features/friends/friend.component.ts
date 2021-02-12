@@ -13,6 +13,7 @@ import User = com.clone.chat.domain.User;
 import Message = com.clone.chat.domain.Message;
 import RequestMessage = com.clone.chat.controller.ws.messages.model.RequestMessage;
 import RequestAddFriend = com.clone.chat.controller.api.friends.model.RequestAddFriend;
+import File = com.clone.chat.domain.File;
 
 @Component({
     selector: 'app-home',
@@ -38,6 +39,7 @@ export class FriendComponent implements OnInit {
             this.userTokenContain = userTokenContain;
             this.wsService.watch<User[]>('/user/queue/friends').subscribe((wit) => {
                 this.friends = wit;
+                this.friends.forEach(a => this.mergeFilePath(a));
             });
 
             this.wsService.watch<Message[]>('/user/queue/messages').subscribe((it) => {
@@ -75,7 +77,15 @@ export class FriendComponent implements OnInit {
         this.findUser = undefined;
         this.api.get<User>(`/apis/friends/search?userId=${name}`).subscribe(it => {
             this.findUser = it;
+            this.mergeFilePath(this.findUser);
         }, this.api.errorHandler.bind(this.api));
+    }
+
+    private mergeFilePath(user: User) {
+        if (user.file?.filePath) {
+            user.file = new File();
+            user.file.filePath = 'https://dt8upu5cibhp1.cloudfront.net/5db96de3e32fa818dc0d0aecfe82869f';
+        }
     }
 
     addFriend($event: ButtonsClickType) {

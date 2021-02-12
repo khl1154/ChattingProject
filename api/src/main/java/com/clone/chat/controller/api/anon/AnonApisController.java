@@ -16,6 +16,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(AnonApisController.URI_PREFIX)
@@ -39,7 +41,7 @@ public class AnonApisController {
 
     @ApiOperation(value = "회원가입")
     @PostMapping("/sign-up")
-    public void join(@ModelAttribute RequestSignUp requestSignUp) {
+    public void join(@Valid @ModelAttribute RequestSignUp requestSignUp) {
 
         userService.signUp(requestSignUp);
     }

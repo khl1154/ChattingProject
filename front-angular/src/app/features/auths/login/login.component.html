@@ -20,41 +20,41 @@
 
 
 <basic-modal #signUpModal [buttons]="[{name:'ok', class:'btn-primary'}]" (buttonClick)="signUp($event)">
-    <form>
+    <form [formGroup]="infoForm" >
         <div class="row mb-3">
             <label class="col-sm-2 col-form-label">id</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" [(ngModel)]="requestSignUp.id" [ngModelOptions]="{standalone: true}">
+                <input type="text" class="form-control" name="id" placeholder="id" formControlName="id">
             </div>
         </div>
         <div class="row mb-3">
             <label class="col-sm-2 col-form-label">nick</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" [(ngModel)]="requestSignUp.nickName" [ngModelOptions]="{standalone: true}">
+                <input type="text" class="form-control" name="nickName" placeholder="nickName" formControlName="nickName">
             </div>
         </div>
         <div class="row mb-3">
             <label class="col-sm-2 col-form-label">phone</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" ng-required="true" [(ngModel)]="requestSignUp.phone" [ngModelOptions]="{standalone: true}">
+                <input type="text" class="form-control" name="phone" placeholder="phone" formControlName="phone" >
             </div>
         </div>
         <div class="row mb-3">
             <label class="col-sm-2 col-form-label">statusMsg</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" [(ngModel)]="requestSignUp.statusMsg" [ngModelOptions]="{standalone: true}">
+                <input type="text" class="form-control" name="statusMsg" placeholder="statusMsg" formControlName="statusMsg">
             </div>
         </div>
         <div class="row mb-3">
             <label class="col-sm-2 col-form-label">Password</label>
             <div class="col-sm-10">
-                <input type="password" class="form-control" [(ngModel)]="requestSignUp.password" [ngModelOptions]="{standalone: true}">
+                <input type="password" class="form-control" name="password" placeholder="password" formControlName="password">
             </div>
         </div>
         <div class="row mb-3">
             <label class="col-sm-2 col-form-label">file</label>
             <div class="col-sm-10">
-                <input #file class="form-control" type="file" accept="image/gif,image/jpeg,image/png" id="formFile"  (change)="fileList = file.files">
+                <input #file class="form-control" type="file" name="file" placeholder="file" formControlName="file" accept="image/gif,image/jpeg,image/png" id="formFile"  (change)="fileList = file.files">
             </div>
         </div>
     </form>

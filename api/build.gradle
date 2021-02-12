@@ -79,6 +79,7 @@ generateTypeScript {
             'com.clone.chat.controller.api.**.model.**',
             'com.clone.chat.controller.ws.**.model.**',
             'com.clone.chat.config.security.jwt.**',
+            com/clone/chat/model/error
 //            'org.springframework.http.**',
 
     ]

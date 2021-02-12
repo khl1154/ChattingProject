@@ -3,6 +3,7 @@ import {JsonApiService} from '@app/services/json-api.service';
 import {UserService} from '@app/services/user.service';
 import {WsService} from '@app/services/ws.service';
 import {MomentService} from '@app/services/date/moment.service';
+import {ValidationService} from '@app/services/validation/validation.service';
 
 export const services = [
     AlertService,
@@ -10,6 +11,7 @@ export const services = [
     UserService,
     WsService,
     MomentService,
+    ValidationService,
 ];
 //
 export * from './ui/alert.service';

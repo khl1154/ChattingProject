@@ -19,6 +19,9 @@ import {filter} from 'rxjs/operators';
 import {BasicModalComponent, ButtonsClickType} from '@app/shareds/modals/basic-modal/basic-modal.component';
 import {com} from '@generate/models';
 import RequestSignUp = com.clone.chat.controller.api.anon.model.RequestSignUp;
+import Error = com.clone.chat.model.error.Error;
+import FieldError = com.clone.chat.model.error.FieldError;
+import {ValidationService} from '@app/services/validation/validation.service';
 declare var $;
 
 @Component({
@@ -37,40 +40,18 @@ export class LoginComponent implements OnInit {
     @ViewChild('from') someInput: ElementRef;
     @ViewChild('signUpModal') signUpModal: BasicModalComponent;
     private type: string;
+    infoForm: FormGroup;
     // https://stackoverflow.com/questions/38093727/angular2-insert-a-dynamic-component-as-child-of-a-container-in-the-dom
-    constructor(private router: Router, private userService: UserService, private cookieService: CookieService,
+    constructor(private validationService: ValidationService, private router: Router, private userService: UserService, private cookieService: CookieService,
                 private http: HttpClient, private route: ActivatedRoute, private api: JsonApiService, private alertService: AlertService,
                 private momentService: MomentService, private renderer2: Renderer2, private el: ElementRef, private componentFactoryResolver: ComponentFactoryResolver,
                 public viewContainerRef: ViewContainerRef,
     ) {
-        // console.log('LoginComponent constructor');
-        // setTimeout(() => {
-        //     this.sw = true;
-        // }, 2000);
-
-        // const componentFactory = this.componentFactoryResolver.resolveComponentFactory(
-        //     BasicModalComponent,
-        // );
-        // const viewRef = viewContainerRef.detach();
-        // const componentRef = this.viewContainerRef.createComponent(componentFactory);
-        // this.el.nativeElement.appendChild(componentRef.location.nativeElement);
-
-        // const booleanObservable = of(true);
-        // const ss = of(true);
-        // booleanObservable.pipe(
-        //         switchMapTo('zzz'),
-        //         debounceTime(1),
-        //         distinctUntilChanged(),
-        //         takeUntil(ss)
-        //     )
-        //     .subscribe((value) => console.log('-----', value));
-        //
-        // ss.subscribe((o) => {
-        //    console.log(o);
-        // });
+        this.setFormGroup();
     }
 
     ngOnInit() {
+        this.setFormGroup();
         this.requestSignUp = new RequestSignUp();
         this.type = this.route.snapshot.queryParamMap.get('type');
         if ('sign-fail' === this.type) {
@@ -85,45 +66,38 @@ export class LoginComponent implements OnInit {
         });
 
         this.userService.user$.subscribe((it) => {
-            // console.log('login init  ' + it.admNm);
-            // if (UseCd.USE001 === it.useCd) {
-            //     if (it.homeUrl) {
-            //         this.router.navigate([it.homeUrl.replace('/#', '')]);
-            //     } else {
-            //         this.router.navigate(['/home']);
-            //     }
-            // }
         });
 
+    }
+
+
+    setFormGroup() {
+        this.infoForm = new FormGroup({
+            id: new FormControl('', [Validators.required]),
+            nickName: new FormControl('', [Validators.required]),
+            phone: new FormControl('', [Validators.required]),
+            statusMsg: new FormControl('', [Validators.required]),
+            password: new FormControl('', [Validators.required]),
+            file: new FormControl('', [Validators.required]),
+        });
     }
 
     submit(e) {
         this.userService.login(this.username, this.password);
     }
 
-
-
-    policiesComplete() {
-        // this.signUpModal.show();
-    }
-
-    showFindIdPwd() {
-        // this.idpwdFindModal.show();
-    }
-
-
-
     signUp($event: ButtonsClickType) {
-
+        if (!this.infoForm.valid){
+            this.validationService.validCheck(this.infoForm);
+            return;
+        }
+        const fromData = this.infoForm.value;
         const headers = new HttpHeaders();
         headers.append('Content-Type', 'multipart/form-data');
-
         const requestFormData = new FormData();
-        Object.keys(this.requestSignUp).filter(it => this.requestSignUp[it]).forEach(it => {
-            requestFormData.append(it, this.requestSignUp[it]);
+        Object.keys(fromData).filter(it => fromData[it]).forEach(it => {
+            requestFormData.append(it, fromData[it]);
         });
-
-        /* 이미지 업로드 관련 */
         if (this.fileList !== undefined && this.fileList.length > 0){
             requestFormData.append('file', this.fileList[0]);
         }
@@ -132,14 +106,14 @@ export class LoginComponent implements OnInit {
             {params: requestFormData, headers})
             .subscribe(_ => {
                 this.signUpModal.close();
-            }, (err) => {
-                if(err.error.code === 'ERROR_DUPLICATED_ID')
-                    this.alertService.dangerAlertHttpErrorResponse('error', '중복된 아이디입니다.');
-                if(err.error.code === 'ERROR_SIGNUP_VALIDATION')
-                    this.alertService.dangerAlertHttpErrorResponse('error', '항목을 모두 입력해주세요.');
-                else
-                    this.alertService.dangerAlertHttpErrorResponse('error', '에러');
-            });
+            }, (error => {
+                const err = error.error as Error<FieldError<string>>;
+                let details = '에러<br/> ';
+                err.errors.forEach((it: FieldError<string>) => {
+                    details +=  it.message + '<br/>' + it.field;
+                });
+                this.alertService.dangerAlert(err.message, details);
+            }));
     }
 
     openSignUpModal() {
