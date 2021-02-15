@@ -25,7 +25,7 @@ import java.util.Optional;
 public class Room extends ModelBase {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ID")
 	@JsonView({JsonViewApi.class})
 	private Long id;

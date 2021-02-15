@@ -7,6 +7,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,7 +22,7 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
             " a.id in (select b.room from a.userRooms b where b.userId = :userId) " +
             "order by a.lastMsgDt desc " +
             "")
-    List<Room> findAllByUserRoom_UserId(String userId);
+    List<Room> findAllByUserRoom_UserId(@Param("userId") String userId);
 
 
     @EntityGraph(value = "Room.userRooms", type = EntityGraph.EntityGraphType.LOAD)

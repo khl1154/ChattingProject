@@ -16,7 +16,7 @@ public class RoomMessage extends ModelBase {
 
 	@Id
 	@Column(name = "ID")
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@JsonView({JsonViewApi.class})
 	Long id;
 

@@ -4,8 +4,9 @@ apply plugin: 'cz.habarta.typescript-generator'
 //    dependsOn "buildRestDoc"
 //}
 bootJar {
+    mainClassName = 'com.clone.chat.ChatApplication'
     dependsOn "buildAngular"
-    dependsOn asciidoctor
+//    dependsOn asciidoctor
     from ("${project.projectDir}/src/main/resources/templates/docs") {
         into 'BOOT-INF/classes/templates/docs'
     }
@@ -59,6 +60,9 @@ asciidoctor {
 //    println("--> ${outputDir}")
 //    print('-asciidoctor after-')
 }
+
+
+
 //asciidoctor.doLast {
 //    println("do lastttt")
 //    copy {
@@ -79,7 +83,6 @@ generateTypeScript {
             'com.clone.chat.controller.api.**.model.**',
             'com.clone.chat.controller.ws.**.model.**',
             'com.clone.chat.config.security.jwt.**',
-            com/clone/chat/model/error
 //            'org.springframework.http.**',
 
     ]
@@ -101,10 +104,6 @@ generateTypeScript {
     scanSpringApplication = true
     generateSpringApplicationClient = true
 }
-
-
-
-
 
 task installAngular(type: Exec) {
     dependsOn generateTypeScript
@@ -145,3 +144,8 @@ task buildAngular(type: Copy, dependsOn: 'buildWebAppAngular') {
     print("buildAngular END : ${webappDir} ${templatesDir}")
 //    }
 }
+
+
+//bootJar {
+//    mainClassName = 'com.clone.chat.ChatApplication'
+//}

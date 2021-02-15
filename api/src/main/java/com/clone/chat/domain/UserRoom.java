@@ -15,7 +15,7 @@ import lombok.*;
 public class UserRoom extends ModelBase {
 
 	@Id
-	@GeneratedValue(strategy= GenerationType.SEQUENCE)
+	@GeneratedValue(strategy= GenerationType.IDENTITY)
 	@JsonView({JsonViewApi.class})
 	Long id;
 

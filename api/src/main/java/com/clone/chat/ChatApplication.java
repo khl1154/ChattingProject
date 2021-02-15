@@ -60,7 +60,7 @@ public class ChatApplication implements CommandLineRunner {
     @Transactional
     public void applicationStartedEvent(ApplicationStartedEvent applicationStartedEvent) {
         log.debug("applicationStartedEvent done!! -> " + activeProfile);
-        if ("dev".equals(activeProfile)) {
+        if (true) {
             User admin = UserBase.builder().id("admin").password(passwordEncoder.encode("1234")).nickName("admin-nick").role(UserRole.ADMIN).build().map(User.class);
             User user1 = UserBase.builder().id("user1").password(passwordEncoder.encode("1234")).nickName("user1-nick").role(UserRole.USER).statusMsg("아 심심하다").build().map(User.class);
             User user2 = UserBase.builder().id("user2").password(passwordEncoder.encode("1234")).nickName("user2-nick").role(UserRole.USER).statusMsg("신남").build().map(User.class);

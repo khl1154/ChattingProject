@@ -22,7 +22,7 @@ public class Message extends ModelBase {
 
 	@Id
 	@Column(name = "ID")
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@JsonView({JsonViewApi.class})
 	Long id;
 

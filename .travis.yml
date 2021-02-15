@@ -1,0 +1,57 @@
+language: node.js
+node_js: "12.0"
+
+branches:
+  only:
+    - master # master 브랜치에 push되었을 때만 동작
+
+# Travis CI 서버의 Home
+cache: # gradle을 통해 받은 의존성들을 캐시에 저장하여 같은 의존성은 다음 배포 때 다시 받지 않는다  .
+  directories:
+    - '$HOME/.m2/repository'
+    - '$HOME/.gradle'
+
+script: "./gradlew clean :api:bootjar"
+
+before_install :
+  - chmod +x gradlew # build 시 gradle 권한 부여
+
+# CI 실행 완료시 메일로 알람
+notifications:
+  email:
+    recipients:
+      - hsro2228@naver.com
+
+before_deploy:
+  - zip -r chatting *
+  - mkdir -p deploy
+  - mv chatting.zip deploy/chatting.zip
+
+deploy:
+  - provider: s3
+    access_key_id: $AWS_ACCESS_KEY # Travis repo settings에 설정된 값
+    secret_access_key: $AWS_SECRET_KEY # Travis repo settings에 설정된 값
+    bucket: chatting-deploy # 6-3-3에서 생성한 S3 버킷
+    region: ap-northeast-2
+    skip_cleanup: true
+    acl: public_read
+    local_dir: deploy # before_deploy에서 생성한 디렉토리
+    wait-until-deployed: true
+    on:
+      repo: hwangsero/ChattingProjectDeploy #Github 주소
+      branch: master
+
+  #Travis가 AWS codedeploy를 실행시키도록 설정
+  - provider: codedeploy
+    access_key_id: $AWS_ACCESS_KEY # Travis repo settings에 설정된 값
+    secret_access_key: $AWS_SECRET_KEY # Travis repo settings에 설정된 값
+    bucket: chatting-deploy # S3 버킷
+    key: chatting.zip # 빌드 파일을 압축해서 전달
+    bundle_type: zip
+    application: chatting-project # 웹 콘솔에서 등록한 CodeDeploy 어플리케이션
+    deployment_group: chatting-project-group # 웹 콘솔에서 등록한 CodeDeploy 배포 그룹
+    region: ap-northeast-2
+    wait-until-deployed: true
+    on:
+      repo: hwangsero/ChattingProjectDeploy
+      branch: master

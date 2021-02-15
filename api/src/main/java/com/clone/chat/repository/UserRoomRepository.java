@@ -19,17 +19,17 @@ public interface UserRoomRepository extends JpaRepository<UserRoom, Long>{
 //	public List<UserRoom> findByUserId(String userId);
 //	public List<UserRoom> findByUserIdIn(List<String> userIds);
 
-//	@Query(value = "" +
+    //	@Query(value = "" +
 //			"select count(a.id) from UserInChatRoom a " +
 //			"")
-	public List<UserRoom> findAllByUserId(String userId);
+    public List<UserRoom> findAllByUserId(String userId);
 
     public List<UserRoom> findAllByRoom(Room roomId);
 
     @Query("" +
             "select a from UserRoom a join a.room b where b.id = :roomId" +
             "")
-    public List<UserRoom> findAllByRoom(Long roomId);
+    public List<UserRoom> findAllByRoom(@Param("roomId") Long roomId);
 
 //    @Query("" +
 //            "select a from UserRoom a join a.room b " +

@@ -99,3 +99,7 @@ project(':api') {
 		compile project(':core')
 	}
 }
+
+bootJar {
+	mainClassName = 'api.src.main.java.com.clone.chat.ChatApplication'
+}
