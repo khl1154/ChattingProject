@@ -65,6 +65,7 @@ subprojects { it ->
 		compile group: 'org.webjars', name: 'jquery', version: '3.5.1'
 
 
+
 		//웹소켓 관련 dependency
 		implementation 'org.springframework.boot:spring-boot-starter-websocket'
 //		compile 'org.webjars:sockjs-client:1.1.0'

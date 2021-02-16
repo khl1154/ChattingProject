@@ -1,5 +1,6 @@
 spring:
   profiles:
+    active: dev
     include:
       - core
       - db
@@ -20,3 +21,5 @@ project:
   properties:
     angular-path: classpath:/webapp
     swagger-host: localhost:9000
+
+
