@@ -7,7 +7,7 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 
 public interface RoomMessageRepository extends CrudRepository<RoomMessage, Long> {
-    @Query("select a from RoomMessage a where a.roomId = :roomId order by a.message.regDt")
+
     List<RoomMessage> findByRoomId(String roomId);
 
 

@@ -4,6 +4,7 @@ import com.clone.chat.code.MsgCode;
 import com.clone.chat.code.UserRole;
 import com.clone.chat.controller.api.anon.model.RequestSignUp;
 import com.clone.chat.domain.File;
+import com.clone.chat.domain.RedisUser;
 import com.clone.chat.domain.User;
 import com.clone.chat.exception.BusinessException;
 import com.clone.chat.exception.ErrorTrace;
@@ -75,14 +76,24 @@ public class UserService {
 
         //유저아이디와 해당 유저아이디의 토큰값이 일치하면 success 아니면 fail
         if (userId.equals(String.valueOf(scope))) {
-            log.info("logoutSuccess");
             resultMap.put("return", "success");
         } else {
-            log.info("logoutFail");
             resultMap.put("return", "fail");
         }
 
         return resultMap;
+    }
+
+    public RedisUser getRedisUser(String userId) {
+        User findUser = userRepository.findById(userId).get();
+        RedisUser redisUser = RedisUser.builder()
+                .id(findUser.getId())
+                .nickName(findUser.getNickName())
+                .statusMsg(findUser.getStatusMsg())
+                .build();
+        if(findUser.getFile() != null)
+            redisUser.setFilePath(findUser.getFile().getFilePath());
+        return redisUser;
     }
 
 

@@ -16,6 +16,7 @@ import com.clone.chat.redisRepository.RoomMessageRepository;
 import com.clone.chat.redisRepository.RoomRepository;
 import com.clone.chat.repository.*;
 import com.clone.chat.service.RoomService;
+import com.clone.chat.service.UserService;
 import com.clone.chat.service.WebSocketManagerService;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.extern.slf4j.Slf4j;
@@ -57,6 +58,9 @@ public class RoomsController {
     @Autowired
     RoomService roomService;
 
+    @Autowired
+    UserService userService;
+
     @MessageMapping(URI_PREFIX+"/create-room")
     public void createRoom(RequestCreateRoom createRoom, Principal principal, SimpMessageHeaderAccessor simpMessageHeaderAccessor) throws Exception {
         UserToken user = webSocketManagerService.getUser(simpMessageHeaderAccessor).orElseThrow(() -> new BusinessException(MsgCode.ERROR_AUTH));
@@ -65,14 +69,9 @@ public class RoomsController {
         Room room = Room.builder().name(createRoom.getName()).build();
         List<String> publishKeys = new ArrayList<>();
         for (String it : CollectionUtils.emptyIfNull(createRoom.getUsers())) {
+
             User findUser = userRepository.findById(it).get();
-            RedisUser redisUser = RedisUser.builder()
-                    .id(findUser.getId())
-                    .nickName(findUser.getNickName())
-                    .statusMsg(findUser.getStatusMsg())
-                    .build();
-            if(findUser.getFile() != null)
-                redisUser.setFilePath(findUser.getFile().getFilePath());
+            RedisUser redisUser = userService.getRedisUser(it);
             room.addUser(redisUser);
         }
 //        for (String it : CollectionUtils.emptyIfNull(createRoom.getUsers())) {

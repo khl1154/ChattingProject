@@ -57,6 +57,7 @@ public class FriendsController {
 //        user.orElseThrow(() -> new NoSuchElementException("no Such"));
 //        return friendRepository.findByUserId(user.get().getId());
         User data = friendService.findFriends(user.getId());
+
         return data.getFriends();
     }
 }

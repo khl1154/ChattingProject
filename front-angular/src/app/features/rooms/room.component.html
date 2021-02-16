@@ -14,8 +14,9 @@
                 <div>
                     <b>{{it.name}}</b> <br *ngIf="it.lastMsgContents">{{it.lastMsgContents}}&nbsp;&nbsp;&nbsp; {{it.lastMsgDt | date: 'yyyy/MM/dd HH:mm:ss'}}
                 </div>
-                <div >
-                    <span *ngFor="let it2 of it.users | keyvalue" class="badge badge-primary m-1">{{it2.value.nickName}}</span>
+                <div *ngFor="let it2 of it.users | keyvalue" style="float: left">
+                    <img  style="width: 20px; height: 20px" src="{{it2.value.filePath}}"  onerror="this.src='https://dt8upu5cibhp1.cloudfront.net/5db96de3e32fa818dc0d0aecfe82869f'">
+                    <span class="badge badge-primary m-1">{{it2.value.nickName}}</span>
                 </div>
 
             </li>
@@ -43,7 +44,7 @@
         <div class="m-2">
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
-                    <span class="input-group-text" id="basic-addon1">name</span>
+                    <span class="input-group-text" id="basic-addon1">방이름</span>
                 </div>
                 <input type="text" class="form-control" readonly placeholder="name" aria-label="Username" aria-describedby="basic-addon1" value="{{choiceRoom.name}}">
             </div>
