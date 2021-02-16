@@ -1,11 +1,7 @@
 package com.clone.chat.redisRepository;
 
-import com.clone.chat.domain.Message;
 import com.clone.chat.domain.Room;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.repository.EntityGraph;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;

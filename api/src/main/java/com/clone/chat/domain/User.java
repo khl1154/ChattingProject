@@ -22,12 +22,9 @@ import java.util.*;
 public class User extends UserBase {
 
     @Transient
-    String token;
-
+    private String token;
 
     @ManyToMany(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "user_no", referencedColumnName = "no", insertable = false, updatable = false)
-//    @JoinColumn(name = "id")
     @JoinTable(name = "USER_FRIEND")
     @JsonView({JsonViewFrontEnd.class})
     private List<User> friends = new ArrayList<>();
@@ -35,18 +32,6 @@ public class User extends UserBase {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "file_id")
     private File file;
-
-//    @ManyToOne(optional = true, fetch = FetchType.LAZY)
-//    @JoinTable(name = "ITEMINCENTIVESMAPPING",
-//            joinColumns = { @JoinColumn(name = "INCENTIVEITEMID", referencedColumnName = "ITEMID", insertable = false, updatable = false) },
-//            inverseJoinColumns = { @JoinColumn(name = "ITEMID", referencedColumnName = "ITEMID", insertable = false, updatable = false) } )
-//    private User parentItem;
-
-//    @OneToMany(fetch = FetchType.LAZY)
-//    @JoinTable(name = "FF",
-//            joinColumns = { @JoinColumn(name = "INCENTIVEITEMID", referencedColumnName = "ITEMID") },
-//            inverseJoinColumns = { @JoinColumn(name = "ITEMID", referencedColumnName = "ITEMID") } )
-//    private Set<User> friends;
 
     public void addFirend(User... users) {
         if(null == friends) {

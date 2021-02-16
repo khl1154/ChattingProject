@@ -23,7 +23,6 @@ public class RequestSignUp extends ModelBase {
     private String nickName;
     @NotEmpty
     private String phone;
-    @NotEmpty
     private String statusMsg;
     MultipartFile file;
 

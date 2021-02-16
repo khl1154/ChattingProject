@@ -1,6 +1,5 @@
 package com.clone.chat.config;
 
-import com.clone.chat.redis.CacheInfo;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,14 +23,14 @@ public class RedisCacheConfig {
 
         RedisCacheConfiguration configuration = RedisCacheConfiguration.defaultCacheConfig()
                 .disableCachingNullValues()
-                .entryTtl(Duration.ofSeconds(CacheInfo.DEFAULT_EXPIRE_SEC))
+                .entryTtl(Duration.ofSeconds(60))
                 .computePrefixWith(CacheKeyPrefix.simple())
                 .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer()));
 
         Map<String, RedisCacheConfiguration> cacheConfigurations = new HashMap<>();
         // ROOMS
         cacheConfigurations.put("ROOMS", RedisCacheConfiguration.defaultCacheConfig()
-                .entryTtl(Duration.ofSeconds(CacheInfo.USER_EXPIRE_SEC)));
+                .entryTtl(Duration.ofSeconds(60)));
 
         return RedisCacheManager.RedisCacheManagerBuilder.fromConnectionFactory(connectionFactory).cacheDefaults(configuration)
                 .withInitialCacheConfigurations(cacheConfigurations).build();

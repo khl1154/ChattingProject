@@ -1,9 +1,7 @@
 package com.clone.chat;
 
 import com.clone.chat.code.UserRole;
-import com.clone.chat.domain.Room;
 import com.clone.chat.domain.User;
-import com.clone.chat.domain.UserRoom;
 import com.clone.chat.domain.base.UserBase;
 import com.clone.chat.redisRepository.ChatRoomRepository;
 import com.clone.chat.repository.UserRepository;

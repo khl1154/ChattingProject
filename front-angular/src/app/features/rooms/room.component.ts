@@ -119,9 +119,7 @@ export class RoomComponent implements OnInit, AfterViewInit {
         requestSendRoomMessage.contents = value;
         requestSendRoomMessage.sendDt = new Date();
         this.wsService.publish('/app/rooms/send-messages', requestSendRoomMessage);
-
     }
-
 
     scrollToBottom = () => {
         try {

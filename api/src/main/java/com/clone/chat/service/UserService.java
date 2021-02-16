@@ -29,7 +29,6 @@ public class UserService {
     private final FileService fileService;
     private final PasswordEncoder passwordEncoder;
 
-
     @Transactional
     public void save(User user) {
         userRepository.save(user);
@@ -51,11 +50,9 @@ public class UserService {
         userRepository.save(user);
     }
 
-
     public Optional<User> find(String userId) {
         return userRepository.findById(userId);
     }
-
 
     public List<String> getList(String id) {
         List<User> list = userRepository.findAll();
@@ -66,10 +63,8 @@ public class UserService {
                 response.add(l.getId());
         });
 
-
         return response;
     }
-
 
     public Map<String, Object> validate(String token, String userId) throws UnsupportedEncodingException {
         Map<String, Object> resultMap = new HashMap<String, Object>();
@@ -86,7 +81,6 @@ public class UserService {
             log.info("logoutFail");
             resultMap.put("return", "fail");
         }
-
 
         return resultMap;
     }

@@ -76,9 +76,9 @@ export class LoginComponent implements OnInit {
             id: new FormControl('', [Validators.required]),
             nickName: new FormControl('', [Validators.required]),
             phone: new FormControl('', [Validators.required]),
-            statusMsg: new FormControl('', [Validators.required]),
+            statusMsg: new FormControl(''),
             password: new FormControl('', [Validators.required]),
-            file: new FormControl('', [Validators.required]),
+            file: new FormControl(''),
         });
     }
 

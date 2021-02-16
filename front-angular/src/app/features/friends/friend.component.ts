@@ -10,7 +10,7 @@ import {UserTokenContain} from '@app/models/UserTokenContain';
 import {com} from '@generate/models';
 import {BasicModalComponent, ButtonsClickType} from '@app/shareds/modals/basic-modal/basic-modal.component';
 import User = com.clone.chat.domain.User;
-import Message = com.clone.chat.domain.Message;
+import Message = com.clone.chat
 import RequestMessage = com.clone.chat.controller.ws.messages.model.RequestMessage;
 import RequestAddFriend = com.clone.chat.controller.api.friends.model.RequestAddFriend;
 import File = com.clone.chat.domain.File;
@@ -71,6 +71,7 @@ export class FriendComponent implements OnInit {
     sendMessage(choiceUser: User, value: string) {
         const requestMsg = new RequestMessage();
         requestMsg.contents = value;
+        requestMsg.sendDt = new Date();
         this.wsService.publish(`/app/messages/${this.choiceUser.id}/send`, requestMsg);
     }
 

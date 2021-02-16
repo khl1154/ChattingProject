@@ -13,13 +13,5 @@ spring:
   profiles: default
   application:
     name: api
-project:
-  jwt:
-    secretKey: sW4unUJNFTenEbGvVKpQJ0pUcGY2e0UdHfHCc6eShM0Mtgmg8VaZ86J3hilNFbG4bG
-    tokenPrefix: "Bearer "
-    tokenExpirationAfterDays: 10
-  properties:
-    angular-path: classpath:/webapp
-    swagger-host: localhost:9000
 
 

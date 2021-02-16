@@ -1,19 +1,12 @@
 package com.clone.chat.domain;
 
-import com.clone.chat.domain.base.UserBase;
 import com.clone.chat.model.view.json.JsonViewApi;
-import com.clone.chat.model.view.json.JsonViewFrontEnd;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 @Getter
 @Setter
@@ -21,16 +14,16 @@ import java.util.List;
 public class RedisUser implements Serializable {
 
     @JsonView({JsonViewApi.class})
-    String id;
+    private String id;
 
     @JsonView({JsonViewApi.class})
-    String nickName;
+    private String nickName;
 
     @JsonView({JsonViewApi.class})
-    String statusMsg;
+    private String statusMsg;
 
     @JsonView({JsonViewApi.class})
-    String filePath;
+    private String filePath;
 
     @Builder
     public RedisUser(String id, String nickName, String statusMsg, String filePath) {

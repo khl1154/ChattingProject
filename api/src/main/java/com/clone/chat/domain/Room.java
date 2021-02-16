@@ -4,23 +4,19 @@ import javax.persistence.*;
 
 import com.clone.chat.model.ModelBase;
 import com.clone.chat.model.view.json.JsonViewApi;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.Proxy;
 import org.springframework.data.redis.core.RedisHash;
-import org.springframework.data.redis.core.index.Indexed;
 
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.*;
 
 
-@Proxy(lazy = false)
 @Getter
 @Setter
 @NoArgsConstructor
@@ -43,7 +39,7 @@ public class Room extends ModelBase implements Serializable, Comparable<Room> {
 
 	@JsonManagedReference
 	@JsonView({JsonViewApi.class})
-	Map<String,RedisUser> users = new HashMap<>();
+	private Map<String,RedisUser> users = new HashMap<>();
 
 	@Builder
 	public Room(String id, String name, ZonedDateTime lastMsgDt, String lastMsgContents, Map<String,RedisUser> users) {

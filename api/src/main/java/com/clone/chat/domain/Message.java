@@ -18,8 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-
-
 @Getter @Setter
 @NoArgsConstructor
 @RedisHash("MESSAGE")
@@ -28,54 +26,24 @@ public class Message implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@JsonView({JsonViewApi.class})
-	Long id;
+	private Long id;
 
 	@JsonView({JsonViewApi.class})
-	String userId;
+	private String userId;
 
 	@JsonView({JsonViewApi.class})
-	String contents;
+	private String contents;
 
-
-
-//	@JsonIgnore
-//	@OneToMany(mappedBy = "message", cascade = CascadeType.ALL) //mappedBy = "room", , cascade = CascadeType.ALL
-//	@JsonManagedReference
-//	@JsonView({JsonViewApi.class})
-//	List<UserMessage> userMessages;
-//
-//	@JsonIgnore
-//	@OneToMany(mappedBy = "message", cascade = CascadeType.ALL) //mappedBy = "room", , cascade = CascadeType.ALL
-//	@JsonManagedReference
-//	@JsonView({JsonViewApi.class})
-//	List<RoomMessage> roomMessages;
-
-	@Column(name = "REG_DT")
 	@JsonView({JsonViewApi.class})
 	private ZonedDateTime regDt;
 
-//	@Column(name = "UPD_DT")
-//	private ZonedDateTime updDt;
-
-
-
 	@Builder
-	public Message(Long id, String userId, String contents) {
+	public Message(Long id, String userId, String contents, ZonedDateTime regDt) {
 		this.id = id;
 		this.userId = userId;
 		this.contents = contents;
+		this.regDt = regDt;
 	}
-
-//	public void addUserMessage(UserMessage message){
-//		this.userMessages = Optional.ofNullable(this.userMessages).orElseGet(() -> new ArrayList<>());
-//		message.setMessage(this);
-//		this.userMessages.add(message);
-//	}
-//	public void addRoomMessage(RoomMessage message){
-//		this.roomMessages = Optional.ofNullable(this.roomMessages).orElseGet(() -> new ArrayList<>());
-//		message.setMessage(this);
-//		this.roomMessages.add(message);
-//	}
 
 	@PrePersist
 	public void onPrePersist() {
@@ -83,9 +51,4 @@ public class Message implements Serializable {
 			this.regDt = ZonedDateTime.now();
 		}
 	}
-
-//	@PreUpdate
-//	public void onPreUpdate() {
-//		this.updDt = ZonedDateTime.now();
-//	}
 }

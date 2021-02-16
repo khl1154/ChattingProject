@@ -16,5 +16,4 @@ public class UserInChatRoomId implements Serializable {
 
     private Long chatRoom;
     private String user;
-
 }

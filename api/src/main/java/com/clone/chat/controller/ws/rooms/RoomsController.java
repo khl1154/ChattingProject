@@ -7,10 +7,13 @@ import com.clone.chat.domain.*;
 import com.clone.chat.exception.BusinessException;
 import com.clone.chat.model.UserToken;
 import com.clone.chat.model.view.json.JsonViewApi;
+import com.clone.chat.domain.Message;
+import com.clone.chat.domain.RedisUser;
+import com.clone.chat.domain.Room;
+import com.clone.chat.domain.RoomMessage;
 import com.clone.chat.redisRepository.MessageRepository;
 import com.clone.chat.redisRepository.RoomMessageRepository;
 import com.clone.chat.redisRepository.RoomRepository;
-import com.clone.chat.redisRepository.UserRoomRepository;
 import com.clone.chat.repository.*;
 import com.clone.chat.service.RoomService;
 import com.clone.chat.service.WebSocketManagerService;
@@ -27,7 +30,6 @@ import org.springframework.stereotype.Controller;
 
 import java.security.Principal;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Controller("ws-rooms-controller")
 @Slf4j
@@ -47,9 +49,6 @@ public class RoomsController {
     RoomRepository roomRepository;
 
     @Autowired
-    UserRoomRepository userRoomRepository;
-
-    @Autowired
     MessageRepository messageRepository;
 
     @Autowired
@@ -57,9 +56,6 @@ public class RoomsController {
 
     @Autowired
     RoomService roomService;
-
-
-
 
     @MessageMapping(URI_PREFIX+"/create-room")
     public void createRoom(RequestCreateRoom createRoom, Principal principal, SimpMessageHeaderAccessor simpMessageHeaderAccessor) throws Exception {
@@ -102,7 +98,7 @@ public class RoomsController {
     @MessageMapping(URI_PREFIX+"/send-messages")
     public void sendMessage(RequestSendRoomMessage message, Principal principal, SimpMessageHeaderAccessor simpMessageHeaderAccessor) throws Exception {
         UserToken user = webSocketManagerService.getUser(simpMessageHeaderAccessor).orElseThrow(() -> new BusinessException(MsgCode.ERROR_AUTH));
-        Message msg = Message.builder().userId(user.getId()).contents(message.getContents()).build();
+        Message msg = Message.builder().userId(user.getId()).contents(message.getContents()).regDt(message.getSendDt()).build();
 
         Room room = roomRepository.findById(message.getRoomId()).get();
         room.setLastMsgDt(message.getSendDt());
@@ -154,11 +150,11 @@ public class RoomsController {
 //        return roomMessages.stream().map(it -> it.getMessage()).collect(Collectors.toList());
 //    }
 
-    @MessageMapping(URI_PREFIX+"/confirm-messages/{id}")
-    public void checkMessage(@DestinationVariable("id") Long id, Principal principal, SimpMessageHeaderAccessor simpMessageHeaderAccessor) throws Exception {
-        UserToken user = webSocketManagerService.getUser(simpMessageHeaderAccessor).orElseThrow(() -> new BusinessException(MsgCode.ERROR_AUTH));
-        roomMessageRepository.updateChecktByMessageIdAndUserId(true, id, user.getId());
-    }
+//    @MessageMapping(URI_PREFIX+"/confirm-messages/{id}")
+//    public void checkMessage(@DestinationVariable("id") Long id, Principal principal, SimpMessageHeaderAccessor simpMessageHeaderAccessor) throws Exception {
+//        UserToken user = webSocketManagerService.getUser(simpMessageHeaderAccessor).orElseThrow(() -> new BusinessException(MsgCode.ERROR_AUTH));
+//        roomMessageRepository.updateChecktByMessageIdAndUserId(true, id, user.getId());
+//    }
 
 
 }

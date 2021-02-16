@@ -1,6 +1,5 @@
 package com.clone.chat.controller.user;
 
-import com.clone.chat.controller.api.UserController;
 import com.clone.chat.dto.UserDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,15 +21,15 @@ class UserControllerTest {
 
     private MockMvc mockMvc;
 
-    @Autowired
-    private UserController userController;
-
-    @BeforeEach
-    public  void setup() {
-        mockMvc = MockMvcBuilders.standaloneSetup(userController)
-                .setControllerAdvice(new ExceptionHandlerExceptionResolver())
-                .build();
-    }
+//    @Autowired
+//    private UserController userController;
+//
+//    @BeforeEach
+//    public  void setup() {
+//        mockMvc = MockMvcBuilders.standaloneSetup(userController)
+//                .setControllerAdvice(new ExceptionHandlerExceptionResolver())
+//                .build();
+//    }
 
     @Test
     @Rollback(value = false)

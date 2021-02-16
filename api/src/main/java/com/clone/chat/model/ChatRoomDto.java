@@ -1,6 +1,5 @@
 package com.clone.chat.model;
 
-import com.clone.chat.domain.Room;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,9 +9,9 @@ import lombok.NoArgsConstructor;
 public class ChatRoomDto extends ModelBase {
 
     @ApiModelProperty(notes = "방이름")
-    String chatRoomName;
+    private String chatRoomName;
     @ApiModelProperty(notes = "사용자이이디")
-    String userId;
+    private String userId;
 
 //    public Room toEntity() {
 //        return Room.builder()

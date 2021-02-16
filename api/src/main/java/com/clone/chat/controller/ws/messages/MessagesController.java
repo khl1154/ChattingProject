@@ -10,7 +10,6 @@ import com.clone.chat.model.view.json.JsonViewApi;
 import com.clone.chat.redisRepository.MessageRepository;
 import com.clone.chat.redisRepository.UserMessageRepository;
 import com.clone.chat.repository.UserRepository;
-import com.clone.chat.redisRepository.UserRoomRepository;
 import com.clone.chat.service.UserMessageService;
 import com.clone.chat.service.WebSocketManagerService;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -23,7 +22,6 @@ import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.stereotype.Controller;
 
 import java.security.Principal;
-import java.util.Arrays;
 import java.util.List;
 
 @Controller("ws-messages-controller")
@@ -40,9 +38,6 @@ public class MessagesController {
     UserRepository userRepository;
 
     @Autowired
-    UserRoomRepository userRoomRepository;
-
-    @Autowired
     MessageRepository messageRepository;
 
     @Autowired
@@ -54,10 +49,10 @@ public class MessagesController {
     @MessageMapping(URI_PREFIX+"/{userId}/send")
     public void sendDirectMessage(RequestMessage message, @DestinationVariable("userId") String toUserId, Principal principal, SimpMessageHeaderAccessor simpMessageHeaderAccessor) throws Exception {
         UserToken user = webSocketManagerService.getUser(simpMessageHeaderAccessor).orElseThrow(() -> new BusinessException(MsgCode.ERROR_AUTH));
-        Message msg = Message.builder().userId(user.getId()).contents(message.getContents()).build();
+        Message msg = Message.builder().userId(user.getId()).contents(message.getContents()).regDt(message.getSendDt()).build();
         // 보낸사람
         UserMessage senderUserMessage = UserMessage.builder()
-                .userId(toUserId)
+                .userId(user.getId())
                 .message(msg)
                 .confirm(true)
                 .build();
@@ -82,19 +77,5 @@ public class MessagesController {
         UserToken user = webSocketManagerService.getUser(simpMessageHeaderAccessor).orElseThrow(() -> new BusinessException(MsgCode.ERROR_AUTH));
         List<UserMessage> data = userMessageService.getUserMessages(user.getId(), fromUserId);
         return data;
-//        return roomMessages.stream().map(it -> it.getMessage()).collect(Collectors.toList());
     }
-
-
-//    @MessageMapping(URI_PREFIX+"/send-room-messages")
-//    public void createRoom(RequestSendRoomMessage message, Principal principal, SimpMessageHeaderAccessor simpMessageHeaderAccessor) throws Exception {
-//        Optional<UserToken> userToken = webSocketManagerService.getUser(simpMessageHeaderAccessor);
-//        UserToken user = userToken.orElseThrow(() -> new BusinessException(MsgCode.ERROR_AUTH));
-//        Message msg = Message.builder().userId(user.getId()).contents(message.getContents()).build();
-//        userRoomRepository.findAllByRoom(message.getRoomId()).stream().forEach(it -> {
-//            msg.addRoomMessage(RoomMessage.builder().roomId(message.getRoomId()).userId(it.getUserId()).build());
-//        });
-//        messageRepository.save(msg);
-//    }
-
 }

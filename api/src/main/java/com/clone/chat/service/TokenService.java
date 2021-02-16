@@ -28,14 +28,7 @@ public class TokenService {
     public String makeToken(String subject, Collection<? extends GrantedAuthority> bodyAuthorities) {
         Date now = Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant());
         LocalDateTime localDateTime = LocalDateTime.now().plusDays(jwtConfig.getTokenExpirationAfterDays());
-//        LocalDateTime localDateTime = LocalDateTime.now().plusMinutes(1);
         Date expirationDate = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
-
-//        Key key = Keys.secretKeyFor(SignatureAlgorithm.HS512);
-//        Key key = new SecretKeySpec(SignatureAlgorithm.HS512.getJcaName().getBytes());
-//        SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.forSigningKey(Key);
-//        byte[] keyBytes = this.jwtConfig.getSecretKey().getBytes(StandardCharsets.UTF_8);;
-//        SecretKey key = Keys.hmacShaKeyFor(keyBytes);
 
         String token = Jwts.builder()
                 .setSubject(subject)

@@ -5,7 +5,7 @@ export const myRxStompConfig: InjectableRxStompConfig = {
     // brokerURL: 'ws://127.0.0.1:15674/ws',
 
     webSocketFactory() {
-        return new SockJS('http://localhost:9000/websocket');
+        return new SockJS('http://13.124.86.222:9000/websocket');
     },
     // Headers
     // Typical keys: login, passcode, host

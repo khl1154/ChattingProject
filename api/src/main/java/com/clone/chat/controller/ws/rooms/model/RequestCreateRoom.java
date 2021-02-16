@@ -1,6 +1,5 @@
 package com.clone.chat.controller.ws.rooms.model;
 
-import com.clone.chat.domain.UserRoom;
 import lombok.Getter;
 import lombok.Setter;
 
