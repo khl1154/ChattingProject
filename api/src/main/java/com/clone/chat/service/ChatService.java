@@ -3,12 +3,12 @@ package com.clone.chat.service;
 import java.util.List;
 
 import com.clone.chat.domain.UserRoom;
-import com.clone.chat.repository.UserRoomRepository;
+import com.clone.chat.redisRepository.UserRoomRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.clone.chat.model.ChatRoomDto;
-import com.clone.chat.repository.ChatRoomRepository;
+import com.clone.chat.redisRepository.ChatRoomRepository;
 import com.clone.chat.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;

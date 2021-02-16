@@ -51,10 +51,10 @@ public class FriendService {
 
         findUser.get().addFirend(findFriend.get());
         userService.save(findUser.get());
-        refreshFriends(userId);
+//        refreshFriends(userId);
     }
 
-    @Cacheable(value = "friends", key = "#userId")
+//    @Cacheable(value = "friends", key = "#userId")
     public User findFriends(String userId) {
         Optional<User> findUser = userRepository.findById(userId);
         if(findUser.isPresent())
@@ -62,7 +62,7 @@ public class FriendService {
         return null;
     }
 
-    @CacheEvict(value = "friends", key = "#userId")
-    public void refreshFriends(String userId) {
-    }
+//    @CacheEvict(value = "friends", key = "#userId")
+//    public void refreshFriends(String userId) {
+//    }
 }

@@ -10,11 +10,12 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.io.Serializable;
 
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class File extends ModelBase {
+public class File extends ModelBase implements Serializable {
 
     @Id
     @GeneratedValue

@@ -33,6 +33,7 @@ ext {
 //ext['spring-restdocs.version'] = '2.0.6.BUILD-SNAPSHOT'
 
 dependencies {
+    implementation 'junit:junit:4.12'
     compile('org.springframework.boot:spring-boot-starter-cache')
 
 

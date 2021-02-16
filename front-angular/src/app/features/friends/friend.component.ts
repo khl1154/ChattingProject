@@ -14,6 +14,7 @@ import Message = com.clone.chat.domain.Message;
 import RequestMessage = com.clone.chat.controller.ws.messages.model.RequestMessage;
 import RequestAddFriend = com.clone.chat.controller.api.friends.model.RequestAddFriend;
 import File = com.clone.chat.domain.File;
+import UserMessage = com.clone.chat.domain.UserMessage;
 
 @Component({
     selector: 'app-home',
@@ -28,7 +29,7 @@ export class FriendComponent implements OnInit {
     private choiceUser: User;
     private findUser: User;
     private friends: User[];
-    private userMessage: Message[] = [];
+    private userMessage: UserMessage[] = [];
     private userTokenContain: UserTokenContain;
 
     constructor(private wsService: WsService, private userService: UserService, private http: HttpClient, private alertService: AlertService, public router: Router, private api: JsonApiService) {
@@ -40,11 +41,16 @@ export class FriendComponent implements OnInit {
             this.wsService.watch<User[]>('/user/queue/friends').subscribe((wit) => {
                 this.friends = wit;
                 this.friends.forEach(a => this.mergeFilePath(a));
-                console.log(this.friends)
             });
 
-            this.wsService.watch<Message[]>('/user/queue/messages').subscribe((it) => {
-                it.forEach(m => this.userMessage.push(m));
+            this.wsService.watch<UserMessage[]>('/user/queue/messages').subscribe((it) => {
+                this.userMessage = it;
+                console.log(this.userMessage)
+            });
+
+            this.wsService.watch<UserMessage>('/user/queue/message').subscribe((it) => {
+                this.userMessage.push(it);
+                console.log(this.userMessage)
             });
 
             this.send();

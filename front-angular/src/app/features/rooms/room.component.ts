@@ -15,6 +15,7 @@ import User = com.clone.chat.domain.User;
 import RequestCreateRoom = com.clone.chat.controller.ws.rooms.model.RequestCreateRoom;
 import Message = com.clone.chat.domain.Message;
 import RequestSendRoomMessage = com.clone.chat.controller.ws.rooms.model.RequestSendRoomMessage;
+import RoomMessage = com.clone.chat.domain.RoomMessage;
 
 class UserCheck extends User {
     value: boolean;
@@ -37,7 +38,7 @@ export class RoomComponent implements OnInit, AfterViewInit {
     private choiceRoom: Room;
     private roomMessagesSubscription: Subscription;
     private roomMessageSubscription: Subscription;
-    private choiceRoomMessages: Message[];
+    private choiceRoomMessages: RoomMessage[];
     private userTokenContain: UserTokenContain;
 
     constructor(private userService: UserService, private wsService: WsService, private alertService: AlertService, public router: Router, private api: JsonApiService) {
@@ -80,7 +81,6 @@ export class RoomComponent implements OnInit, AfterViewInit {
                 this.alertService.dangerAlertHttpErrorResponse('error', '방 이름을 입력해주세요');
                 return;
             }
-            console.log(this.friends);
             const data = new RequestCreateRoom();
             data.name = this.newRoomName;
             data.users = this.friends.filter(it => it.value).map(it => it.id);
@@ -102,11 +102,12 @@ export class RoomComponent implements OnInit, AfterViewInit {
 
         this.roomMessagesSubscription?.unsubscribe();
         this.roomMessageSubscription?.unsubscribe();
-        this.roomMessagesSubscription = this.wsService.watch<Message[]>(`/user/queue/rooms/${this.choiceRoom.id}/messages`).subscribe((it) => {
+        this.roomMessagesSubscription = this.wsService.watch<RoomMessage[]>(`/user/queue/rooms/${this.choiceRoom.id}/messages`).subscribe((it) => {
                 this.choiceRoomMessages = it;
         });
-        this.roomMessageSubscription = this.wsService.watch<Message>(`/user/queue/rooms/${this.choiceRoom.id}/message`).subscribe((it) => {
+        this.roomMessageSubscription = this.wsService.watch<RoomMessage>(`/user/queue/rooms/${this.choiceRoom.id}/message`).subscribe((it) => {
                 this.choiceRoomMessages.push(it);
+
         });
         this.wsService.publish(`/app/rooms/${this.choiceRoom.id}/messages`);
         this.roomModal.show();

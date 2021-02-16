@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.Proxy;
 
 import javax.persistence.*;
 import java.util.*;
@@ -22,6 +23,7 @@ public class User extends UserBase {
 
     @Transient
     String token;
+
 
     @ManyToMany(cascade = CascadeType.ALL)
 //    @JoinColumn(name = "user_no", referencedColumnName = "no", insertable = false, updatable = false)

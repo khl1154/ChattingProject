@@ -5,45 +5,44 @@ import com.clone.chat.model.view.json.JsonViewApi;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.*;
+import org.hibernate.annotations.Index;
+import org.hibernate.annotations.Proxy;
+import org.springframework.data.redis.core.RedisHash;
+import org.springframework.data.redis.core.index.Indexed;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.List;
+
 
 @Getter @Setter
 @NoArgsConstructor
-@Entity
-@Table(name = "ROOM_MESSAGE")
-public class RoomMessage extends ModelBase {
+@RedisHash("ROOM_MESSAGE")
+public class RoomMessage implements Serializable {
 
 	@Id
-	@Column(name = "ID")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@JsonView({JsonViewApi.class})
 	Long id;
 
-	@Column(name = "ROOM_ID")
-	@JsonView({JsonViewApi.class})
-	Long roomId;
-
-	@Column(name = "USER_ID")
 	@JsonView({JsonViewApi.class})
 	String userId;
 
-	@Column(name = "CONFIRM")
+	@Indexed
+	@JsonView({JsonViewApi.class})
+	private String roomId;
+
+	@JsonView({JsonViewApi.class})
+	Message message;
+
 	@JsonView({JsonViewApi.class})
 	Boolean confirm;
 
-	@ManyToOne
-	@JoinColumn(name = "MESSAGE_ID") //, referencedColumnName = "ID", nullable = false, insertable = false, updatable = false)
-	@JsonBackReference
-	@JsonView({JsonViewApi.class})
-	private Message message;
-
 	@Builder
-	public RoomMessage(Long id, Long roomId, String userId, Boolean confirm, Message message) {
+	public RoomMessage(Long id, String roomId, Message message, Boolean confirm) {
 		this.id = id;
 		this.roomId = roomId;
-		this.userId = userId;
-		this.confirm = confirm;
 		this.message = message;
+		this.confirm = confirm;
 	}
 }

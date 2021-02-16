@@ -4,70 +4,67 @@ import javax.persistence.*;
 
 import com.clone.chat.model.ModelBase;
 import com.clone.chat.model.view.json.JsonViewApi;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Proxy;
+import org.springframework.data.redis.core.RedisHash;
+import org.springframework.data.redis.core.index.Indexed;
 
+import java.io.Serializable;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
+
+@Proxy(lazy = false)
 @Getter
 @Setter
 @NoArgsConstructor
-@Entity
-@Table(name = "ROOM")
+@RedisHash("ROOM")
 @NamedEntityGraph(name = "Room.userRooms", attributeNodes = @NamedAttributeNode("userRooms"))
-public class Room extends ModelBase {
+public class Room extends ModelBase implements Serializable, Comparable<Room> {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "ID")
 	@JsonView({JsonViewApi.class})
-	private Long id;
+	private String id;
 
-	@Column(name = "NAME")
 	@JsonView({JsonViewApi.class})
 	private String name;
-//	private Long msgCount;
-//	private String admin;
 
-	@Column(name = "LAST_MSG_DT")
 	@JsonView({JsonViewApi.class})
 	private ZonedDateTime lastMsgDt;
 
-	@Column(name = "LAST_MSG_CONTENTS")
 	@JsonView({JsonViewApi.class})
 	private String lastMsgContents;
 
-	@OneToMany(mappedBy = "room", cascade = CascadeType.ALL) //mappedBy = "room", , cascade = CascadeType.ALL
-//	@JoinColumn(name = "ROOM_IDS", referencedColumnName = "ID", insertable = true, updatable = true)
 	@JsonManagedReference
 	@JsonView({JsonViewApi.class})
-	List<UserRoom> userRooms;
-
-	@OneToMany
-	@JoinColumn(name = "ROOM_ID", referencedColumnName = "ID", insertable = true, updatable = true)
-	@JsonManagedReference
-	@JsonView({JsonViewApi.class})
-	List<RoomMessage> roomMessages;
+	Map<String,RedisUser> users = new HashMap<>();
 
 	@Builder
-	public Room(Long id, String name, List<UserRoom> userRooms) {
+	public Room(String id, String name, ZonedDateTime lastMsgDt, String lastMsgContents, Map<String,RedisUser> users) {
 		this.id = id;
 		this.name = name;
-		this.userRooms = userRooms;
+		this.lastMsgDt = lastMsgDt;
+		this.lastMsgContents = lastMsgContents;
+		this.users = users;
 	}
 
+	public void addUser(RedisUser user){
+		this.users = Optional.ofNullable(this.users).orElseGet(() -> new HashMap<>());
+		this.users.put(user.getId(),user);
+	}
 
-
-	public void addUserRoom(UserRoom userRoom){
-		this.userRooms = Optional.ofNullable(this.userRooms).orElseGet(() -> new ArrayList<>());
-		userRoom.setRoom(this);
-		this.userRooms.add(userRoom);
+	@Override
+	public int compareTo(Room that) {
+		if(this.lastMsgDt == null && that.lastMsgDt != null)
+			return 1;
+		if(that.lastMsgDt == null)
+			return -1;
+		return that.lastMsgDt.compareTo(this.lastMsgDt);
 	}
 }

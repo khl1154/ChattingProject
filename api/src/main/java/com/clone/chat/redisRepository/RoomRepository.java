@@ -1,4 +1,4 @@
-package com.clone.chat.repository;
+package com.clone.chat.redisRepository;
 
 import com.clone.chat.domain.Message;
 import com.clone.chat.domain.Room;
@@ -7,12 +7,13 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface RoomRepository extends JpaRepository<Room, Long> {
+public interface RoomRepository extends CrudRepository<Room, String> {
 
     @Query("" +
             "select " +
@@ -27,4 +28,5 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
 
     @EntityGraph(value = "Room.userRooms", type = EntityGraph.EntityGraphType.LOAD)
     Optional<Room> findById(Long id);
+
 }

@@ -5,14 +5,20 @@ import javax.persistence.*;
 import com.clone.chat.model.ModelBase;
 import com.clone.chat.model.view.json.JsonViewApi;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.*;
+import org.hibernate.annotations.Proxy;
+import org.springframework.data.redis.core.RedisHash;
 
+import java.io.Serializable;
+
+
+@Proxy(lazy = false)
 @Getter  @Setter
 @NoArgsConstructor
-@Entity
-@Table(name = "USER_ROOM")
-public class UserRoom extends ModelBase {
+@RedisHash("USER_ROOM")
+public class UserRoom extends ModelBase implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -26,13 +32,14 @@ public class UserRoom extends ModelBase {
 	@JsonView({JsonViewApi.class})
 	String userId;
 
+	@JsonIgnore
 //	@JoinColumns(@JoinColumn(name = "ROOM_IDS"))
 //	@JoinTable(name = "ROOM",)
 	@ManyToOne
 	@JoinColumn(name = "ROOM_ID") //, nullable = false, insertable = false, updatable = false
 	@JsonBackReference
 	@JsonView({JsonViewApi.class})
-	private Room room;
+	private Long roomId;
 
 	@ManyToOne
 	@JoinColumn(name = "USER_ID", referencedColumnName = "ID", nullable = false, insertable = false, updatable = false)
@@ -40,11 +47,10 @@ public class UserRoom extends ModelBase {
 	private User user;
 
 	@Builder
-	public UserRoom(Long id, Long roomId, String userId, Room room, User user) {
+	public UserRoom(Long id, Long roomId, String userId) {
 		this.id = id;
-//		this.roomId = roomId;
+		this.roomId = roomId;
 		this.userId = userId;
-		this.room = room;
 		this.user = user;
 	}
 

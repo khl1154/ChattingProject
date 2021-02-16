@@ -5,8 +5,7 @@ import com.clone.chat.domain.Room;
 import com.clone.chat.domain.User;
 import com.clone.chat.domain.UserRoom;
 import com.clone.chat.domain.base.UserBase;
-import com.clone.chat.repository.ChatRoomRepository;
-import com.clone.chat.repository.FileRepository;
+import com.clone.chat.redisRepository.ChatRoomRepository;
 import com.clone.chat.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,7 +59,7 @@ public class ChatApplication implements CommandLineRunner {
     @Transactional
     public void applicationStartedEvent(ApplicationStartedEvent applicationStartedEvent) {
         log.debug("applicationStartedEvent done!! -> " + activeProfile);
-        if (true) {
+        if (activeProfile.equals("dev")) {
             User admin = UserBase.builder().id("admin").password(passwordEncoder.encode("1234")).nickName("admin-nick").role(UserRole.ADMIN).build().map(User.class);
             User user1 = UserBase.builder().id("user1").password(passwordEncoder.encode("1234")).nickName("user1-nick").role(UserRole.USER).statusMsg("아 심심하다").build().map(User.class);
             User user2 = UserBase.builder().id("user2").password(passwordEncoder.encode("1234")).nickName("user2-nick").role(UserRole.USER).statusMsg("신남").build().map(User.class);
@@ -77,22 +76,22 @@ public class ChatApplication implements CommandLineRunner {
             userRepository.saveAll(Arrays.asList(admin, user1, user2, user3, user4, user5, user6));
 
 
-            Room room1 = Room.builder().name("room1").build();
-            room1.addUserRoom(UserRoom.builder().userId(user1.getId()).build());
-            room1.addUserRoom(UserRoom.builder().userId(user2.getId()).build());
-            room1.addUserRoom(UserRoom.builder().userId(user3.getId()).build());
-            roomRepository.save(room1);
-
-            Room room2 = Room.builder().name("room2").build();
-            room2.addUserRoom(UserRoom.builder().userId(user4.getId()).build());
-            room2.addUserRoom(UserRoom.builder().userId(user5.getId()).build());
-            room2.addUserRoom(UserRoom.builder().userId(user6.getId()).build());
-            roomRepository.save(room2);
-
-            Room u1u2 = Room.builder().name("u1u2").build();
-            u1u2.addUserRoom(UserRoom.builder().userId(user1.getId()).build());
-            u1u2.addUserRoom(UserRoom.builder().userId(user2.getId()).build());
-            roomRepository.save(u1u2);
+//            Room room1 = Room.builder().name("room1").build();
+//            room1.addUserRoom(UserRoom.builder().userId(user1.getId()).build());
+//            room1.addUserRoom(UserRoom.builder().userId(user2.getId()).build());
+//            room1.addUserRoom(UserRoom.builder().userId(user3.getId()).build());
+//            roomRepository.save(room1);
+//
+//            Room room2 = Room.builder().name("room2").build();
+//            room2.addUserRoom(UserRoom.builder().userId(user4.getId()).build());
+//            room2.addUserRoom(UserRoom.builder().userId(user5.getId()).build());
+//            room2.addUserRoom(UserRoom.builder().userId(user6.getId()).build());
+//            roomRepository.save(room2);
+//
+//            Room u1u2 = Room.builder().name("u1u2").build();
+//            u1u2.addUserRoom(UserRoom.builder().userId(user1.getId()).build());
+//            u1u2.addUserRoom(UserRoom.builder().userId(user2.getId()).build());
+//            roomRepository.save(u1u2);
 
 
         }

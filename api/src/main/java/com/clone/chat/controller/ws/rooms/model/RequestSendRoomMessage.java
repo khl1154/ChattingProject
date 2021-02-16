@@ -9,7 +9,7 @@ import java.time.ZonedDateTime;
 @Getter
 @Setter
 public class RequestSendRoomMessage extends ModelBase {
-    Long roomId;
+    String roomId;
     String contents;
     ZonedDateTime sendDt;
 }

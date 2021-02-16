@@ -1,9 +1,8 @@
 package com.clone.chat.controller.api.chats;
 
 import com.clone.chat.controller.api.ApiController;
-import com.clone.chat.domain.Room;
 import com.clone.chat.domain.UserRoom;
-import com.clone.chat.repository.UserRoomRepository;
+import com.clone.chat.redisRepository.UserRoomRepository;
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

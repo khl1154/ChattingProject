@@ -1,1 +1,2 @@
-ALTER DATABASE chatting CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
+select * from user
+-- ALTER DATABASE chatting CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
