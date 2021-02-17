@@ -57,13 +57,13 @@ public class FriendsController {
     @PostMapping(value = "/add")
     public void addFriend(@RequestBody RequestAddFriend requestAddFriend, @ModelAttributeMapping UserToken userToken) {
         friendService.addFriend(userToken.getId(), requestAddFriend.getId());
-        User user = userService.find(userToken.getId());
+        User user = friendService.search(userToken.getId());
         List<User> friendsOfUser = user.getFriends();
 //        friendService.refreshFriends(user.getId());
         webSocketManagerService.sendToUserByUserId("/queue/friends",friendsOfUser,user.getId());
 
         friendService.addFriend(requestAddFriend.getId(), userToken.getId());
-        User friend = userService.find(requestAddFriend.getId());
+        User friend = friendService.search(requestAddFriend.getId());
         List<User> friendsOfFriend = friend.getFriends();
 //        friendService.refreshFriends(friend.getId());
         webSocketManagerService.sendToUserByUserId("/queue/friends",friendsOfFriend,requestAddFriend.getId());
