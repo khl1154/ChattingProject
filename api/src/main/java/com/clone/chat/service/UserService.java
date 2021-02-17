@@ -37,9 +37,6 @@ public class UserService {
 
     @Transactional
     public void signUp(RequestSignUp requestSignUp) {
-        if (find(requestSignUp.getId()).isPresent()) {
-            throw new BusinessException(MsgCode.ERROR_DUPLICATED_ID, ErrorTrace.getName());
-        }
 
         User user = requestSignUp.map(User.class);
         if (requestSignUp.isFile()) {
@@ -51,8 +48,12 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public Optional<User> find(String userId) {
-        return userRepository.findById(userId);
+    public User find(String userId) {
+        Optional<User> user = userRepository.findById(userId);
+        user.orElseThrow(() -> new BusinessException(MsgCode.ERROR_ENTITY_NOT_FOUND, ErrorTrace.getName()));
+        if(user.get().getFile() != null)
+            user.get().getFile().getFileName();
+        return user.get();
     }
 
     public List<String> getList(String id) {

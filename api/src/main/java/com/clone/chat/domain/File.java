@@ -1,6 +1,8 @@
 package com.clone.chat.domain;
 
 import com.clone.chat.model.ModelBase;
+import com.clone.chat.model.view.json.JsonViewApi;
+import com.fasterxml.jackson.annotation.JsonView;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -30,6 +32,7 @@ public class File extends ModelBase implements Serializable {
     @Column(nullable = false)
     private String fileName;
 
+    @JsonView({JsonViewApi.class})
     @Column(nullable = false)
     private String filePath;
 

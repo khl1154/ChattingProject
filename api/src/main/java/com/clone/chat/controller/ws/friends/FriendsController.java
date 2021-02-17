@@ -56,7 +56,7 @@ public class FriendsController {
         UserToken user = userToken.orElseThrow(() -> new BusinessException(MsgCode.ERROR_AUTH));
 //        user.orElseThrow(() -> new NoSuchElementException("no Such"));
 //        return friendRepository.findByUserId(user.get().getId());
-        User data = friendService.findFriends(user.getId());
+        User data = friendService.search(user.getId());
 
         return data.getFriends();
     }

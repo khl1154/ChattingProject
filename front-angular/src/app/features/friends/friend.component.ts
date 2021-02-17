@@ -45,12 +45,10 @@ export class FriendComponent implements OnInit {
 
             this.wsService.watch<UserMessage[]>('/user/queue/messages').subscribe((it) => {
                 this.userMessage = it;
-                console.log(this.userMessage)
             });
 
             this.wsService.watch<UserMessage>('/user/queue/message').subscribe((it) => {
                 this.userMessage.push(it);
-                console.log(this.userMessage)
             });
 
             this.send();
@@ -90,7 +88,7 @@ export class FriendComponent implements OnInit {
     }
 
     private mergeFilePath(user: User) {
-        if (user.file === undefined) {
+        if (user.file === undefined || user.file === null) {
             user.file = new File();
             user.file.filePath = 'https://dt8upu5cibhp1.cloudfront.net/5db96de3e32fa818dc0d0aecfe82869f';
         }

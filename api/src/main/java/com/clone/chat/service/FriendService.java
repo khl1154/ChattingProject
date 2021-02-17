@@ -5,6 +5,7 @@ import com.clone.chat.domain.User;
 import com.clone.chat.exception.BusinessException;
 import com.clone.chat.exception.ErrorTrace;
 import com.clone.chat.model.UserToken;
+import com.clone.chat.repository.FileRepository;
 import com.clone.chat.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +14,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Transactional(readOnly = true)
@@ -24,10 +26,16 @@ public class FriendService {
     private final UserService userService;
     private final UserRepository userRepository;
 
-    @Transactional
     public User search(String userId) {
-        Optional<User> findUser = userRepository.findByIdEquals(userId);
+        Optional<User> findUser = userRepository.findById(userId);
         if(findUser.isPresent()) {
+            if(findUser.get().getFile() != null)
+                findUser.get().getFile().getFileName();
+
+            for(User user : findUser.get().getFriends()) {
+                if (user.getFile() != null)
+                    user.getFile().getFileName();
+            }
             return findUser.get();
         }
         return null;
@@ -53,14 +61,19 @@ public class FriendService {
         userService.save(findUser.get());
 //        refreshFriends(userId);
     }
-
+//
 //    @Cacheable(value = "friends", key = "#userId")
-    public User findFriends(String userId) {
-        Optional<User> findUser = userRepository.findById(userId);
-        if(findUser.isPresent())
-            return findUser.get();
-        return null;
-    }
+//    public List<User> findFriends(String userId) {
+//        Optional<User> findUser = userRepository.findById(userId);
+//        if(findUser.isPresent()) {
+//            for (User friend : findUser.get().getFriends()) {
+//                if(friend.getFile() != null)
+//                    friend.getFile().getFilePath();
+//            }
+//            return findUser.get().getFriends();
+//        }
+//        return null;
+//    }
 
 //    @CacheEvict(value = "friends", key = "#userId")
 //    public void refreshFriends(String userId) {

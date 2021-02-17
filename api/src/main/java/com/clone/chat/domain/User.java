@@ -1,6 +1,7 @@
 package com.clone.chat.domain;
 
 import com.clone.chat.domain.base.UserBase;
+import com.clone.chat.model.view.json.JsonViewApi;
 import com.clone.chat.model.view.json.JsonViewFrontEnd;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.google.common.collect.Lists;
@@ -31,6 +32,7 @@ public class User extends UserBase {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "file_id")
+    @JsonView({JsonViewApi.class})
     private File file;
 
     public void addFirend(User... users) {
