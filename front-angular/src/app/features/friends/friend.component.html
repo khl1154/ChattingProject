@@ -75,6 +75,7 @@
                 <input #sendInput type="text" class="form-control" placeholder="message">
                 <div class="input-group-append">
                     <button class="btn btn-outline-secondary" type="button"
+                            (keyup.enter)="sendMessage(choiceUser, sendInput.value); sendInput.value=''"
                             (click)="sendMessage(choiceUser, sendInput.value); sendInput.value=''">Send
                     </button>
                 </div>

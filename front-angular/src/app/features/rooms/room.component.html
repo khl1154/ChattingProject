@@ -16,7 +16,7 @@
                 </div>
                 <div *ngFor="let it2 of it.users | keyvalue" style="float: left">
                     <img  style="width: 20px; height: 20px" src="{{it2.value.filePath}}"  onerror="this.src='https://dt8upu5cibhp1.cloudfront.net/5db96de3e32fa818dc0d0aecfe82869f'">
-                    <span class="badge badge-primary m-1">{{it2.value.nickName}}</span>
+                    <span class="badge badge-primary m-1">{{it2.value.id}}</span>
                 </div>
 
             </li>
@@ -76,7 +76,7 @@
             <div class="input-group mb-3">
                 <input #sendInput type="text" class="form-control" placeholder="message">
                 <div class="input-group-append">
-                    <button class="btn btn-outline-secondary" type="button" (click)="sendMessage(choiceRoom, sendInput.value); sendInput.value=''" >Send</button>
+                    <button class="btn btn-outline-secondary" type="button" (keyup.enter)="sendMessage(choiceRoom, sendInput.value); sendInput.value=''"  (click)="sendMessage(choiceRoom, sendInput.value); sendInput.value=''" >Send</button>
                 </div>
             </div>
         </div>
