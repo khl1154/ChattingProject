@@ -72,10 +72,9 @@
         </div>
         <div class="m-2">
             <div class="input-group mb-3">
-                <input #sendInput type="text" class="form-control" placeholder="message">
+                <input #sendInput type="text" (keyup.enter)="sendMessage(choiceUser, sendInput.value); sendInput.value=''" class="form-control" placeholder="message">
                 <div class="input-group-append">
                     <button class="btn btn-outline-secondary" type="button"
-                            (keyup.enter)="sendMessage(choiceUser, sendInput.value); sendInput.value=''"
                             (click)="sendMessage(choiceUser, sendInput.value); sendInput.value=''">Send
                     </button>
                 </div>

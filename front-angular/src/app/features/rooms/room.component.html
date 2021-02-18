@@ -74,9 +74,9 @@
         </div>
         <div class="m-2">
             <div class="input-group mb-3">
-                <input #sendInput type="text" class="form-control" placeholder="message">
+                <input #sendInput type="text" class="form-control" placeholder="message" (keyup.enter)="sendMessage(choiceRoom, sendInput.value); sendInput.value=''"  >
                 <div class="input-group-append">
-                    <button class="btn btn-outline-secondary" type="button" (keyup.enter)="sendMessage(choiceRoom, sendInput.value); sendInput.value=''"  (click)="sendMessage(choiceRoom, sendInput.value); sendInput.value=''" >Send</button>
+                    <button class="btn btn-outline-secondary" type="button" (click)="sendMessage(choiceRoom, sendInput.value); sendInput.value=''" >Send</button>
                 </div>
             </div>
         </div>
