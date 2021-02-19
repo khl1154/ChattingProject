@@ -2,13 +2,21 @@ package com.clone.chat.controller.api.anon;
 
 import com.clone.chat.code.MsgCode;
 import com.clone.chat.controller.api.anon.model.RequestSignUp;
+import com.clone.chat.domain.Message;
+import com.clone.chat.domain.Room;
+import com.clone.chat.domain.RoomMessage;
 import com.clone.chat.domain.User;
 import com.clone.chat.exception.BusinessException;
 import com.clone.chat.exception.ErrorTrace;
+import com.clone.chat.model.UserToken;
 import com.clone.chat.model.view.json.JsonViewApi;
+import com.clone.chat.redisRepository.RoomMessageRepository;
+import com.clone.chat.redisRepository.RoomRepository;
 import com.clone.chat.repository.UserRepository;
+import com.clone.chat.service.RoomService;
 import com.clone.chat.service.TokenService;
 import com.clone.chat.service.UserService;
+import com.clone.chat.service.WebSocketManagerService;
 import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -20,6 +28,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -41,6 +50,10 @@ public class AnonApisController {
 
     @Autowired
     PasswordEncoder passwordEncoder;
+
+
+
+
 
 
     @ApiOperation(value = "회원가입")
