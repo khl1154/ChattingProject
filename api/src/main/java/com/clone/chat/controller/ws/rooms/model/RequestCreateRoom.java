@@ -10,9 +10,8 @@ import java.util.Optional;
 @Getter
 @Setter
 public class RequestCreateRoom {
-    String name;
-    List<String> users;
-//    String targetUser;
+    private String name;
+    private List<String> users;
 
     public void addUser(String user){
         this.users = Optional.ofNullable(this.users).orElseGet(() -> new ArrayList<>());

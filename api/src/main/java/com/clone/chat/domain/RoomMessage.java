@@ -25,7 +25,7 @@ public class RoomMessage implements Serializable, Comparable<RoomMessage> {
 
 	@Indexed
 	@JsonView({JsonViewApi.class})
-	private String roomId;
+	private Long roomId;
 
 	@JsonView({JsonViewApi.class})
 	private Message message;
@@ -34,7 +34,7 @@ public class RoomMessage implements Serializable, Comparable<RoomMessage> {
 	private Boolean confirm;
 
 	@Builder
-	public RoomMessage(Long id, String roomId, Message message, Boolean confirm) {
+	public RoomMessage(Long id, Long roomId, Message message, Boolean confirm) {
 		this.id = id;
 		this.roomId = roomId;
 		this.message = message;

@@ -5,6 +5,7 @@ import com.clone.chat.domain.User;
 import com.clone.chat.model.UserToken;
 import com.clone.chat.repository.UserRepository;
 import io.jsonwebtoken.*;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -18,12 +19,12 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class TokenService {
 
-    @Autowired
-    public JwtConfig jwtConfig;
-    @Autowired
-    public UserRepository userRepository;
+    private final JwtConfig jwtConfig;
+
+    private final UserRepository userRepository;
 
     public String makeToken(String subject, Collection<? extends GrantedAuthority> bodyAuthorities) {
         Date now = Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant());

@@ -17,8 +17,8 @@ import java.util.List;
 @Slf4j
 public class UserMessageService {
 
-    @Autowired
-    UserMessageRepository userMessageRepository;
+
+    private final UserMessageRepository userMessageRepository;
 
     public List<UserMessage> getUserMessages(String userId, String friendId) {
         Iterable<UserMessage> userMessagesAll = userMessageRepository.findAll();

@@ -114,6 +114,7 @@ export class RoomComponent implements OnInit, AfterViewInit {
     }
 
     sendMessage(room: Room, value: string) {
+        console.log(room.id)
         const requestSendRoomMessage = new RequestSendRoomMessage();
         requestSendRoomMessage.roomId = room.id;
         requestSendRoomMessage.contents = value;

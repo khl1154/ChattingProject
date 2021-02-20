@@ -12,6 +12,7 @@ import com.clone.chat.repository.UserRepository;
 import com.clone.chat.service.FriendService;
 import com.clone.chat.service.WebSocketManagerService;
 import com.fasterxml.jackson.annotation.JsonView;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.messaging.handler.annotation.Header;
@@ -29,33 +30,22 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Controller("ws-friends-controller")
+@RequiredArgsConstructor
 public class FriendsController {
     public static final String URI_PREFIX = "/friends";
 
-    @Autowired
-    private WebSocketManagerService webSocketManagerService;
+    private final WebSocketManagerService webSocketManagerService;
 
-    @Autowired
-    private SimpMessageSendingOperations messagingTemplate;
+    private final SimpMessageSendingOperations messagingTemplate;
 
-    @Autowired
-    FriendService friendService;
-
-//    @Autowired
-//    SimpMessageTemplate
-
+    private final FriendService friendService;
 
     @MessageMapping(URI_PREFIX)
     @SendToUser("/queue"+URI_PREFIX)
     @JsonView({JsonViewApi.class})
-    //@Header("simpSessionId") String sessionId,
     public List<User> processMessageFromClient(Principal principal, SimpMessageHeaderAccessor simpMessageHeaderAccessor) throws Exception {
-//        String name = new Gson().fromJson(message, Map.class).get("name").toString();
-        //messagingTemplate.convertAndSendToUser(principal.getName(), "/queue/reply", name);
         Optional<UserToken> userToken = webSocketManagerService.getUser(simpMessageHeaderAccessor);
         UserToken user = userToken.orElseThrow(() -> new BusinessException(MsgCode.ERROR_AUTH));
-//        user.orElseThrow(() -> new NoSuchElementException("no Such"));
-//        return friendRepository.findByUserId(user.get().getId());
         User data = friendService.search(user.getId());
 
         return data.getFriends();

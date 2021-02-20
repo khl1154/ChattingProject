@@ -9,6 +9,6 @@ import java.time.ZonedDateTime;
 @Getter
 @Setter
 public class RequestMessage extends ModelBase {
-    String contents;
-    ZonedDateTime sendDt;
+    private String contents;
+    private ZonedDateTime sendDt;
 }

@@ -10,7 +10,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Index;
 import org.springframework.data.redis.core.RedisHash;
+import org.springframework.data.redis.core.index.Indexed;
 
 import java.io.Serializable;
 import java.time.ZonedDateTime;
@@ -26,7 +28,7 @@ public class Room extends ModelBase implements Serializable, Comparable<Room> {
 	
 	@Id
 	@JsonView({JsonViewApi.class})
-	private String id;
+	private Long id;
 
 	@JsonView({JsonViewApi.class})
 	private String name;
@@ -39,10 +41,10 @@ public class Room extends ModelBase implements Serializable, Comparable<Room> {
 
 	@JsonManagedReference
 	@JsonView({JsonViewApi.class})
-	private Map<String,RedisUser> users = new HashMap<>();
+	private Map<String, RedisUser> users = new HashMap<>();
 
 	@Builder
-	public Room(String id, String name, ZonedDateTime lastMsgDt, String lastMsgContents, Map<String,RedisUser> users) {
+	public Room(Long id, String name, ZonedDateTime lastMsgDt, String lastMsgContents, Map<String, RedisUser> users) {
 		this.id = id;
 		this.name = name;
 		this.lastMsgDt = lastMsgDt;
@@ -52,7 +54,7 @@ public class Room extends ModelBase implements Serializable, Comparable<Room> {
 
 	public void addUser(RedisUser user){
 		this.users = Optional.ofNullable(this.users).orElseGet(() -> new HashMap<>());
-		this.users.put(user.getId(),user);
+		this.users.put(user.getId(), user);
 	}
 
 	@Override

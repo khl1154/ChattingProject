@@ -13,13 +13,6 @@ public class ChatRoomDto extends ModelBase {
     @ApiModelProperty(notes = "사용자이이디")
     private String userId;
 
-//    public Room toEntity() {
-//        return Room.builder()
-//                .name(chatRoomName)
-//                .admin(userId)
-//                .build();
-//    }
-
 
     private String name;
     private String message;

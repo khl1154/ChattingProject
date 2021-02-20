@@ -14,11 +14,13 @@ import com.clone.chat.domain.RoomMessage;
 import com.clone.chat.redisRepository.MessageRepository;
 import com.clone.chat.redisRepository.RoomMessageRepository;
 import com.clone.chat.redisRepository.RoomRepository;
+import com.clone.chat.redisRepository.UserInChatRoomRepository;
 import com.clone.chat.repository.*;
 import com.clone.chat.service.RoomService;
 import com.clone.chat.service.UserService;
 import com.clone.chat.service.WebSocketManagerService;
 import com.fasterxml.jackson.annotation.JsonView;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,32 +36,25 @@ import java.util.*;
 
 @Controller("ws-rooms-controller")
 @Slf4j
+@RequiredArgsConstructor
 public class RoomsController {
     public static final String URI_PREFIX = "/rooms";
 
-    @Autowired
-    private WebSocketManagerService webSocketManagerService;
+    private final WebSocketManagerService webSocketManagerService;
 
-    @Autowired
-    private SimpMessageSendingOperations messagingTemplate;
+    private final RoomRepository roomRepository;
 
-    @Autowired
-    UserRepository userRepository;
+    private final MessageRepository messageRepository;
 
-    @Autowired
-    RoomRepository roomRepository;
+    private final RoomMessageRepository roomMessageRepository;
 
-    @Autowired
-    MessageRepository messageRepository;
+    private final RoomService roomService;
 
-    @Autowired
-    RoomMessageRepository roomMessageRepository;
+    private final UserService userService;
 
-    @Autowired
-    RoomService roomService;
+    private final RoomIdRepository roomIdRepository;
 
-    @Autowired
-    UserService userService;
+    private final UserInChatRoomRepository userInChatRoomRepository;
 
     @MessageMapping(URI_PREFIX+"/create-room")
     public void createRoom(RequestCreateRoom createRoom, Principal principal, SimpMessageHeaderAccessor simpMessageHeaderAccessor) throws Exception {
@@ -70,17 +65,19 @@ public class RoomsController {
         List<String> publishKeys = new ArrayList<>();
         for (String it : CollectionUtils.emptyIfNull(createRoom.getUsers())) {
 
-            User findUser = userRepository.findById(it).get();
+            User findUser = userService.find(it);
             RedisUser redisUser = userService.getRedisUser(it);
             room.addUser(redisUser);
         }
-//        for (String it : CollectionUtils.emptyIfNull(createRoom.getUsers())) {
-//            UserRoom userRoom = UserRoom.builder().userId(it).roomId(room.getId()).build();
-//            userRoomRepository.save(userRoom);
-//            room.addUserRoom(userRoom);
-//        }
+
+        RoomId roomId = roomIdRepository.save(new RoomId());
+        room.setId(roomId.getId());
         roomRepository.save(room);
         for(String userId : room.getUsers().keySet()) {
+            UserInChatRoom userInChatRoom = UserInChatRoom.builder()
+                    .roomId(room.getId())
+                    .userId(userId).build();
+            userInChatRoomRepository.save(userInChatRoom);
             List<Room> rooms = roomService.userRoomFindAllByUserId(userId);
             webSocketManagerService.sendToUserByUserId("/queue/rooms", rooms, userId);
         }
@@ -114,29 +111,12 @@ public class RoomsController {
             List<Room> rooms = roomService.userRoomFindAllByUserId(userId);
             webSocketManagerService.sendToUserByUserId("/queue/rooms", rooms, userId);
         }
-//        webSocketManagerService.sendToUserByUserId("/queue"+URI_PREFIX+"/"+message.getRoomId()+"/message", recipientRoomMessage, user.getId());
-//
-//        userRoomRepository.findAllByRoom(message.getRoomId()).stream().forEach(it -> {
-//            msg.addRoomMessage(RoomMessage.builder().roomId(message.getRoomId()).userId(it.getUserId()).confirm(false).build());
-//        });
-//        Message saveMsg = messageRepository.save(msg);
-//
-//        Room room = roomRepository.findById(message.getRoomId()).get();
-//        room.setLastMsgContents(message.getContents());
-//        room.setLastMsgDt(message.getSendDt());
-//        roomRepository.save(room);
-//
-//        room.getUserRooms().forEach(it -> {
-//            webSocketManagerService.sendToUserByUserId("/queue"+URI_PREFIX+"/"+message.getRoomId()+"/message", saveMsg, it.getUserId());
-//            List<Room> rooms = roomService.userRoomFindAllByUserId(it.getUserId());
-//            webSocketManagerService.sendToUserByUserId("/queue/rooms", rooms, it.getUserId());
-//        });
     }
 
     @MessageMapping(URI_PREFIX+"/{roomId}/messages")
     @SendToUser("/queue"+URI_PREFIX+"/{roomId}/messages")
     @JsonView({JsonViewApi.class})
-    public List<RoomMessage> getMessages(@DestinationVariable("roomId") String roomId,Principal principal, SimpMessageHeaderAccessor simpMessageHeaderAccessor) throws Exception {
+    public List<RoomMessage> getMessages(@DestinationVariable("roomId") Long roomId,Principal principal, SimpMessageHeaderAccessor simpMessageHeaderAccessor) throws Exception {
         UserToken user = webSocketManagerService.getUser(simpMessageHeaderAccessor).orElseThrow(() -> new BusinessException(MsgCode.ERROR_AUTH));
         List<RoomMessage> roomMessages = roomService.getRoomMessages(roomId);
         return roomMessages;

@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface RoomMessageRepository extends CrudRepository<RoomMessage, Long> {
 
-    List<RoomMessage> findByRoomId(String roomId);
+    List<RoomMessage> findByRoomId(Long roomId);
 
 
 //    @Modifying

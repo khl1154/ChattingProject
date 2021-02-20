@@ -2,6 +2,7 @@ package com.clone.chat.service;
 
 import com.clone.chat.domain.User;
 import com.clone.chat.model.UserToken;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.cache.annotation.Cacheable;
@@ -18,10 +19,10 @@ import java.util.Optional;
 
 @Service
 @Scope(value = ConfigurableBeanFactory.SCOPE_SINGLETON)
+@RequiredArgsConstructor
 public class WebSocketManagerService {
 
-    @Autowired
-    SimpMessagingTemplate template;
+    private final SimpMessagingTemplate template;
 
     public static Map<String, UserToken> users = new HashMap<>();
 

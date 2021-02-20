@@ -20,8 +20,6 @@ public class WebSocketController {
     @MessageMapping("/message")
     @SendToUser("/queue/reply")
     public String processMessageFromClient(@Payload String message, Principal principal, SimpMessageHeaderAccessor simpMessageHeaderAccessor) throws Exception {
-//        String name = new Gson().fromJson(message, Map.class).get("name").toString();
-        //messagingTemplate.convertAndSendToUser(principal.getName(), "/queue/reply", name);
         return "zz"+message;
     }
 

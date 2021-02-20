@@ -5,6 +5,7 @@ import com.clone.chat.domain.User;
 import com.clone.chat.domain.base.UserBase;
 import com.clone.chat.redisRepository.ChatRoomRepository;
 import com.clone.chat.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,6 +29,7 @@ import java.util.Arrays;
 @EnableCaching
 @EnableJpaAuditing
 @SpringBootApplication
+@RequiredArgsConstructor
 @Slf4j
 public class ChatApplication implements CommandLineRunner {
 
@@ -37,14 +39,11 @@ public class ChatApplication implements CommandLineRunner {
     @Value("${spring.profiles.active}")
     private String activeProfile;
 
-    @Autowired
-    UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    ChatRoomRepository roomRepository;
+    private final ChatRoomRepository roomRepository;
 
-    @Autowired
-    PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     public static void main(String[] args) {
         SpringApplicationBuilder builder = new SpringApplicationBuilder(ChatApplication.class);
@@ -56,7 +55,6 @@ public class ChatApplication implements CommandLineRunner {
     @EventListener
     @Transactional
     public void applicationStartedEvent(ApplicationStartedEvent applicationStartedEvent) {
-        log.debug("applicationStartedEvent done!! -> " + activeProfile);
         if (activeProfile.equals("dev")) {
             User admin = UserBase.builder().id("admin").password(passwordEncoder.encode("1234")).nickName("admin-nick").role(UserRole.ADMIN).build().map(User.class);
             User user1 = UserBase.builder().id("user1").password(passwordEncoder.encode("1234")).nickName("user1-nick").role(UserRole.USER).statusMsg("아 심심하다").build().map(User.class);
@@ -97,27 +95,16 @@ public class ChatApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-//        log.info("EXECUTING : command line runner");
-//
-//        for (int i = 0; i < args.length; ++i) {
-//            log.info("args[{}]: {}", i, args[i]);
-//        }
     }
-//    @Bean
-//	@Profile("dev")
-//	public void test() {
-//		log.info("----");
-//	}
-
 
     @PostConstruct
     public void onStart() {
-        log.info("START {}", applicationName);
+
     }
 
     @PreDestroy
     public void onExit() {
-        log.info("EXIT {}", applicationName);
+
     }
 
 }

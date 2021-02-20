@@ -9,20 +9,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.Optional;
 
-public interface RoomRepository extends CrudRepository<Room, String> {
+public interface RoomRepository extends CrudRepository<Room, Long> {
 
-    @Query("" +
-            "select " +
-            " distinct a " +
-            "from Room a left join fetch a.userRooms b " +
-            "where" +
-            " a.id in (select b.room from a.userRooms b where b.userId = :userId) " +
-            "order by a.lastMsgDt desc " +
-            "")
-    List<Room> findAllByUserRoom_UserId(@Param("userId") String userId);
-
-
-    @EntityGraph(value = "Room.userRooms", type = EntityGraph.EntityGraphType.LOAD)
-    Optional<Room> findById(Long id);
-
+    List<Room> findAllByUsersIs(String userId);
 }

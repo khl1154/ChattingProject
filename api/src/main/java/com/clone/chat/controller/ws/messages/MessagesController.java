@@ -13,6 +13,7 @@ import com.clone.chat.repository.UserRepository;
 import com.clone.chat.service.UserMessageService;
 import com.clone.chat.service.WebSocketManagerService;
 import com.fasterxml.jackson.annotation.JsonView;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -25,26 +26,21 @@ import java.security.Principal;
 import java.util.List;
 
 @Controller("ws-messages-controller")
+@RequiredArgsConstructor
 public class MessagesController {
     public static final String URI_PREFIX = "/messages";
 
-    @Autowired
-    private WebSocketManagerService webSocketManagerService;
+    private final WebSocketManagerService webSocketManagerService;
 
-    @Autowired
-    private SimpMessageSendingOperations messagingTemplate;
+    private final SimpMessageSendingOperations messagingTemplate;
 
-    @Autowired
-    UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    MessageRepository messageRepository;
+    private final MessageRepository messageRepository;
 
-    @Autowired
-    UserMessageRepository userMessageRepository;
+    private final UserMessageRepository userMessageRepository;
 
-    @Autowired
-    UserMessageService userMessageService;
+    private final UserMessageService userMessageService;
 
     @MessageMapping(URI_PREFIX+"/{userId}/send")
     public void sendDirectMessage(RequestMessage message, @DestinationVariable("userId") String toUserId, Principal principal, SimpMessageHeaderAccessor simpMessageHeaderAccessor) throws Exception {
