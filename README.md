@@ -37,6 +37,41 @@ pub/sub 구조는 클라이언트가 특정 주제(topic)에 대해 구독(sub)�
 계정 정보, 친구 관계, 프로필 사진과 같은 자주 변동되지 않고 형태가 일정한 데이터는 JPA 엔티티 매핑을 통해 mysql에 저장하였습니다.
 채팅방 정보, 채팅 내역 등 DB와 io가 자주 일어나고 변동이 잦은 데이터들은 인메모리 방식인 redis에 저장함으로써 성능 향상을 도모하였습니다.
 jpa maria redis
+'''
+@Getter
+@Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class File extends ModelBase implements Serializable {
+
+    @Id
+    @GeneratedValue
+    @Column(name = "file_id")
+    private Long id;
+
+    @Column(nullable = false)
+    private String originalFileName;
+
+    @Column(nullable = false)
+    private String fileName;
+
+    @JsonView({JsonViewApi.class})
+    @Column(nullable = false)
+    private String filePath;
+
+    @Column(nullable = false)
+    private Long fileSize;
+
+    @Builder
+    public File(Long id, String originalFileName, String fileName, String filePath, Long fileSize) {
+        this.id = id;
+        this.originalFileName = originalFileName;
+        this.fileName = fileName;
+        this.filePath = filePath;
+        this.fileSize = fileSize;
+    }
+}
+
+'''
 
 spring security token
 ### Spring Security와 JWT를 이용한 인가, 인증
