@@ -8,7 +8,7 @@
 3명
 
 ### 개요
-소켓 통신을 이용한 실시간 채팅 사이트입니다.
+소켓 통신을 이용한 실시간 채팅 사이트입니다.  
 웹소켓과 Stomp 프로토콜을 이용하여 구현하였으며 여러명의 친구를 초대하여 실시간 채팅을 이용할 수 있습니다. 
 
 ### 주요기능
@@ -76,5 +76,5 @@ Spring Security와 JWT을 이용하여 일부 리소스를 인증된 회원만�
 ### 지속적인 통합(CI), 지속적인 배포(CD)
 Travis, AWS s3를 통해 지속적인 통합(CI) 환경을 구축하였고  
 AWS CodeDeploy를 통해 AWS ec2 서버에 지속적인 배포(CD) 환경을 구축하였습니다.
-![CICD](https://user-images.githubusercontent.com/45163261/108695177-538de980-7543-11eb-9c52-882411cf195a.PNG)
+![CICD](https://user-images.githubusercontent.com/45163261/108695469-ac5d8200-7543-11eb-989d-eed462410b2a.PNG)
 
