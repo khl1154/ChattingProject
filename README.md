@@ -37,41 +37,37 @@ pub/sub 구조는 클라이언트가 특정 주제(topic)에 대해 구독(sub)�
 계정 정보, 친구 관계, 프로필 사진과 같은 자주 변동되지 않고 형태가 일정한 데이터는 JPA 엔티티 매핑을 통해 mysql에 저장하였습니다.
 채팅방 정보, 채팅 내역 등 DB와 io가 자주 일어나고 변동이 잦은 데이터들은 인메모리 방식인 redis에 저장함으로써 성능 향상을 도모하였습니다.
 jpa maria redis
-'''
-@Getter
-@Entity
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class File extends ModelBase implements Serializable {
 
-    @Id
-    @GeneratedValue
-    @Column(name = "file_id")
-    private Long id;
+```java
+Service
+@NoArgsConstructor
+public class RedisService {
 
-    @Column(nullable = false)
-    private String originalFileName;
+    private static final String ROOMS = "ROOMS";
+    private static final String USER_IN_ROOMS = "USER_IN_ROOMS";
+    private static final String ROOM_IN_USERS = "ROOM_IN_USERS";
+    private static final String ROOM_MESSAGES = "ROOM_MESSAGES";
+    private static final String USER_MESSAGES = "USER_MESSAGES";
 
-    @Column(nullable = false)
-    private String fileName;
+    @Autowired
+    private RedisTemplate<String, String> redisTemplate;
 
-    @JsonView({JsonViewApi.class})
-    @Column(nullable = false)
-    private String filePath;
+    @Resource(name = "redisTemplate")
+    private HashOperations<String, Long, Room> rooms;
 
-    @Column(nullable = false)
-    private Long fileSize;
+    @Resource(name = "redisTemplate")
+    private HashOperations<String, String, Set<Long>> userInRooms;
 
-    @Builder
-    public File(Long id, String originalFileName, String fileName, String filePath, Long fileSize) {
-        this.id = id;
-        this.originalFileName = originalFileName;
-        this.fileName = fileName;
-        this.filePath = filePath;
-        this.fileSize = fileSize;
+    @Resource(name = "redisTemplate")
+    private HashOperations<String, Long, List<Message>> roomMessages;
+
+    public Room findRoom(Long roomId) {
+        return rooms.get(ROOMS, roomId);
     }
-}
 
-'''
+    public void saveRoom(Room room) { rooms.put(ROOMS, room.getId(), room); }
+    ...
+```
 
 spring security token
 ### Spring Security와 JWT를 이용한 인가, 인증
