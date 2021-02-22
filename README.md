@@ -1,42 +1,32 @@
-kakaoClone
-===
+# kaka
 
-# 실행
- - -Dspring.profiles.active=dev
- - java -Dspring.profiles.active=prod -jar api.jar(운영배포)
- - java -Dspring.profiles.active=dev -jar api.jar(개발배포)
+## 프로젝트 요약
+### 개발기간
+2018/12/10 ~ 2019/01/17
 
-tip
-===
+### 참여인원
+3명
 
-websocket
- - https://www.baeldung.com/spring-websockets-sendtouser
- - https://hyeooona825.tistory.com/89?category=794651
- - https://kmdigit.github.io/2020/03/12/send-message-direct-user-in-spring-websocket/
- - https://www.codesandnotes.be/2020/03/31/websocket-based-notification-system-using-spring/
- - event: https://ratseno.tistory.com/71
- - https://www.devglan.com/spring-boot/spring-boot-websocket-example
- - channel: https://medium.com/@hardeek.sharma/accessing-header-in-stomp-web-socket-connection-with-spring-boot-3d4a962a0f00
- - session관리: https://stackoverflow.com/questions/28552033/disconnect-client-session-from-spring-websocket-stomp-server
-   - https://stackoverflow.com/questions/56497055/principal-is-null-for-every-spring-websocket-event 
- - pathvariable and url mapping: https://stackoverflow.com/questions/27047310/path-variables-in-spring-websockets-sendto-mapping
+### 개요
+소켓 통신을 이용한 채팅 사이트 
 
-h2
-- http://h2database.com/html/features.html#connection_modes
+### 주요기능
+- 아이디를 이용해 친구 검색 및 친구 추가
+- 등록된 친구들 중에서 대화할 상대를 선택하여 대화방 개설
+- 개설된 대화방에서 여러명의 친구들과의 실시간 채팅 기능
+- 채팅방목록에서 채팅방들의 가장 최근 대화내용 확인 및 최근에 채팅이 이루어진 순서대로 채팅방 목록 실시간 변화
 
-test
-- https://goddaehee.tistory.com/211
-- controller: https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-testing
-- 종류: https://goddaehee.tistory.com/212
+## 개발환경
+![개발환경](https://user-images.githubusercontent.com/45163261/94261746-53c29280-ff6d-11ea-885c-d315f682482b.PNG)
 
-spring-rest-doc
-- https://www.baeldung.com/spring-rest-docs
-- ascii-doc plugin
-  - 공식 https://asciidoctor.github.io/asciidoctor-gradle-plugin/master/user-guide/
-  - https://jogeum.net/16
-  - https://www.popit.kr/spring-rest-docs/
-  - gradle: https://jojoldu.tistory.com/294
-  - 공식: https://github.com/spring-projects/spring-restdocs/tree/v2.0.1.RELEASE/samples
-  
-jackson
-- string to list object: https://mkyong.com/java/jackson-convert-json-array-string-to-list/
+## 내가 구현한 기능
+![주요기능](https://user-images.githubusercontent.com/45163261/94263084-7c4b8c00-ff6f-11ea-8303-09ac2cb980f6.PNG)
+
+## 프로젝트 상세화면
+![화면1](https://user-images.githubusercontent.com/45163261/94261753-5624ec80-ff6d-11ea-9cb2-d7ad107acc46.PNG)
+![화면2](https://user-images.githubusercontent.com/45163261/94261756-57561980-ff6d-11ea-8755-9cdaad464bd8.PNG)
+![화면3](https://user-images.githubusercontent.com/45163261/94261759-57eeb000-ff6d-11ea-926b-6e268bbb084a.PNG)
+![화면4](https://user-images.githubusercontent.com/45163261/94261763-591fdd00-ff6d-11ea-8478-581d1905a6f0.PNG)
+![화면5](https://user-images.githubusercontent.com/45163261/94261987-b2880c00-ff6d-11ea-8dc7-451c801f9579.PNG)
+![화면6](https://user-images.githubusercontent.com/45163261/94263090-7e154f80-ff6f-11ea-8aee-5c0d60d496ab.PNG)
+
