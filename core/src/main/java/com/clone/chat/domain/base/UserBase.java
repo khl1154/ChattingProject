@@ -21,7 +21,7 @@ import java.time.ZonedDateTime;
 @MappedSuperclass
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-public class UserBase extends ModelBase {
+public class UserBase extends ModelBase implements Serializable {
 
 	@Id
 	@Column(name = "ID")

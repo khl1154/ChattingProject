@@ -3,11 +3,9 @@ package com.clone.chat;
 import com.clone.chat.code.UserRole;
 import com.clone.chat.domain.User;
 import com.clone.chat.domain.base.UserBase;
-import com.clone.chat.redisRepository.ChatRoomRepository;
 import com.clone.chat.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -40,8 +38,6 @@ public class ChatApplication implements CommandLineRunner {
     private String activeProfile;
 
     private final UserRepository userRepository;
-
-    private final ChatRoomRepository roomRepository;
 
     private final PasswordEncoder passwordEncoder;
 

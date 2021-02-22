@@ -1,53 +1,36 @@
 package com.clone.chat.service;
 
-import com.clone.chat.domain.Room;
-import com.clone.chat.domain.RoomMessage;
-import com.clone.chat.domain.UserInChatRoom;
-import com.clone.chat.redisRepository.RoomMessageRepository;
-import com.clone.chat.redisRepository.RoomRepository;
-import com.clone.chat.redisRepository.UserInChatRoomRepository;
+import com.clone.chat.domain.User;
 import com.clone.chat.repository.UserRepository;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
+@Getter
+@Setter
 @Transactional(readOnly = true)
-@RequiredArgsConstructor
+@NoArgsConstructor
 @Service
-@Slf4j
 public class RoomService {
 
-    private final RoomRepository roomRepository;
+    @Autowired
+    private UserRepository userRepository;
 
-    private final RoomMessageRepository roomMessageRepository;
-
-    private final UserRepository userRepository;
-
-    private final UserInChatRoomRepository userInChatRoomRepository;
-
-    public void save(Room room) {
-        roomRepository.save(room);
-    }
-
-//    @Cacheable(value = "Rooms", key = "#id")
-    public List<Room> userRoomFindAllByUserId(String userId) {
-        List<UserInChatRoom> userInChatRooms = userInChatRoomRepository.findAllByUserId(userId);
-        List<Room> rooms = new ArrayList<>();
-        for (UserInChatRoom userInChatRoom : userInChatRooms) {
-            rooms.add(roomRepository.findById(userInChatRoom.getRoomId()).get());
-        }
-        rooms.sort(null);
-
-        return rooms;
-    }
-
-    public List<RoomMessage> getRoomMessages(Long roomId) {
-        List<RoomMessage> roomMessages = roomMessageRepository.findByRoomId(roomId);
-        roomMessages.sort(null);
-        return roomMessages;
+//    @Cacheable(value = "roomInUsers", key = "#roomId")
+    public Set<User> getInUsers(Long roomId, Set<String> userIds) {
+        return userRepository.findAllById(userIds);
+//        Set<User> users = new HashSet<>();
+//        for(String userId : userIds) {
+//            Optional<User> findUser = userRepository.findById(userId);
+//            users.add(findUser.get());
+//        }
+//        return users;
     }
 }

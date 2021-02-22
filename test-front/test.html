@@ -18,7 +18,7 @@ test
         connectionSockJs(connected);
     });
     function connectionSockJs(connected) {
-        var socket = new SockJS('http://13.124.86.222:9000/websocket')
+        var socket = new SockJS('http://localhost:9000/websocket')
         var stompClient = Stomp.over(socket);
         stompClient.connect({}, function (frame) {
             connected(stompClient, frame)

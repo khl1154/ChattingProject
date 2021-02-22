@@ -20,7 +20,6 @@ import java.util.Optional;
 
 @Getter @Setter
 @NoArgsConstructor
-@RedisHash("MESSAGE")
 public class Message implements Serializable {
 
 	@Id

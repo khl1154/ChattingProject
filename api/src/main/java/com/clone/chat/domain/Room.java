@@ -22,8 +22,6 @@ import java.util.*;
 @Getter
 @Setter
 @NoArgsConstructor
-@RedisHash("ROOM")
-@NamedEntityGraph(name = "Room.userRooms", attributeNodes = @NamedAttributeNode("userRooms"))
 public class Room extends ModelBase implements Serializable, Comparable<Room> {
 	
 	@Id
@@ -39,22 +37,17 @@ public class Room extends ModelBase implements Serializable, Comparable<Room> {
 	@JsonView({JsonViewApi.class})
 	private String lastMsgContents;
 
-	@JsonManagedReference
 	@JsonView({JsonViewApi.class})
-	private Map<String, RedisUser> users = new HashMap<>();
+	private Set<String> inUserIds;
+
 
 	@Builder
-	public Room(Long id, String name, ZonedDateTime lastMsgDt, String lastMsgContents, Map<String, RedisUser> users) {
+	public Room(Long id, String name, ZonedDateTime lastMsgDt, String lastMsgContents, Set<String> inUserIds) {
 		this.id = id;
 		this.name = name;
 		this.lastMsgDt = lastMsgDt;
 		this.lastMsgContents = lastMsgContents;
-		this.users = users;
-	}
-
-	public void addUser(RedisUser user){
-		this.users = Optional.ofNullable(this.users).orElseGet(() -> new HashMap<>());
-		this.users.put(user.getId(), user);
+		this.inUserIds = inUserIds;
 	}
 
 	@Override
@@ -64,5 +57,10 @@ public class Room extends ModelBase implements Serializable, Comparable<Room> {
 		if(that.lastMsgDt == null)
 			return -1;
 		return that.lastMsgDt.compareTo(this.lastMsgDt);
+	}
+
+	public void addInUser(String userId) {
+		if(inUserIds == null) inUserIds = new HashSet<>();
+		inUserIds.add(userId);
 	}
 }

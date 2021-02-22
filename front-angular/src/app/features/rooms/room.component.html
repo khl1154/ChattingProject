@@ -10,13 +10,13 @@
 
     <div class="container">
         <ul class="list-group">
-            <li class="list-group-item" *ngFor="let it of rooms" style="cursor: pointer" (click)="showRoom(it)">
+            <li class="list-group-item" *ngFor="let it of rooms" style="cursor: pointer" (click)="showRoom(it.room)">
                 <div>
-                    <b>{{it.name}}</b> <br *ngIf="it.lastMsgContents">{{it.lastMsgContents}}&nbsp;&nbsp;&nbsp; {{it.lastMsgDt | date: 'yyyy/MM/dd HH:mm:ss'}}
+                    <b>{{it.room.name}}</b> <br *ngIf="it.room?.lastMsgContents">{{it.room.lastMsgContents}}&nbsp;&nbsp;&nbsp; {{it.room.lastMsgDt | date: 'yyyy/MM/dd HH:mm:ss'}}
                 </div>
-                <div *ngFor="let it2 of it.users | keyvalue" style="float: left">
-                    <img  style="width: 20px; height: 20px" src="{{it2.value.filePath}}"  onerror="this.src='https://dt8upu5cibhp1.cloudfront.net/5db96de3e32fa818dc0d0aecfe82869f'">
-                    <span class="badge badge-primary m-1">{{it2.value.id}}</span>
+                <div *ngFor="let it2 of it.roomInUsers " style="float: left">
+                    <img  style="width: 20px; height: 20px" src="{{it2.file?.filePath}}"  onerror="this.src='https://dt8upu5cibhp1.cloudfront.net/5db96de3e32fa818dc0d0aecfe82869f'">
+                    <span class="badge badge-primary m-1">{{it2.nickName}}</span>
                 </div>
 
             </li>
@@ -61,13 +61,13 @@
             </div>
         </div>
         <div #contents style="height: 300px; width: 100%; overflow: scroll" class="alert alert-info m-2" >
-            <li #contentsItems class="list-group-item" *ngFor="let it of choiceRoomMessages" style="cursor: pointer" [ngStyle]="{'text-align': userTokenContain && it.message.userId === userTokenContain.id ? 'right' : 'left'}">
+            <li #contentsItems class="list-group-item" *ngFor="let it of choiceRoomMessages" style="cursor: pointer" [ngStyle]="{'text-align': userTokenContain && it.userId === userTokenContain.id ? 'right' : 'left'}">
 <!--                <span [style]="userTokenContain && it.userId === userTokenContain.id ? 'float: right' : 'float: left'">-->
                 <span class="badge badge-pill badge-primary">
-                {{it.message.userId}}
+                {{it.userId}}
                 </span>
-                <span class="badge badge-light ml-2 mr-2">{{it.message.contents}}</span>
-                <span class="badge badge-secondary">{{it.message.regDt | moment}}</span>
+                <span class="badge badge-light ml-2 mr-2">{{it.contents}}</span>
+                <span class="badge badge-secondary">{{it.regDt | moment}}</span>
 
 <!--                <span style="float: right" *ngIf="userTokenContain && it.userId === userTokenContain.id"> *me</span>-->
             </li>

@@ -16,6 +16,7 @@ import RequestCreateRoom = com.clone.chat.controller.ws.rooms.model.RequestCreat
 import Message = com.clone.chat.domain.Message;
 import RequestSendRoomMessage = com.clone.chat.controller.ws.rooms.model.RequestSendRoomMessage;
 import RoomMessage = com.clone.chat.domain.RoomMessage;
+import ResponseRoom = com.clone.chat.controller.ws.rooms.model.ResponseRoom;
 
 class UserCheck extends User {
     value: boolean;
@@ -32,20 +33,21 @@ export class RoomComponent implements OnInit, AfterViewInit {
     @ViewChild('roomModal') roomModal: BasicModalComponent;
     @ViewChild('contents') private contents: ElementRef;
     @ViewChildren('contentsItems') contentsItems: QueryList<any>;
-    private rooms: Room[];
+    private rooms: ResponseRoom[];
     private friends: UserCheck[];
     private newRoomName = uuidv4();
     private choiceRoom: Room;
     private roomMessagesSubscription: Subscription;
     private roomMessageSubscription: Subscription;
-    private choiceRoomMessages: RoomMessage[];
+    private choiceRoomMessages: Message[];
     private userTokenContain: UserTokenContain;
 
     constructor(private userService: UserService, private wsService: WsService, private alertService: AlertService, public router: Router, private api: JsonApiService) {
         this.userService.user$.pipe(filter(it => it.authorities && it.authorities.length > 0)).subscribe((userTokenContain: UserTokenContain) => {
             this.userTokenContain = userTokenContain;
-            this.wsService.watch<Room[]>('/user/queue/rooms').subscribe((it) => {
+            this.wsService.watch<ResponseRoom[]>('/user/queue/rooms').subscribe((it) => {
                 this.rooms = it;
+                // console.log(it)
             });
             // this.wsService.watch<string>(`/topic/rooms/${userTokenContain.authorizationHeaders}`).subscribe((it) => {
             //     console.log(it);
@@ -102,11 +104,13 @@ export class RoomComponent implements OnInit, AfterViewInit {
 
         this.roomMessagesSubscription?.unsubscribe();
         this.roomMessageSubscription?.unsubscribe();
-        this.roomMessagesSubscription = this.wsService.watch<RoomMessage[]>(`/user/queue/rooms/${this.choiceRoom.id}/messages`).subscribe((it) => {
-                this.choiceRoomMessages = it;
+        this.roomMessagesSubscription = this.wsService.watch<Message[]>(`/user/queue/rooms/${this.choiceRoom.id}/messages`).subscribe((it) => {
+            this.choiceRoomMessages = it;
         });
-        this.roomMessageSubscription = this.wsService.watch<RoomMessage>(`/user/queue/rooms/${this.choiceRoom.id}/message`).subscribe((it) => {
-                this.choiceRoomMessages.push(it);
+
+        this.roomMessageSubscription = this.wsService.watch<Message>(`/user/queue/rooms/${this.choiceRoom.id}/message`).subscribe((it) => {
+            this.choiceRoomMessages.push(it);
+            console.log(it)
 
         });
         this.wsService.publish(`/app/rooms/${this.choiceRoom.id}/messages`);
@@ -114,7 +118,6 @@ export class RoomComponent implements OnInit, AfterViewInit {
     }
 
     sendMessage(room: Room, value: string) {
-        console.log(room.id)
         const requestSendRoomMessage = new RequestSendRoomMessage();
         requestSendRoomMessage.roomId = room.id;
         requestSendRoomMessage.contents = value;
