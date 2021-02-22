@@ -34,10 +34,10 @@ pub/sub 구조는 클라이언트가 특정 주제(topic)에 대해 구독(sub)�
 
 
 ### JPA을 통한 RDBMS와 Redis을 이용한 채팅 데이터
-계정 정보, 친구 관계, 프로필 사진과 같은 자주 변동되지 않고 형태가 일정한 데이터는 JPA 엔티티 매핑을 통해 mysql에 저장하였습니다.
+계정 정보, 친구 관계, 프로필 사진과 같은 자주 변동되지 않고 형태가 일정한 데이터는 JPA 엔티티 매핑을 통해 mysql에 저장하였습니다.  
 채팅방 정보, 채팅 내역 등 DB와 io가 자주 일어나고 변동이 잦은 데이터들은 인메모리 방식인 redis에 저장함으로써 성능 향상을 도모하였습니다.
-jpa maria redis
 
+#### redis 적용 코드
 ```java
 @Service
 @NoArgsConstructor
@@ -69,12 +69,12 @@ public class RedisService {
     //...이하생략
 ```
 
-spring security token
 ### Spring Security와 JWT를 이용한 인가, 인증
-Spring Security와 JWT을 이용하여 일부 리소스를 인증된 회원만이 접근 가능하게 하였습니다.
+Spring Security와 JWT을 이용하여 일부 리소스를 인증된 회원만이 접근 가능하게 하였습니다.  
 또한 사용자의 권한을 확인하여 일부 리소스를 인가된 회원만이 접근 가능하게 하였습니다.
 
-CICD
 ### 지속적인 통합(CI), 지속적인 배포(CD)
-Travis, AWS s3를 통해 지속적인 통합(CI) 환경을 구축하였고
+Travis, AWS s3를 통해 지속적인 통합(CI) 환경을 구축하였고  
 AWS CodeDeploy를 통해 AWS ec2 서버에 지속적인 배포(CD) 환경을 구축하였습니다.
+![CICD](https://user-images.githubusercontent.com/45163261/108695177-538de980-7543-11eb-9c52-882411cf195a.PNG)
+
