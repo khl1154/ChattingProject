@@ -30,7 +30,8 @@
 Stomp 프로토콜은 웹상에서 텍스트를 송수신하는 방식을 규약한 것으로 pub/sub 모델로 되어 있어 채팅방과 같은 실시간 양방향 통신을 구현하는데 유용합니다.
 pub/sub 구조는 클라이언트가 특정 주제(topic)에 대해 구독(sub)을 하면 해당 주제에 대해 발행(pub)되는 정보에 대해 받아볼 수 있게됩니다.
 이때 구독, 발행의 작업은 중간 브로커(broker)를 통해 이루어지게 됩니다.
-![Stomp](https://user-images.githubusercontent.com/45163261/108693445-30623a80-7541-11eb-843f-e6773cb37fdc.PNG)
+![Stomp](https://user-images.githubusercontent.com/45163261/108693610-60114280-7541-11eb-9f3f-ca55efa7d625.PNG)
+
 
 ### JPA을 통한 RDBMS와 Redis을 이용한 채팅 데이터
 계정 정보, 친구 관계, 프로필 사진과 같은 자주 변동되지 않고 형태가 일정한 데이터는 JPA 엔티티 매핑을 통해 mysql에 저장하였습니다.
