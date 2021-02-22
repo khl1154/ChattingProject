@@ -23,11 +23,12 @@
 ## 내가 구현한 기능
 
 ## 프로젝트 상세화면
-![친구리스트](https://user-images.githubusercontent.com/45163261/108714766-4e3d9880-755d-11eb-9cf4-00b666d8b891.PNG)
-![친구검색](https://user-images.githubusercontent.com/45163261/108714764-4da50200-755d-11eb-9741-59de0d8c9f47.PNG)
-![채팅리스트](https://user-images.githubusercontent.com/45163261/108714763-4da50200-755d-11eb-8f52-3366a8fa14d7.PNG)
-![방생성](https://user-images.githubusercontent.com/45163261/108714768-4ed62f00-755d-11eb-99d3-ee1b9904c268.PNG)
-![채팅](https://user-images.githubusercontent.com/45163261/108714760-4c73d500-755d-11eb-8b38-e6b75ac99f1b.PNG)
+![친구리스트](https://user-images.githubusercontent.com/45163261/108715375-23a00f80-755e-11eb-8c62-187091af15ca.PNG)
+![친구검색](https://user-images.githubusercontent.com/45163261/108715378-24d13c80-755e-11eb-934f-6e9541da0b20.PNG)
+![채팅리스트](https://user-images.githubusercontent.com/45163261/108715379-269b0000-755e-11eb-9518-1532848f5d20.PNG)
+![방생성](https://user-images.githubusercontent.com/45163261/108715389-2864c380-755e-11eb-941c-e94ddcbdec3d.PNG)
+![채팅](https://user-images.githubusercontent.com/45163261/108715393-2995f080-755e-11eb-8dea-9edfc6ebd32f.PNG)
+
 
 ## 사용된 기술
 ### 웹 소켓을 이용한 채팅방 구현
