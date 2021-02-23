@@ -23,7 +23,7 @@
 - __같은 계정으로 여러개의 브라우저 또는 여러개의 탭에서 동시에 이용할 경우 정상적으로 동작하지 않을 수 있습니다.__  
 >  __사용가능한 계정__  
 > id : sero &nbsp;&nbsp;pw : 123  
-> id : son  &nbsp;&nbsp;pw : 123  
+> id : son  &nbsp;&nbsp;&nbsp;pw : 123  
 
 ## 개발환경
 ![찐개발환경](https://user-images.githubusercontent.com/45163261/108697007-a49edd00-7545-11eb-84f5-1f578d003e13.PNG)
