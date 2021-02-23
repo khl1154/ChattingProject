@@ -29,7 +29,7 @@ import java.util.Set;
 @Slf4j
 public class performanceTest {
 
-    private final WebSocketManagerService webSocketManagerService;
+//    private final WebSocketManagerService webSocketManagerService;
 
     public static final String URI_PREFIX = "/anon-apis";
 
@@ -37,31 +37,31 @@ public class performanceTest {
 
     private final RoomService roomService;
     // 메시지 전송
-    @GetMapping("/test")
-    public void test(String userId, Long roomId) {
-
-        Message msg = Message.builder().userId(userId).contents("테스트메시지").build();
-
-        Room room = redisService.findRoom(roomId);
-        room.setLastMsgContents("테스트메시지");
-        redisService.saveRoom(room);
-        redisService.sendMessage(room.getId(), msg);
-
-        for(String userId1 : room.getInUserIds()) {
-            webSocketManagerService.sendToUserByUserId("/queue"+URI_PREFIX+"/"+roomId+"/message", msg, userId1);
-
-            List<Room> rooms = redisService.getUserInRooms(userId1);
-            List<ResponseRoom> responseRooms = new ArrayList<>();
-            for (Room room1 : rooms) {
-                Set<User> roomInUsers1 = roomService.getInUsers(room1.getId(), room1.getInUserIds());
-                ResponseRoom responseRoom = ResponseRoom.builder()
-                        .room(room1)
-                        .roomInUsers(roomInUsers1).build();
-                responseRooms.add(responseRoom);
-            }
-            webSocketManagerService.sendToUserByUserId("/queue/rooms", responseRooms, userId1);
-        }
-    }
+//    @GetMapping("/test")
+//    public void test(String userId, Long roomId) {
+//
+//        Message msg = Message.builder().userId(userId).contents("테스트메시지").build();
+//
+//        Room room = redisService.findRoom(roomId);
+//        room.setLastMsgContents("테스트메시지");
+//        redisService.saveRoom(room);
+//        redisService.sendMessage(room.getId(), msg);
+//
+//        for(String userId1 : room.getInUserIds()) {
+//            webSocketManagerService.sendToUserByUserId("/queue"+URI_PREFIX+"/"+roomId+"/message", msg, userId1);
+//
+//            List<Room> rooms = redisService.getUserInRooms(userId1);
+//            List<ResponseRoom> responseRooms = new ArrayList<>();
+//            for (Room room1 : rooms) {
+//                Set<User> roomInUsers1 = roomService.getInUsers(room1.getId(), room1.getInUserIds());
+//                ResponseRoom responseRoom = ResponseRoom.builder()
+//                        .room(room1)
+//                        .roomInUsers(roomInUsers1).build();
+//                responseRooms.add(responseRoom);
+//            }
+//            webSocketManagerService.sendToUserByUserId("/queue/rooms", responseRooms, userId1);
+//        }
+//    }
 
 //    // 메시지 전체 조회
 //    @GetMapping("/test2")

@@ -34,7 +34,8 @@ import java.util.Optional;
 public class FriendsController {
     public static final String URI_PREFIX = "/friends";
 
-    private final WebSocketManagerService webSocketManagerService;
+    @Autowired
+    private WebSocketManagerService webSocketManagerService;
 
     private final SimpMessageSendingOperations messagingTemplate;
 
