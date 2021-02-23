@@ -15,6 +15,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageExceptionHandler;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -34,7 +35,7 @@ import java.util.Optional;
 public class FriendsController {
     public static final String URI_PREFIX = "/friends";
 
-    @Autowired
+    @Autowired @Lazy
     private WebSocketManagerService webSocketManagerService;
 
     private final SimpMessageSendingOperations messagingTemplate;
