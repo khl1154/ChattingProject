@@ -3,7 +3,7 @@
 
     <div class="d-flex mt-3 mb-3 ">
         <div class="mr-auto p-2" style="margin-left: 50px"> <b>대화방</b></div>
-<!--        <div class="p-2"><i-feather name="refresh-Cw" style="margin-right:10px; cursor: pointer" (click)="send()"></i-feather></div>-->
+        <!--        <div class="p-2"><i-feather name="refresh-Cw" style="margin-right:10px; cursor: pointer" (click)="send()"></i-feather></div>-->
         <div class="p-2" style="margin-right: 38px"><i-feather name="plus-square" style="margin-right:10px; cursor: pointer" (click)="createRoom(); modal.show()"></i-feather></div>
     </div>
 
@@ -56,20 +56,20 @@
                     참여자
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                    <button class="dropdown-item" type="button" *ngFor="let it of choiceRoom.users | keyvalue">{{it.value.id}}</button>
+                    <button class="dropdown-item" type="button" *ngFor="let it of choiceRoom.inUserIds">{{it}}</button>
                 </div>
             </div>
         </div>
         <div #contents style="height: 300px; width: 100%; overflow: scroll" class="alert alert-info m-2" >
             <li #contentsItems class="list-group-item" *ngFor="let it of choiceRoomMessages" style="cursor: pointer" [ngStyle]="{'text-align': userTokenContain && it.userId === userTokenContain.id ? 'right' : 'left'}">
-<!--                <span [style]="userTokenContain && it.userId === userTokenContain.id ? 'float: right' : 'float: left'">-->
+                <!--                <span [style]="userTokenContain && it.userId === userTokenContain.id ? 'float: right' : 'float: left'">-->
                 <span class="badge badge-pill badge-primary">
                 {{it.userId}}
                 </span>
                 <span class="badge badge-light ml-2 mr-2">{{it.contents}}</span>
                 <span class="badge badge-secondary">{{it.regDt | moment}}</span>
 
-<!--                <span style="float: right" *ngIf="userTokenContain && it.userId === userTokenContain.id"> *me</span>-->
+                <!--                <span style="float: right" *ngIf="userTokenContain && it.userId === userTokenContain.id"> *me</span>-->
             </li>
         </div>
         <div class="m-2">

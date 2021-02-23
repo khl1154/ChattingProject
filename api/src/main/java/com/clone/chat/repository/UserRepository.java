@@ -18,5 +18,6 @@ public interface UserRepository extends JpaRepository<User, String> {
     Optional<User> findByIdEquals(String userId);
 
     @Query("select a from User a where a.id in :userIds")
+    @EntityGraph(attributePaths = "file", type = EntityGraph.EntityGraphType.LOAD)
     Set<User> findAllById(@Param("userIds") Set<String> userIds);
 }

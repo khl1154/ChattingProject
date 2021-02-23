@@ -62,12 +62,12 @@
         </div>
         <div #contents style="height: 300px; width: 100%; overflow: scroll" class="alert alert-info m-2">
             <li #contentsItems class="list-group-item" *ngFor="let it of userMessage" style="cursor: pointer"
-                [ngStyle]="{'text-align': userMessage && it.message.userId === userTokenContain.id ? 'right' : 'left'}">
+                [ngStyle]="{'text-align': userMessage && it.userId === userTokenContain.id ? 'right' : 'left'}">
                 <span class="badge badge-pill badge-primary">
-                {{it.message.userId}}
+                {{it.userId}}
                 </span>
-                <span class="badge badge-light ml-2 mr-2">{{it.message.contents}}</span>
-                <span class="badge badge-secondary">{{it.message.regDt | moment}}</span>
+                <span class="badge badge-light ml-2 mr-2">{{it.contents}}</span>
+                <span class="badge badge-secondary">{{it.regDt | moment}}</span>
             </li>
         </div>
         <div class="m-2">

@@ -47,7 +47,7 @@ export class RoomComponent implements OnInit, AfterViewInit {
             this.userTokenContain = userTokenContain;
             this.wsService.watch<ResponseRoom[]>('/user/queue/rooms').subscribe((it) => {
                 this.rooms = it;
-                // console.log(it)
+                console.log(it)
             });
             // this.wsService.watch<string>(`/topic/rooms/${userTokenContain.authorizationHeaders}`).subscribe((it) => {
             //     console.log(it);

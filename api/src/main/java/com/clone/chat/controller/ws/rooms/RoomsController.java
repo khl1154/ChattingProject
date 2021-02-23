@@ -97,9 +97,10 @@ public class RoomsController {
         room.setLastMsgDt(message.getSendDt());
         room.setLastMsgContents(message.getContents());
         redisService.saveRoom(room);
+        redisService.sendMessage(room.getId(), msg);
 
         for(String userId : room.getInUserIds()) {
-            redisService.sendMessage(room.getId(), msg);
+            redisService.saveUserInRoom(userId, room.getId());
             webSocketManagerService.sendToUserByUserId("/queue"+URI_PREFIX+"/"+message.getRoomId()+"/message", msg, userId);
 
             List<Room> rooms = redisService.getUserInRooms(userId);

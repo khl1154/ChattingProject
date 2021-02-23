@@ -10,7 +10,7 @@ import {UserTokenContain} from '@app/models/UserTokenContain';
 import {com} from '@generate/models';
 import {BasicModalComponent, ButtonsClickType} from '@app/shareds/modals/basic-modal/basic-modal.component';
 import User = com.clone.chat.domain.User;
-import Message = com.clone.chat
+import Message = com.clone.chat.domain.Message;
 import RequestMessage = com.clone.chat.controller.ws.messages.model.RequestMessage;
 import RequestAddFriend = com.clone.chat.controller.api.friends.model.RequestAddFriend;
 import File = com.clone.chat.domain.File;
@@ -29,7 +29,7 @@ export class FriendComponent implements OnInit {
     private choiceUser: User;
     private findUser: User;
     private friends: User[];
-    private userMessage: UserMessage[] = [];
+    private userMessage: Message[] = [];
     private userTokenContain: UserTokenContain;
 
     constructor(private wsService: WsService, private userService: UserService, private http: HttpClient, private alertService: AlertService, public router: Router, private api: JsonApiService) {
@@ -43,11 +43,11 @@ export class FriendComponent implements OnInit {
                 this.friends.forEach(a => this.mergeFilePath(a));
             });
 
-            this.wsService.watch<UserMessage[]>('/user/queue/messages').subscribe((it) => {
+            this.wsService.watch<Message[]>('/user/queue/messages').subscribe((it) => {
                 this.userMessage = it;
             });
 
-            this.wsService.watch<UserMessage>('/user/queue/message').subscribe((it) => {
+            this.wsService.watch<Message>('/user/queue/message').subscribe((it) => {
                 this.userMessage.push(it);
             });
 

@@ -23,6 +23,7 @@ public class RedisService {
     private static final String USER_IN_ROOMS = "USER_IN_ROOMS";
     private static final String ROOM_IN_USERS = "ROOM_IN_USERS";
     private static final String ROOM_MESSAGES = "ROOM_MESSAGES";
+    private static final String USER_MESSAGES = "USER_MESSAGES";
 
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
@@ -31,33 +32,40 @@ public class RedisService {
     private HashOperations<String, Long, Room> rooms;
 
     @Resource(name = "redisTemplate")
-    private HashOperations<String, String, Set<Room>> userInRooms;
-
-//    @Resource(name = "redisTemplate")
-//    private HashOperations<String, Long, List<String>> roomInUsers;
+    private HashOperations<String, String, Set<Long>> userInRooms;
 
     @Resource(name = "redisTemplate")
     private HashOperations<String, Long, List<Message>> roomMessages;
+
+    @Resource(name = "redisTemplate")
+    private ValueOperations<String, Long> oneToOneRoom;
 
     public Room findRoom(Long roomId) {
         return rooms.get(ROOMS, roomId);
     }
 
-    public void saveRoom(Room room) {
-        rooms.put(ROOMS, room.getId(), room);
+    public void saveRoom(Room room) { rooms.put(ROOMS, room.getId(), room); }
+
+    public void saveUserInRoom(String userId, Long roomId) {
+        Set<Long> members = userInRooms.get(USER_IN_ROOMS, userId);
+        if(members == null) members = new HashSet<>();
+        members.add(roomId);
     }
 
     public void joinRoom(String userId, Room room) {
-        Set<Room> userInRoom = userInRooms.get(USER_IN_ROOMS, userId);
+        Set<Long> userInRoom = userInRooms.get(USER_IN_ROOMS, userId);
         if(userInRoom == null) userInRoom = new HashSet<>();
-        userInRoom.add(room);
+        userInRoom.add(room.getId());
         userInRooms.put(USER_IN_ROOMS, userId, userInRoom);
     }
 
     public List<Room> getUserInRooms(String userId) {
-        Set<Room> members = userInRooms.get(USER_IN_ROOMS, userId);
+        Set<Long> members = userInRooms.get(USER_IN_ROOMS, userId);
         if(members == null) return new ArrayList<>();
-        List<Room> roomList = new ArrayList(members);
+        List<Room> roomList = new ArrayList<>();
+        for(Long roomId : members) {
+            roomList.add(rooms.get(ROOMS,roomId));
+        }
         roomList.sort(null);
         return roomList;
     }
@@ -75,5 +83,12 @@ public class RedisService {
         return messages;
     }
 
+    public Long getOneToOneRoom(String user1, String user2) {
+        return oneToOneRoom.get(user1+":"+user2);
+    }
+
+    public void createOneToOneRoom(String user1, String user2, Long roomId) {
+        oneToOneRoom.set(user1+":"+user2,roomId);
+    }
 }
 

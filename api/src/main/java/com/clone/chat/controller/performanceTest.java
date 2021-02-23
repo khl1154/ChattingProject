@@ -29,8 +29,7 @@ import java.util.Set;
 @Slf4j
 public class performanceTest {
 
-    @Autowired
-    private WebSocketManagerService webSocketManagerService;
+    private final WebSocketManagerService webSocketManagerService;
 
     public static final String URI_PREFIX = "/anon-apis";
 
@@ -41,14 +40,14 @@ public class performanceTest {
     @GetMapping("/test")
     public void test(String userId, Long roomId) {
 
-        Message msg = Message.builder().userId(userId).contents("2").build();
+        Message msg = Message.builder().userId(userId).contents("테스트메시지").build();
 
         Room room = redisService.findRoom(roomId);
-        room.setLastMsgContents("2");
+        room.setLastMsgContents("테스트메시지");
         redisService.saveRoom(room);
+        redisService.sendMessage(room.getId(), msg);
 
         for(String userId1 : room.getInUserIds()) {
-            redisService.sendMessage(room.getId(), msg);
             webSocketManagerService.sendToUserByUserId("/queue"+URI_PREFIX+"/"+roomId+"/message", msg, userId1);
 
             List<Room> rooms = redisService.getUserInRooms(userId1);

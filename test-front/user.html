@@ -24,7 +24,7 @@ user
         })
     });
     function connectionSockJs(connected) {
-        var socket = new SockJS('http://localhost:9000/websocket')
+        var socket = new SockJS('http://13.124.86.222:9000/websocket')
         ws = Stomp.over(socket);
 
         ws.connect({}, function(frame) {

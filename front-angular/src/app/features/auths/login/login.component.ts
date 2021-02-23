@@ -62,7 +62,7 @@ export class LoginComponent implements OnInit {
 
 
         this.userService.user$.pipe(filter(it => it.authorities && it.authorities.length > 0)).subscribe(sit => {
-            this.router.navigate(['/home']);
+            this.router.navigate(['/firends']);
         });
 
         this.userService.user$.subscribe((it) => {
