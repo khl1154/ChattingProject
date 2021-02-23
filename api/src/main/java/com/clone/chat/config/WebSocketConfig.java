@@ -35,7 +35,7 @@ import java.util.Optional;
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
 
-    @Autowired
+    @Autowired @Lazy
     WebSocketManagerService webSocketManagerService;
 
 
@@ -118,13 +118,10 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @EventListener
     public void handleWebSocketConnectListener(SessionConnectedEvent event) {
-        log.info("Received a new web socket connection");
         SimpMessageHeaderAccessor headers = SimpMessageHeaderAccessor.wrap(event.getMessage());
         String sessionId = headers.getSessionId();
-        log.debug("sessionId is " + sessionId);
         if(null!=headers.getUser()) {
             String username = headers.getUser().getName(); // headers.getUser() is null
-            log.debug("username is " + username);
         }
     }
 
