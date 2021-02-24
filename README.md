@@ -93,7 +93,7 @@ Travis, AWS s3를 통해 **지속적인 통합(CI)** 환경을 구축했고 AWS 
 
 ### DB 전환 과정
 - 채팅 데이터의 DB 전환을 위하여 기존의 JPA ORM을 위해 만들었던 Entity들을 모두 Redis에 적용하기 위한 형태로 변환했습니다.
-- 기존에는 JPARepository 인터페이스를 상속받아 DB에 접근했던 것을 **RestTemplate에 Key-value** 형태로 접근하도록 했습니다.
+- 기존에는 JPARepository 인터페이스를 상속받아 DB에 접근했던 것을 **RedisTemplate에 Key-value** 형태로 접근하도록 했습니다.
 
 ### 성능 비교
 - 채팅 데이터를 MariaDB에서 관리 했을 때와 Redis에서 관리 했을 때 성능 비교를 **Apache-jmeter**를 통해 수행했습니다.
