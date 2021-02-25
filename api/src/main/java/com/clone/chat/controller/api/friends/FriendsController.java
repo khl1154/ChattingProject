@@ -69,6 +69,10 @@ public class FriendsController {
         webSocketManagerService.sendToUserByUserId("/queue/friends",friendsOfFriend,requestAddFriend.getId());
     }
 
+    @PostMapping(value = "/t")
+    public void t(@ModelAttributeMapping UserToken userToken) {
+    }
+
     @GetMapping(value = {"", "/"})
     @JsonView({JsonViewApi.class})
     public List<User> friends(HttpServletRequest request, HttpServletResponse response, @ModelAttributeMapping UserToken userToken) {

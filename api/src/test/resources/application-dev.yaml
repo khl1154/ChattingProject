@@ -1,4 +1,10 @@
 spring:
+  # redis 설정
+  redis:
+    host: localhost
+    port: 6379
+  application:
+    name: api
   datasource:
     url: jdbc:h2:mem:test;DB_CLOSE_DELAY=-1
 #    url: jdbc:h2:tcp://localhost/~/test
@@ -20,6 +26,15 @@ spring:
     database-platform: org.hibernate.dialect.H2Dialect
 logging:
   config: classpath:logback-dev.xml
+
+project:
+  jwt:
+    secretKey: sW4unUJNFTenEbGvVKpQJ0pUcGY2e0UdHfHCc6eShM0Mtgmg8VaZ86J3hilNFbG4bG
+    tokenPrefix: "Bearer "
+    tokenExpirationAfterDays: 10
+  properties:
+    angular-path: classpath:/webapp
+    swagger-host: http://13.124.86.222:9000
 
 cloud:
   aws:

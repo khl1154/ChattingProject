@@ -54,6 +54,9 @@ subprojects { it ->
 		compile group: 'org.apache.commons', name: 'commons-text', version: '1.9'
 		implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
+		// https://mvnrepository.com/artifact/org.mockito/mockito-all
+		testImplementation group: 'org.mockito', name: 'mockito-all', version: '1.10.19'
+
 
 		testImplementation 'org.springframework.security:spring-security-test'
 		compile('org.springframework.boot:spring-boot-starter-security')

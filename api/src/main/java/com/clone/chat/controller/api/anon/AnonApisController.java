@@ -37,11 +37,6 @@ public class AnonApisController {
     @Autowired
     PasswordEncoder passwordEncoder;
 
-
-
-
-
-
     @ApiOperation(value = "회원가입")
     @PostMapping("/sign-up")
     public void join(@Valid @ModelAttribute RequestSignUp requestSignUp) {
