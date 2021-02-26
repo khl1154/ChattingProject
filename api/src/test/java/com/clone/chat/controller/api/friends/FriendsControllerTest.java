@@ -1,12 +1,16 @@
 package com.clone.chat.controller.api.friends;
 
 import com.clone.chat.code.UserRole;
+import com.clone.chat.config.security.jwt.JwtConfig;
 import com.clone.chat.controller.api.ApiController;
 import com.clone.chat.controller.api.friends.model.RequestAddFriend;
 import com.clone.chat.domain.User;
 import com.clone.chat.model.UserToken;
 import com.clone.chat.repository.UserRepository;
+import com.clone.chat.service.TokenService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.junit.Before;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,7 +28,14 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.context.WebApplicationContext;
+
+import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
@@ -47,6 +58,10 @@ class FriendsControllerTest {
     private MockMvc mockMvc;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private TokenService tokenService;
+    @Autowired
+    private JwtConfig jwtConfig;
 
     @Before
     public void setup() {
@@ -65,7 +80,7 @@ class FriendsControllerTest {
                 .id("findUserId")
                 .nickName("nickName")
                 .password("password")
-                .phone("010-7365-0759")
+                .phone("010-1111-2222")
                 .role(UserRole.USER)
                 .build().map(User.class);
         userRepository.save(findUser);
@@ -82,31 +97,4 @@ class FriendsControllerTest {
         User resultUser = mapper.readValue(content, User.class);
         assertEquals(findUser.getId(), resultUser.getId());
     }
-
-    @Test
-    @DisplayName("친구추가 성공")
-    @WithMockUser(roles = "USER")
-    public void addFriend_success() throws Exception {
-        //given
-//        User user = User.builder().id("myId").build().map(User.class);
-//        User friend = User.builder().id("friendId").build().map(User.class);
-//        userRepository.save(user);
-//        userRepository.save(friend);
-//
-//        RequestAddFriend requestAddFriend = new RequestAddFriend();
-//        requestAddFriend.setId("friendId");
-//        ObjectMapper objectMapper = new ObjectMapper();
-//        String request = objectMapper.writeValueAsString(requestAddFriend);
-//        //when
-
-
-        mockMvc.perform(post(URI_PREFIX + "/t")
-//                .content(request)
-                .param("id", "myId")
-        )
-                .andExpect(status().isOk());
-        //then
-//        assertTrue(user.getFriends().contains(friend));
-    }
-
 }
