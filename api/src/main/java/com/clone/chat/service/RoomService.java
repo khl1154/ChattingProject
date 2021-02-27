@@ -23,14 +23,7 @@ public class RoomService {
     @Autowired
     private UserRepository userRepository;
 
-//    @Cacheable(value = "roomInUsers", key = "#roomId")
     public Set<User> getInUsers(Long roomId, Set<String> userIds) {
         return userRepository.findAllById(userIds);
-//        Set<User> users = new HashSet<>();
-//        for(String userId : userIds) {
-//            Optional<User> findUser = userRepository.findById(userId);
-//            users.add(findUser.get());
-//        }
-//        return users;
     }
 }

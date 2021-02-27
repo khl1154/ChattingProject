@@ -1,10 +1,7 @@
 package com.clone.chat.controller.api.anon.model;
 
 import com.clone.chat.model.ModelBase;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -13,7 +10,6 @@ import javax.validation.constraints.NotEmpty;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class RequestSignUp extends ModelBase {
     @NotEmpty
     private String id;
@@ -32,5 +28,15 @@ public class RequestSignUp extends ModelBase {
         } else {
             return true;
         }
+    }
+
+    @Builder
+    public RequestSignUp(@NotEmpty String id, @NotEmpty String password, @NotEmpty String nickName, @NotEmpty String phone, String statusMsg, MultipartFile file) {
+        this.id = id;
+        this.password = password;
+        this.nickName = nickName;
+        this.phone = phone;
+        this.statusMsg = statusMsg;
+        this.file = file;
     }
 }
