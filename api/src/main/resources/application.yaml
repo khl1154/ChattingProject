@@ -15,3 +15,7 @@ spring:
     name: api
 
 
+project:
+  properties:
+    angular-path: ''
+    swagger-host: ''
